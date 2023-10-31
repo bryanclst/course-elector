@@ -1,9 +1,10 @@
 from src.models.course import Course
 
 class Rating:
-    def __init__(self, course: Course, major: str, prof: str, quality: int, difficulty: int) -> None:
+    def __init__(self, course: Course, prof: str, quality: int, difficulty: int, grade: str, desc: str) -> None:
         self.course = course
-        self.major = major
         self.prof = prof
         self.quality = quality
         self.difficulty = difficulty
+        self.grade = grade
+        self.desc = desc
