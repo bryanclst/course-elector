@@ -1,1 +1,54 @@
 {% extends '_layout.html' %}
+{% block body %}
+
+<h1>Course Directory Search</h1>
+<h2>Choose one or more search criteria:</h2>
+
+<form action="/search" method="post" class="mt-4">
+    <div class="mb-3">
+    <label for="major">Course Major</label>
+    <select name="major" id="major" class="form-select form-select-lg mb-3" aria-label=".form-select-lg example">
+        <option selected value="">Please select your major</option>
+        <option value="CompSci">Computer Science</option>
+        <option value="English">English</option>
+        <option value="Biology">Biology</option>
+    </select>
+    </div>
+    
+    <div class="mb-3">
+    <label for="quality">Sort By Class Quality Rating</label>
+    <select name="quality" id="quality" class="form-select form-select-lg mb-3" aria-label=".form-select-lg example">
+        <option selected value="">Please choose a class quality based upon our 5 star user-submitted system</option>
+        <option value="Quality1Plus">One Star or Higher</option>
+        <option value="Quality2Plus">Two Stars or Higher</option>
+        <option value="Quality3Plus">Three Stars or Higher</option>
+        <option value="Quality4Plus">Four Stars or Higher</option>
+        <option value="Quality5Only">Five Star Quality Only</option>
+    </select>
+    </div>
+
+    <div class="mb-3">
+        <label for="difficulty">Sort By Class Difficulty Rating</label>
+        <select name="difficulty" id="difficulty" class="form-select form-select-lg mb-3" aria-label=".form-select-lg example">
+            <option selected value="">Please choose a class difficulty based upon our 5 star user-submitted system</option>
+            <option value="Diff1Plus">One Star or Higher</option>
+            <option value="Diff2Plus">Two Stars or Higher</option>
+            <option value="Diff3Plus">Three Stars or Higher</option>
+            <option value="Diff4Plus">Four Stars or Higher</option>
+            <option value="Diff5Only">Five Star Quality Only</option>
+        </select>
+        </div>
+
+    <div class="mb-3"> 
+    <label for="instructorID" class="form-label">Sort By Instructor ID:</label>
+    <input type="number" name="instructorID" id="instructorID" class="form-control">
+    </div>
+
+    <button type="submit" class="btn btn-primary">Submit</button>
+</form>
+
+<img src="/static/search-background.jpg" class="img-fluid" alt="Responsive image">
+
+
+
+{% endblock %}
