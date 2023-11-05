@@ -3,33 +3,24 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="profile.css" rel="profile.css" alt="stylesheet">
-    <title>User Profile</title>
+    <link  rel="styleshet" href="{{ url_for('static', filename='css/profile.css') }}" alt="stylesheet">
+    <title> User Profile</title>
 </head>
 <body>
-    <main>
-        <nav>
-            <h1>Profile</h1>
-            <ul>
-                <li><a class="active">Dashboard</a></li>
-                <li><a>Settings</a></li>
-                <li><a>Notifications</a></li>
-                <li><a>Privacy</a></li>
-                <hr>
-                <li><a>Help</a></li>
-                <li><a>Language</a></li>
+    <div class="header">
+        <div class="side-nav">
+            <h2>Profile</h2>
+            <ul class="nav-links">
+                <li><a href="#">Dashboard</a></li>
+                <li><a href="#">Settings</a></li>
+                <li><a href="#">Notifications</a></li>
+                <li><a href="#">Privacy</a></li>
+                <li><a href="#">Help</a></li>
+                <li><a href="#">Language</a></li>
             </ul>
-        </nav>
-        <section>
-            <div>
-                <h3>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Voluptas ullam maxime nisi ab vero aperiam, alias nobis dolor earum? Officia aliquid impedit delectus ab quos accusamus obcaecati provident porro! At?</h3>
-                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Molestiae corrupti nisi autem exercitationem perspiciatis sequi deserunt delectus, earum assumenda adipisci modi quisquam sit a, sed molestias quibusdam officia praesentium. Eum?</p>
-            </div>
-        </section>
-        <section>
-
-        </section>
-    </main>
+        </div>
+    </div>
+        
     <footer>
         
     </footer>
