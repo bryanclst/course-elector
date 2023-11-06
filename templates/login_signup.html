@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login / Sign up </title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/login.css') }}">
+</head>
+<body>
+    <div class="container">
+        <!-- Left Side (Login Credentials) -->
+        <div class="login">
+            <h2>Sign in</h2>
+            <hr>
+            <form>
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email"><br><br>                
+                <label for="password">Password:</label>
+                <input type="password" id="password" name="password"><br><br>
+                <input type="submit" value="LogIn">
+            </form>
+            <hr>
+            <ul class="social">
+                <a href="https://www.linkedin.com/" target="_blank">
+                    <i class="fa-brands fa-linkedin fa-2xl" style="color: #306ed9;"></i>
+                </a>
+                
+                <a href="https://www.google.com/" target="_blank">
+                    <i class="fab fa-google fa-2xl"></i>
+                </a>
+                
+                <a href="https://www.facebook.com/" target="_blank">
+                    <i class="fa-brands fa-square-facebook fa-2xl" style="color: #1b56bb;"></i>
+                </a>
+            </ul>
+            
+        </div>
+
+        <!-- Right Side (Photo Container) -->
+        <div class="photo-container">
+            <img src="{{ url_for('static', filename='images/UNCClock.jpg') }}" class="unc"alt="UNC Charlotte">
+        </div>
+    </div>
+
+
+</body>
+</html>

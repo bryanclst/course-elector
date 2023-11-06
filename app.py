@@ -10,5 +10,9 @@ def index():
 def profile():
     return render_template('userprofile.html')
 
+@app.route('/login_signup')
+def login_signup():
+    return render_template('login_signup.html')
+
 if __name__ == '__main__':
     app.run(debug=True)
