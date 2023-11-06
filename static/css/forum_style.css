@@ -1,0 +1,15 @@
+body {
+    margin: 20px;
+}
+
+.container {
+    max-width: 800px;
+}
+
+form {
+    width: 100%;
+}
+
+.list-group {
+    margin-top: 20px;
+}

@@ -1,0 +1,14 @@
+{% extends '_layout.html' %}
+
+{% block body %}
+    <h1>Edit Comment</h1>
+    <form method="post">
+        <div class="form-group">
+            <label for="comment">Comment</label>
+            <textarea id="comment" name="comment" class="form-control" rows="4">{{ comment }}</textarea>
+        </div>
+        <button type="submit" class="btn btn-primary">Save Changes</button>
+    </form>
+    <a href="{{ url_for('view_single_forum_post', post_id=post_id) }}" class="btn btn-secondary mt-2">Cancel</a>
+</div>
+{% endblock %}

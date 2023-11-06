@@ -1,0 +1,18 @@
+{% extends '_layout.html' %}
+
+{% block body %}
+    <h1>Edit Post</h1>
+    <form method="post">
+        <div class="form-group">
+            <label for="title">Title</label>
+            <input type="text" id="title" name="title" class="form-control" value="{{ post.title }}" required>
+        </div>
+        <div class="form-group">
+            <label for="content">Content</label>
+            <textarea id="content" name="content" class="form-control" rows="4" required>{{ post.content }}</textarea>
+        </div>
+        <button type="submit" class="btn btn-primary">Save Changes</button>
+    </form>
+    <a href="{{ url_for('view_single_forum_post', post_id=post_id) }}" class="btn btn-secondary mt-2">Cancel</a>
+</div>
+{% endblock %}
