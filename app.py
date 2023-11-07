@@ -5,3 +5,11 @@ app = Flask(__name__)
 @app.get('/')
 def index():
     return render_template('index.html')
+
+@app.get('/submit_rating')
+def get_rating_form():
+    return render_template('submit_rating.html')
+
+@app.post('/submit_rating')
+def submit_rating():
+    return render_template('view_ratings.html')
