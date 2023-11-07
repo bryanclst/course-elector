@@ -17,21 +17,18 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                 <li class="nav-item">
-                    <a class="nav-link active" href="/" aria-current="page">Home</a>
+                    <a class="nav-link{% if forum_active %} active{% endif %}" href="/">Forum</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="/">Forum</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="/search">Course Directory</a>
+                    <a class="nav-link{% if course_active %} active{% endif %}" href="/search">Course Directory</a>
                 </li>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="/">Submit Rating</a>
+                    <a class="nav-link{% if rating_active %} active{% endif %}" href="/submit_rating">Submit Rating</a>
                 </li>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="/">About</a>
+                    <a class="nav-link{% if about_active %} active{% endif %}" href="/">About</a>
                 </li>
             </ul>
             <ul class="navbar-nav ml-auto mb-2 mb-lg-0">
