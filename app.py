@@ -4,17 +4,17 @@ app = Flask(__name__)
 
 @app.get('/')
 def index():
-    return render_template('homepage.html') #changed from index.html to homepage.html as we do not have an index.html page
+    return render_template('index.html')
 
 @app.get('/about')
 def about_us():
     #Nick
-    return render_template('about_us.html')
+    return render_template('about_us.html', about_active=True)
 
 @app.get('/search')
 def get_search():
     #Nick
-    return render_template('course_directory_search.html')
+    return render_template('course_directory_search.html', course_active=True)
 
 @app.post('/search') #handles submissions
 def post_search():
@@ -39,5 +39,5 @@ def course_directory():
 
     #implement way to get list of courses based upon search parameters
 
-    return render_template('course_directory.html', major_choice=major_choice) #would in theory be feeding in list of courses, just using major_choice for testing
+    return render_template('course_directory.html', major_choice=major_choice, course_active=True) #would in theory be feeding in list of courses, just using major_choice for testing
 
