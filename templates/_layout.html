@@ -17,7 +17,7 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                 <li class="nav-item">
-                    <a class="nav-link{% if forum_active %} active{% endif %}" href="/">Forum</a>
+                    <a class="nav-link{% if forum_active %} active{% endif %}" href="/view_forum_posts">Forum</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link{% if course_active %} active{% endif %}" href="/search">Course Directory</a>
@@ -28,15 +28,12 @@
                 </li>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link{% if about_active %} active{% endif %}" href="/">About</a>
+                    <a class="nav-link{% if about_active %} active{% endif %}" href="/about">About</a>
                 </li>
             </ul>
             <ul class="navbar-nav ml-auto mb-2 mb-lg-0">
                 <li class="nav-item">
-                    <a class="nav-link" href="login_signup">Log In</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="login_signup">Sign Up</a>
+                    <a class="nav-link{% if login_active %} active{% endif %}" href="/login_signup">Log In/Sign up</a>
                 </li>
             </ul>
         </div>
