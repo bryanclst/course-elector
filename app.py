@@ -6,6 +6,14 @@ app = Flask(__name__)
 def index():
     return render_template('index.html')
 
+@app.get('/submit_rating')
+def get_rating_form():
+    return render_template('submit_rating.html', rating_active=True)
+
+@app.post('/submit_rating')
+def submit_rating():
+    return render_template('view_ratings.html', rating_active=True)
+
 @app.get('/about')
 def about_us():
     #Nick
@@ -41,11 +49,5 @@ def course_directory():
 
     return render_template('course_directory.html', major_choice=major_choice, course_active=True) #would in theory be feeding in list of courses, just using major_choice for testing
 
-@app.get('/submit_rating')
-def get_rating_form():
-    return render_template('submit_rating.html', rating_active=True)
 
-@app.post('/submit_rating')
-def submit_rating():
-    return render_template('view_ratings.html', rating_active=True)
 
