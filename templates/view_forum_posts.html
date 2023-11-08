@@ -3,12 +3,27 @@
 {% block body %}
     <h1>Simple Forum</h1>
     <a href="{{ url_for('create_forum_post') }}" class="btn btn-primary">Create Post</a>
-    <ul class="list-group mt-3">
-        {% for post in posts %}
-            <li class="list-group-item">
-                <a href="{{ url_for('view_single_forum_post', post_id=loop.index0) }}">{{ post.title }}</a>
-                <a href="{{ url_for('delete_post', post_id=loop.index0) }}" class="btn btn-danger btn-sm float-right">Delete</a>
-            </li>
-        {% endfor %}
-    </ul>
+    <table class="table">
+        <thread>
+            <tr>
+                <th>Post</th>
+                <th>Course Code</th>
+                <th>Action</th>
+            </tr>
+        </thread>
+        <tbody>
+            {% for post in posts %}
+
+                <td><a href="{{ url_for('view_single_forum_post', post_id=loop.index0) }}">{{ post.title }}</a></td>
+
+                <td>{{ post.code }}</td>
+                
+                <td><a href="{{ url_for('delete_post', post_id=loop.index0) }}" class="btn btn-danger btn-sm">Delete</a></td>
+
+            {% endfor %}
+        </tbody>
+    </table>
+        
+    
+    
 {% endblock %}

@@ -1,7 +1,7 @@
 {% extends '_layout.html' %}
 
 {% block body %}
-    <h1>{{ post.title }}</h1>
+    <h1>{{ post.code}}: {{ post.title }}</h1>
     <p>{{ post.content }}</p>
     <a href="{{ url_for('edit_forum_post', post_id=post_id) }}" class="btn btn-primary">Edit Post</a>
     <hr>

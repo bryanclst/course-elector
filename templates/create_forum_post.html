@@ -3,6 +3,16 @@
 {% block body %}
     <h1>Create Post</h1>
     <form method="post">
+
+        <div class="form-group">
+            <label for="class-select">Choose a course to post about:</label>
+            <select class="form-control" id="class-select" name="code">
+                {% for class in class_list %}
+                <option value="{{ class.code }}">{{ class.code }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        
         <div class="form-group">
             <label for="title">Title</label>
             <input type="text" id="title" name="title" class="form-control" required>

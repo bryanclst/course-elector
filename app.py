@@ -3,6 +3,10 @@ from flask import Flask, render_template, request, redirect, url_for
 app = Flask(__name__)
 
 #structures to hold posts and comments
+class_list = [
+    {"code": "ITCS 3155"},
+    {"code": "JAPN 3202"}
+]
 posts = []
 comments = {}
 
@@ -15,9 +19,11 @@ def create_forum_post():
     if request.method == 'POST':
         title = request.form['title']
         content = request.form['content']
-        posts.append({'title': title, 'content': content})
+        selected_code = request.form['code']
+        posts.append({'title': title, 'content': content, 'code': selected_code})
         return redirect(url_for('view_forum_posts'))
-    return render_template('create_forum_post.html')
+    return render_template('create_forum_post.html', class_list=class_list)
+
 
 @app.route('/view_single_forum_post/<int:post_id>', methods=['GET', 'POST'])
 def view_single_forum_post(post_id):
