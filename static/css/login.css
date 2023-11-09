@@ -11,7 +11,7 @@
 }
 
 .login {
-    width: 45%; /* Adjust width of login form */
+    width: 45%; 
 }
 
 .login form {
@@ -47,7 +47,7 @@
 }
 
 hr{
-    color: var(--light-green);
+    border-color: var(--light-green);
 }
 
 .social {
