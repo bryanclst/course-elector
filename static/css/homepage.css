@@ -18,31 +18,6 @@ body {
     background-color: #ffffff;
 }
 
-/* Nav Bar  */
-nav {
-    background-color: var(--dark-green);
-    padding: 30px;
-}
-
-nav ul {
-    list-style-type: none;
-    padding: 0;
-}
-
-nav li {
-    display: inline;
-    margin-right: 30px;
-}
-
-nav li.right {
-    float: right;
-}
-
-nav a {
-    color: #fff;
-    text-decoration: none;
-}
-
 .header {
     text-align: center;
     position: relative;
@@ -62,7 +37,7 @@ nav a {
 .site-name {
     color: white;
     position: absolute;
-    top: 20px; /* Adjust the top value to control vertical position */
+    padding-top: 10%; 
     left: 50%;
     transform: translateX(-50%);
     z-index: 1;
@@ -74,7 +49,7 @@ nav a {
     filter: brightness(70%);
 }
 
-.search-bar, .site-name {
+.search-bar {
     position: absolute;
     top: 50%;
     left: 50%;
@@ -112,9 +87,5 @@ nav a {
     margin-top: 10px;
     text-decoration: none;
     color: #333;
-}
-
-footer{
-    background-color: #005035;
-    padding: 30px;
+    margin-bottom: 60px;
 }

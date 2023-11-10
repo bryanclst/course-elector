@@ -1,13 +1,9 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login / Sign up </title>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" rel="stylesheet">
+{% extends '_layout.html' %}
+{% block title %}Log In / Sign Up {% endblock %}
+{% block body %}
+{% block styles %}
     <link rel="stylesheet" href="{{ url_for('static', filename='css/login.css') }}">
-</head>
-<body>
+{% endblock %}
     <div class="container">
         <!-- Left Side (Login Credentials) -->
         <div class="login">
@@ -42,7 +38,4 @@
             <img src="{{ url_for('static', filename='images/UNCClock.jpg') }}" class="unc"alt="UNC Charlotte">
         </div>
     </div>
-
-
-</body>
-</html>
+{% endblock %}

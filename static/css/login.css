@@ -3,6 +3,9 @@
     --light-green: #86A873;
     --blue-gray: #70798c;
 }
+body{
+    background-color: #f9f9f9;
+}
 
 .container {
     display: flex;
@@ -11,6 +14,7 @@
 }
 
 .login {
+    padding-top: 60px;
     width: 45%; 
 }
 
@@ -52,7 +56,7 @@ hr{
 
 .social {
     list-style: none;
-    padding: 0;
+    padding: 30px;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -69,7 +73,7 @@ hr{
 }
 
 .photo-container {
-    width: 45%; /* Adjust width of photo container */
+    width: 35%; /* Adjust width of photo container */
 }
 
 .photo-container img {
