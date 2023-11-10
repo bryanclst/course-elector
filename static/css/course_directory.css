@@ -40,3 +40,12 @@
     cursor: pointer;
     font-weight:600;
 }
+
+.pagination-container {
+    position: absolute;
+    right: 45%;
+    bottom: 6%;
+}
+.pagination-container a {
+    color: #005035;
+}
