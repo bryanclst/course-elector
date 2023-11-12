@@ -1,6 +1,6 @@
 {% extends '_layout.html' %}
-
 {% block body %}
+<div class="container pt-4">
     <h1>Simple Forum</h1>
     <a href="{{ url_for('create_forum_post') }}" class="btn btn-primary">Create Post</a>
     <table class="table">
@@ -13,17 +13,16 @@
         </thread>
         <tbody>
             {% for post in posts %}
-
+            <tr>
                 <td><a href="{{ url_for('view_single_forum_post', post_id=loop.index0) }}">{{ post.title }}</a></td>
 
                 <td>{{ post.code }}</td>
                 
                 <td><a href="{{ url_for('delete_post', post_id=loop.index0) }}" class="btn btn-danger btn-sm">Delete</a></td>
 
+            </tr>
             {% endfor %}
         </tbody>
     </table>
-        
-    
-    
+</div>
 {% endblock %}

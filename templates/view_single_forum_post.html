@@ -1,6 +1,6 @@
 {% extends '_layout.html' %}
-
 {% block body %}
+<div class = "container pt-4">
     <h1>{{ post.code}}: {{ post.title }}</h1>
     <p>{{ post.content }}</p>
     <a href="{{ url_for('edit_forum_post', post_id=post_id) }}" class="btn btn-primary">Edit Post</a>
@@ -26,5 +26,9 @@
         <button type="submit" class="btn btn-primary mt-2">Submit Comment</button>
     </form>
     <a href="{{ url_for('view_forum_posts') }}" class="btn btn-secondary mt-2">Back to Forum Home</a>
+    <br>
+    <br>
+    <br>
 </div>
+    
 {% endblock %}

@@ -1,9 +1,10 @@
 {% extends '_layout.html' %}
 
+
 {% block body %}
+<div class="container pt-4">
     <h1>Create Post</h1>
     <form method="post">
-
         <div class="form-group">
             <label for="class-select">Choose a course to post about:</label>
             <select class="form-control" id="class-select" name="code">
@@ -24,4 +25,5 @@
         <button type="submit" class="btn btn-primary">Submit</button>
     </form>
     <a href="{{ url_for('view_forum_posts') }}" class="btn btn-secondary mt-2">Back to Forum Home</a>
+</div>
 {% endblock %}
