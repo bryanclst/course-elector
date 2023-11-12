@@ -1,7 +1,10 @@
 {% extends '_layout.html' %}
 {% block title %}Course Directory Search{% endblock %}
-
+{% block styles %}<link rel="stylesheet" href="/static/css/course_directory_search.css">{% endblock %}
 {% block body %}
+
+<div class="container pt-4">
+
 
 <h1 class="search-directory-h1-adjuster">Course Directory Search</h1>
 <p class="search-directory-second-title">Choose one or more search criteria:</h2>
@@ -57,5 +60,5 @@
 <img src="/static/images/search-background.jpg" class="img-fluid" alt="Responsive image">
 </div>
 
-
+</div>
 {% endblock %}
