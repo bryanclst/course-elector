@@ -1,0 +1,25 @@
+:root{
+    --dark-green: #005035;
+    --light-green: #86A873;
+    --blue-gray: #70798c;
+}
+
+.flex-container {
+    display: flex;
+    justify-content: space-around;
+}
+
+.preview-container {
+}
+
+.preview-bg {
+    display: flex;
+    width: 300px;
+    height: 200px;
+    background-color: var(--light-green);
+    margin: 0 auto;
+}
+
+#submit-btn {
+    margin: 0 auto;
+}

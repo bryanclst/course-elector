@@ -4,7 +4,7 @@ app = Flask(__name__)
 
 @app.get('/')
 def index():
-    return render_template('index.html')
+    return render_template('homepage.html')
 
 @app.get('/submit_rating')
 def get_rating_form():

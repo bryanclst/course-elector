@@ -2,66 +2,77 @@
 
 {% block title %}Course Elector | Submit Rating{% endblock %}
 
+{% block styles %}
+<link href="{{url_for('static', filename='css/submit_rating.css')}}" rel="stylesheet">
+{% endblock %}
+
 {% block body %}
 <h1 class="text-center fw-bold">Submit a Rating</h1>
-<form action="/submit_rating" method="post">
-    <div class="d-flex flex-row align-items-center flex-wrap">
-        <label for="course-letter" class="me-2">Course Code:</label>
-        <div class="me-2">
-            <select class="form-select" id="course-letter" name="course-letter">
-                <option value="ITSC">ITSC</option>
-                <option value="ITCS">ITCS</option>
-                <option value="MATH">MATH</option>
-                <option value="STAT">STAT</option>
-            </select>
-        </div>
-        -
-        <div class="ms-2">
-            <!-- maybe take list of possible numbers from selected course letter -->
-            <select class="form-select" id="course-number" name="course-letter">
-                <option value="9999">9999</option>
-            </select>
-        </div>
+<div class="flex-container">
+    <div class="form-container">
+        <form id="rating-form" action="/submit_rating" method="post">
+            <div class="d-flex flex-row align-items-center flex-wrap">
+                <label for="course-letter" class="me-2">Course Code:</label>
+                <div class="me-2">
+                    <select class="form-select" id="course-letter" name="course-letter">
+                        <option value="ITSC">ITSC</option>
+                        <option value="ITCS">ITCS</option>
+                        <option value="MATH">MATH</option>
+                        <option value="STAT">STAT</option>
+                    </select>
+                </div>
+                -
+                <div class="ms-2">
+                    <!-- maybe take list of possible numbers from selected course letter -->
+                    <select class="form-select" id="course-number" name="course-letter">
+                        <option value="9999">9999</option>
+                    </select>
+                </div>
+            </div>
+            
+            <div class="d-flex flex-row align-items-center flex-wrap">
+                <label for="quality" class="me-2">Quality:</label>
+                <div>
+                    <input class="form-control" type="number" id="quality" name="quality">
+                </div>
+            </div>
+            
+            <div class="d-flex flex-row align-items-center flex-wrap">
+                <label for="difficulty" class="me-2">Difficulty:</label>
+                <div>
+                    <input class="form-control" type="number" id="difficulty" name="difficulty">
+                </div>
+            </div>
+            
+            <div class="d-flex flex-row align-items-center flex-wrap">
+                <label for="Grade" class="me-2">Grade:</label>
+                <div>
+                    
+                    <select class="form-select" id="grade" name="grade">
+                        <option value="A">A</option>
+                        <option value="B">B</option>
+                        <option value="C">C</option>
+                        <option value="D">D</option>
+                        <option value="D">F</option>
+                    </select>
+                </div>
+            </div>
+            
+            <div class="d-flex flex-row align-items-center flex-wrap">
+                <label for="Description" class="me-2">Description:</label>
+                <div>
+                    <textarea class="form-control" id="description" name="description" placeholder="test"></textarea>
+                </div>
+            </div>
+        </form>
     </div>
 
-    <div class="d-flex flex-row align-items-center flex-wrap">
-        <label for="quality" class="me-2">Quality:</label>
-        <div>
-            <input class="form-control" type="number" id="quality" name="quality">
-        </div>
+    <div class="preview-container">
+        <h3 class="preview-header">Here's how your rating will look:</h3>
+        <div class="preview-bg"></div>
     </div>
 
-
-
-    <div class="d-flex flex-row align-items-center flex-wrap">
-        <label for="difficulty" class="me-2">Difficulty:</label>
-        <div>
-            <input class="form-control" type="number" id="difficulty" name="difficulty">
-        </div>
-    </div>
-
-
-    <div class="d-flex flex-row align-items-center flex-wrap">
-        <label for="Grade" class="me-2">Grade:</label>
-        <div>
-
-            <select class="form-select" id="grade" name="grade">
-                <option value="A">A</option>
-                <option value="B">B</option>
-                <option value="C">C</option>
-                <option value="D">D</option>
-                <option value="D">F</option>
-            </select>
-        </div>
-    </div>
-
-    <div class="d-flex flex-row align-items-center flex-wrap">
-        <label for="Description" class="me-2">Description:</label>
-        <div>
-            <textarea class="form-control" id="description" name="description" placeholder="test"></textarea>
-        </div>
-    </div>
-
-    <button type="submit" class="btn btn-success">Submit</button>
-</form>
+    
+</div>
+<button id="submit-btn" form="rating-form" type="submit" class="btn btn-success">Submit</button>
 {% endblock %}
