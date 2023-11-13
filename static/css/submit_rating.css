@@ -1,7 +1,31 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
 :root{
     --dark-green: #005035;
-    --light-green: #86A873;
-    --blue-gray: #70798c;
+    --light-green: #CFE3C3;
+}
+
+h1 {
+    margin: 2rem 0;
+    font-weight: bold;
+    color: var(--dark-green)
+}
+
+label {
+    width: 100px;
+    font-weight: 600;
+    color: var(--dark-green)
+}
+
+.input-container > * {
+    border-color: var(--dark-green)
+}
+
+.input-container {
+    width: 350px;
 }
 
 .flex-container {
@@ -9,17 +33,73 @@
     justify-content: space-around;
 }
 
-/* .preview-container {
-} */
+td {
+    padding: 0.5rem 0;
+}
 
-.preview-bg {
+.form-container {
     display: flex;
-    width: 300px;
-    height: 200px;
-    background-color: var(--light-green);
-    margin: 0 auto;
+    justify-content: center;
+    flex-wrap: nowrap;
+    flex-direction: row;
 }
 
 #submit-btn {
+    display: flex;
     margin: 0 auto;
+    width: 9rem;
+}
+
+.course-code-container {
+    display: flex;
+}
+
+.course-code-container span {
+    margin: auto 0.5rem;
+}
+
+
+
+.preview-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.preview {
+    display: flex;
+    flex-direction: column;
+    width: 450px;
+    min-height: 250px;
+    background-color: var(--light-green);
+    margin: 0 auto;
+    border-radius: 1.5rem;
+    padding: 1rem;
+    flex-shrink: 1; /* cut off text somehow? */
+}
+
+.preview-info {
+    display: flex;
+    justify-content: space-around;
+}
+
+.preview-info p {
+    margin: 0;
+    color: var(--dark-green);
+    font-weight: 600;
+}
+
+.preview-info div {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.preview-description {
+    margin-top: 5px;
+    color: var(--dark-green);
+}
+
+.preview-info-header {
+    text-decoration: underline;
 }
