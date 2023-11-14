@@ -10,7 +10,7 @@ class_list = [
 posts = []
 comments = {}
 
-@app.get('/')
+@app.get('/view_forum_posts')
 def view_forum_posts():
     return render_template('view_forum_posts.html', posts=posts)
 
