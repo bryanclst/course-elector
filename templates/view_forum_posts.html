@@ -4,13 +4,13 @@
     <h1>CourseElector Forum</h1>
     <a href="{{ url_for('create_forum_post') }}" class="btn btn-primary">Create Post</a>
     <table class="table">
-        <thread>
+        <thead>
             <tr>
                 <th>Post</th>
                 <th>Course Code</th>
                 <th>Action</th>
             </tr>
-        </thread>
+        </thead>
         <tbody>
             {% for post in posts %}
             <tr>
