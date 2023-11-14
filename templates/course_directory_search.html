@@ -1,1 +1,66 @@
 {% extends '_layout.html' %}
+{% block title %}Course Directory Search{% endblock %}
+{% block styles %}<link rel="stylesheet" href="/static/css/course_directory_search.css">{% endblock %}
+{% block body %}
+
+
+
+
+<h1 class="search-directory-h1-adjuster">Course Directory Search</h1>
+<p class="search-directory-second-title">Choose one or more search criteria:</h2>
+
+<section>
+
+<form action="/search" method="post" class="mt-4 search-directory-form-adjuster">
+    <div class="mb-3 search-directory-indiv-selector">
+    <label for="major" class="search-directory-label-adjuster">Course Major</label>
+    <select name="major" id="major" class="form-select form-select-lg mb-3 search-directory-select-border" aria-label=".form-select-lg example">
+        <option selected value="">Please select your major</option>
+        <option value="CompSci">Computer Science</option>
+        <option value="English">English</option>
+        <option value="Biology">Biology</option>
+    </select>
+    </div>
+    
+    <div class="mb-3 search-directory-indiv-selector">
+    <label for="quality" class="search-directory-label-adjuster">Sort By Class Quality Rating</label>
+    <select name="quality" id="quality" class="form-select form-select-lg mb-3 search-directory-select-border" aria-label=".form-select-lg example">
+        <option selected value="">Please choose a class quality based upon our 5 star user-submitted system</option>
+        <option value="Quality1Plus">One Star or Higher</option>
+        <option value="Quality2Plus">Two Stars or Higher</option>
+        <option value="Quality3Plus">Three Stars or Higher</option>
+        <option value="Quality4Plus">Four Stars or Higher</option>
+        <option value="Quality5Only">Five Star Quality Only</option>
+    </select>
+    </div>
+
+    <div class="mb-3 search-directory-indiv-selector">
+        <label for="difficulty" class="search-directory-label-adjuster">Sort By Class Difficulty Rating</label>
+        <select name="difficulty" id="difficulty" class="form-select form-select-lg mb-3 search-directory-select-border" aria-label=".form-select-lg example">
+            <option selected value="">Please choose a class difficulty based upon our 5 star user-submitted system</option>
+            <option value="Diff1Plus">One Star or Higher</option>
+            <option value="Diff2Plus">Two Stars or Higher</option>
+            <option value="Diff3Plus">Three Stars or Higher</option>
+            <option value="Diff4Plus">Four Stars or Higher</option>
+            <option value="Diff5Only">Five Star Quality Only</option>
+        </select>
+        </div>
+
+    <div class="mb-3 search-directory-indiv-selector"> 
+    <label for="instructorID" class="form-label search-directory-label-adjuster">Sort By Instructor ID:</label>
+    <input type="number" name="instructorID" id="instructorID" class="form-control search-directory-select-border" step="1">
+    </div>
+    
+    <div class="search-directory-button-container">
+    <button type="submit" class="btn btn-primary search-directory-button-adjuster">Submit</button>
+    </div>
+</form>
+
+
+<div class="search-directory-image-adjuster">
+<img src="/static/images/search-background.jpg" class="img-fluid" alt="Responsive image">
+</div>
+</section>
+
+
+{% endblock %}

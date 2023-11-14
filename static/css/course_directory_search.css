@@ -1,0 +1,78 @@
+.search-directory-image-adjuster img{
+    margin-top: 6%;
+    margin-left: auto;
+    margin-right: 20px;
+    width: 95%;
+    height: 40%;
+    max-height: 450px;
+    height: auto;
+}
+
+section {
+    display: flex;
+    flex-direction: row;
+    
+}
+
+.search-directory-form-adjuster {
+    padding-top: 0%;
+    margin-top: 0%;
+    width: 50%;
+    height: 40%;
+    margin-left: 30px;
+    margin-right: 50px;
+    
+}
+
+.search-directory-label-adjuster {
+    color: #005035;
+    font-weight: bold;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: larger;
+    padding-bottom: 10px;
+}
+
+.search-directory-indiv-selector {
+    padding-bottom: 10px;
+    color: #005035;
+}
+
+.search-directory-h1-adjuster {
+    color: #005035;
+    position: static;
+    left: auto;
+    margin-top: 0px;
+    text-align: center;
+}
+
+.search-directory-second-title {
+    color: #86A873;
+    position: static;
+    left: auto;
+    margin-top: 10px;
+    font-size:24px;
+    text-align: center;
+}
+
+.search-directory-button-container {
+    position: static;
+    left: auto;
+    margin-top: 0;
+    margin-left: 90%;
+    margin-right: auto;
+}
+.search-directory-button-adjuster {
+    width: 200px;
+    background-color: #005035;
+    color: #FFFFFF;
+    border: none;
+    cursor: pointer;
+    font-weight:600;
+}
+
+.search-directory-select-border {
+    border: 2px solid #005035;
+    color: #005035;
+    font-size: medium;
+}
+
