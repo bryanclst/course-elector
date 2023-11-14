@@ -12,7 +12,7 @@ def login_signup():
 
 @app.route('/userprofile')
 def userprofile():
-    return render_template('userprofile.html')
+    return render_template('user_profile.html')
 
 @app.get('/submit_rating')
 def get_rating_form():
