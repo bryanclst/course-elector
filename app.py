@@ -1,10 +1,18 @@
 from flask import Flask, render_template, redirect, request, abort
 
-app = Flask(__name__)
+app = Flask(__name__, static_url_path='/static')
 
 @app.get('/')
 def index():
     return render_template('index.html')
+
+@app.route('/login_signup')
+def login_signup():
+    return render_template('login_signup.html', login_active=True)
+
+@app.route('/userprofile')
+def userprofile():
+    return render_template('user_profile.html')
 
 @app.get('/submit_rating')
 def get_rating_form():
@@ -13,6 +21,10 @@ def get_rating_form():
 @app.post('/submit_rating')
 def submit_rating():
     return render_template('view_ratings.html', rating_active=True)
+
+
+if __name__ == '__main__':
+    app.run(debug=True)
 
 @app.get('/about')
 def about_us():
@@ -48,6 +60,7 @@ def course_directory():
     #implement way to get list of courses based upon search parameters
 
     return render_template('course_directory.html', major_choice=major_choice, course_active=True) #would in theory be feeding in list of courses, just using major_choice for testing
+
 
 
 
