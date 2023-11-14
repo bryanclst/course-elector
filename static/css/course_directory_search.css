@@ -1,18 +1,24 @@
 .search-directory-image-adjuster {
-    position:absolute;
-    right: 2%;
-    top: 25.2%;
+    margin-top: 2%;
+    margin-left: auto;
+    margin-right: 20px;
     width: 50%;
-    max-width: 100%;
-    height: auto;
+    height: 40%;
+}
+
+section {
+    display: flex;
+    flex-direction: row;
     
 }
 
 .search-directory-form-adjuster {
-    padding-top: 5%;
-    margin-top: 10%;
-    width: 700px;
-    margin-left: -10%;
+    padding-top: 0%;
+    margin-top: 0%;
+    width: 50%;
+    height: 40%;
+    margin-left: 30px;
+    margin-right: 50px;
     
 }
 
@@ -21,7 +27,7 @@
     font-weight: bold;
     font-family: Arial, Helvetica, sans-serif;
     font-size: larger;
-    padding-bottom: 20px;
+    padding-bottom: 10px;
 }
 
 .search-directory-indiv-selector {
@@ -31,26 +37,27 @@
 
 .search-directory-h1-adjuster {
     color: #005035;
-    position: absolute;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    margin-top: 22px;
+    position: static;
+    left: auto;
+    margin-top: 0px;
+    text-align: center;
 }
 
 .search-directory-second-title {
     color: #86A873;
-    position: absolute;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    margin-top: 72px;
+    position: static;
+    left: auto;
+    margin-top: 10px;
     font-size:24px;
+    text-align: center;
 }
 
 .search-directory-button-container {
-    position: absolute;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    margin-top: 20px;
+    position: static;
+    left: auto;
+    margin-top: 0;
+    margin-left: 90%;
+    margin-right: auto;
 }
 .search-directory-button-adjuster {
     width: 200px;
@@ -64,5 +71,6 @@
 .search-directory-select-border {
     border: 2px solid #005035;
     color: #005035;
-    font-size: large;
+    font-size: medium;
 }
+

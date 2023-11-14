@@ -3,13 +3,13 @@
 {% block styles %}<link rel="stylesheet" href="/static/css/course_directory_search.css">{% endblock %}
 {% block body %}
 
-<div class="container pt-4">
+
 
 
 <h1 class="search-directory-h1-adjuster">Course Directory Search</h1>
 <p class="search-directory-second-title">Choose one or more search criteria:</h2>
 
-
+<section>
 
 <form action="/search" method="post" class="mt-4 search-directory-form-adjuster">
     <div class="mb-3 search-directory-indiv-selector">
@@ -56,9 +56,11 @@
     </div>
 </form>
 
+
 <div class="search-directory-image-adjuster">
 <img src="/static/images/search-background.jpg" class="img-fluid" alt="Responsive image">
 </div>
+</section>
 
-</div>
+
 {% endblock %}
