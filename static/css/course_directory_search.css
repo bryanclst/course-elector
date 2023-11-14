@@ -1,9 +1,11 @@
-.search-directory-image-adjuster {
-    margin-top: 2%;
+.search-directory-image-adjuster img{
+    margin-top: 6%;
     margin-left: auto;
     margin-right: 20px;
-    width: 50%;
+    width: 95%;
     height: 40%;
+    max-height: 450px;
+    height: auto;
 }
 
 section {
