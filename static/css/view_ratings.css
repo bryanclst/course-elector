@@ -1,0 +1,111 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+:root{
+    --dark-green: #005035;
+    --light-green: #CFE3C3;
+}
+
+h1 {
+    margin: 2rem 0;
+    text-align: center;
+    font-weight: bold;
+    color: var(--dark-green)
+}
+
+.flex-container {
+    display: flex;
+    justify-content: space-around;
+}
+
+.course-info {
+    display: flex;
+    background-color: var(--dark-green);
+    border-radius: 1.5rem;
+    max-width: 1000px;
+    flex-grow: 1;
+    margin: 0 auto;
+    justify-content: space-between;
+    padding: 15px 25px;
+}
+
+.course-info-title {
+    margin: auto 0;
+}
+
+.course-info-metadata {
+    display: flex;
+    justify-content: space-between;
+    max-width: 50%;
+    flex-grow: 1;
+}
+
+.course-info * {
+    color: white;
+}
+
+.course-info-header {
+    text-decoration: underline;
+    font-weight: 600;
+}
+
+.course-info-metadata div {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.course-info p {
+    margin: 0 5px;
+}
+
+/* individual rating formatting */
+
+.ratings-container {
+    display: flex;
+    justify-content: space-around;
+    width: 80%;
+    margin: 0 auto;
+    margin-top: 2rem;
+    flex-wrap: wrap;
+}
+
+.rating {
+    display: flex;
+    flex-direction: column;
+    width: 450px;
+    min-height: 250px;
+    background-color: var(--light-green);
+    margin: 15px;
+    border-radius: 1.5rem;
+    padding: 1rem;
+    flex-shrink: 1; /* cut off text somehow? */
+}
+
+.rating-info {
+    display: flex;
+    justify-content: space-around;
+}
+
+.rating-info p {
+    margin: 0;
+    color: var(--dark-green);
+    font-weight: 600;
+}
+
+.rating-info div {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.rating-description {
+    margin-top: 5px;
+    color: var(--dark-green);
+}
+
+.rating-info-header {
+    text-decoration: underline;
+}
