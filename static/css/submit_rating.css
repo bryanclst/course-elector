@@ -34,6 +34,10 @@ label {
     justify-content: space-around;
 }
 
+.flex-container > div {
+    margin: 0 16px;
+}
+
 td {
     padding: 0.5rem 0;
 }
