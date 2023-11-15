@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> User Profile</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/profile.css') }}">
+</head>
+<body>
+    <div class="header">
+        <div class="side-nav">
+            <h2>Profile</h2>
+            <ul class="nav-links">
+                <li><a href="#"><i class="fa-brands fa-microsoft" style="color: #ffffff;"></i>Dashboard</a></li>
+                <li><a href="#"><i class="fa-solid fa-gear" style="color: #ffffff;"></i>Settings</a></li>
+                <li><a href="#"><i class="fa-solid fa-bell" style="color: #ffffff;"></i>Notifications</a></li>
+                <li><a href="#"><i class="fa-solid fa-user-lock" style="color: #ffffff;"></i>Privacy</a></li>
+                <hr>
+                <li><a href="#"><i class="fa-solid fa-circle-question" style="color: #ffffff;"></i>Help</a></li>
+                <li><a href="#"><i class="fa-solid fa-globe" style="color: #ffffff;"></i>Language</a></li>
+                <div class="active"></div>
+            </ul>
+        </div>
+
+        <div class="main_content">
+            <div class="profile-container">
+                <img src="{{ url_for('static', filename='images/icon.png') }}" class="icon"alt="Profile Icon">
+                <div class="text-info">
+                  <h2>Demo Emma</h2>
+                  <p>Email: demoemma@gmail.com</p>
+                </div>
+            </div>
+            <div class="profile-form">
+                <form class="row g-3">
+                    <div class="col-md-4">
+                      <label for="username" class="form-label">Username</label>
+                      <input type="username" class="form-control" id="username">
+                    </div>
+                    <div class="col-md-4">
+                      <label for="inputPassword4" class="form-label">Password</label>
+                      <input type="password" class="form-control" id="inputPassword4">
+                    </div>
+                    <div class="col-md-4">
+                      <label for="newPassword" class="form-label">New Password</label>
+                      <input type="password" class="form-control" id="newPassword">
+                    </div>
+                    <div class="col-md-4">
+                      <label for="fname" class="form-label">First Name</label>
+                      <input type="text" class="form-control" placeholder="First name" aria-label="First name" id="fname"> 
+                    </div>
+                    <div class="col-md-4">
+                      <label for="lname" class="form-label">Last Name</label>
+                      <input type="text" class="form-control" placeholder="Last name" aria-label="Last name" id="lname">
+                    </div>
+                    <div class="col-md-4">
+                      <label for="phone" class="form-label">Phone Number</label>
+                      <input type="text" class="form-control" placeholder="(+1 123 456 7890)" aria-label="Phone Number" id="phone">
+                    </div>
+                    <div class="col-12">
+                      <label for="inputAddress" class="form-label">Address</label>
+                      <input type="text" class="form-control" id="inputAddress" placeholder="1234 Main St">
+                    </div>
+                    <div class="col-12">
+                      <label for="inputAddress2" class="form-label">Address 2</label>
+                      <input type="text" class="form-control" id="inputAddress2" placeholder="Apartment, studio, or floor">
+                    </div>
+                    <div class="col-md-6">
+                      <label for="inputCity" class="form-label">City</label>
+                      <input type="text" class="form-control" id="inputCity">
+                    </div>
+                    <div class="col-md-4">
+                      <label for="inputState" class="form-label">State</label>
+                      <select id="inputState" class="form-select">
+                        <option selected>Choose...</option>
+                        <option>...</option>
+                      </select>
+                    </div>
+                    <div class="col-md-2">
+                      <label for="inputZip" class="form-label">Zip</label>
+                      <input type="text" class="form-control" id="inputZip">
+                    </div>
+                    <div class="col-12">
+                      <button type="submit" class="btn btn-secondary">Edit</button>
+                    </div>
+                </form>
+                
+            </div>
+        </div>   
+    </div>
+  </body>
+  </html>
+
+
