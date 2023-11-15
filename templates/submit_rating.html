@@ -1,1 +1,134 @@
 {% extends '_layout.html' %}
+
+{% block title %}Course Elector | Submit Rating{% endblock %}
+
+{% block styles %}
+<link href="{{url_for('static', filename='css/submit_rating.css')}}" rel="stylesheet">
+{% endblock %}
+
+{% block body %}
+<h1>Submit a Rating</h1>
+<div class="flex-container">
+    <div class="form-container">
+        <form id="rating-form" action="/submit_rating" method="post">
+            <table>
+                <tr>
+                    <td>
+                        <label for="course-letter" class="me-2">Course Code:</label>
+                    </td>
+                    <td>
+                        <div class="input-container course-code-container">
+                            <select class="form-select" id="course-letter" name="course-letter">
+                                <option value="ITSC">ITSC</option>
+                                <option value="ITCS">ITCS</option>
+                                <option value="MATH">MATH</option>
+                                <option value="STAT">STAT</option>
+                            </select>
+                            <span>-</span>
+                            <!-- maybe take list of possible numbers from selected course letter -->
+                            <select class="form-select" id="course-number" name="course-letter">
+                                <option value="9999">9999</option>
+                            </select>
+                        </div>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>
+                        <label for="instructor" class="me-2">Instructor:</label>
+                    </td>
+                    <td>
+                        <div class="input-container single-input-container">
+                            <select class="form-select" id="instructor" name="instructor">
+                                <option value="A">A</option>
+                                <option value="B">B</option>
+                                <option value="C">C</option>
+                                <option value="D">D</option>
+                                <option value="D">F</option>
+                            </select>
+                        </div>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>
+                        <label for="quality" class="me-2">Quality:</label>
+                    </td>
+                    <td>
+                        <div class="input-container single-input-container">
+                            <input class="form-control" type="number" id="quality" name="quality">
+                        </div>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>
+                        <label for="difficulty" class="me-2">Difficulty:</label>
+                    </td>
+                    <td>
+                        <div class="input-container single-input-container">
+                            <input class="form-control" type="number" id="difficulty" name="difficulty">
+                        </div>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>
+                        <label for="grade" class="me-2">Grade:</label>
+                    </td>
+                    <td>
+                        <div class="input-container single-input-container">
+                            <select class="form-select" id="grade" name="grade">
+                                <option value="A">A</option>
+                                <option value="B">B</option>
+                                <option value="C">C</option>
+                                <option value="D">D</option>
+                                <option value="D">F</option>
+                            </select>
+                        </div>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>
+                        <label for="description" class="me-2">Description:</label>
+                    </td>
+                    <td>
+                        <div class="input-container single-input-container">
+                            <textarea class="form-control" id="description" name="description" placeholder="test"></textarea>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        </form>
+    </div>
+
+    <div class="preview-container">
+        <h3 class="preview-header">Here's how your rating will look:</h3>
+        <div class="preview">
+            <div class="preview-info">
+                <div>
+                    <p class="preview-info-header">Instructor</p>
+                    <p>Jacob Krevat</p>
+                </div>
+                <div>
+                    <p class="preview-info-header">Quality</p>
+                    <p>X/5</p>
+                </div>
+                <div>
+                    <p class="preview-info-header">Difficulty</p>
+                    <p>X/5</p>
+                </div>
+                <div>
+                    <p class="preview-info-header">Grade</p>
+                    <p>A</p>
+                </div>
+            </div>
+            <p class="preview-description">Lorem ipsum dolor sit amet consectetur adipisicing elit. Perferendis saepe a ea nemo molestias necessitatibus suscipit nulla, cum doloribus commodi quod ipsa minus temporibus consequatur tempora debitis, facilis beatae vel? Quisquam facilis eius distinctio qui perspiciatis ipsum beatae dignissimos illum quidem autem dolorum non aspernatur quas, veniam repellendus quae! Non.</p>
+        </div>
+    </div>
+
+
+</div>
+<input type="submit" id="submit-btn" form="rating-form" class="btn btn-success mt-3" value="Submit">
+{% endblock %}
