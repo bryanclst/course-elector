@@ -42,13 +42,13 @@ def view_single_forum_post(post_id):
 def delete_post(post_id):
     if post_id < len(posts):
         del posts[post_id]
-    return redirect(url_for('view_forum_posts'), forum_active = True)
+    return redirect(url_for('view_forum_posts'))
 
 @app.route('/delete_comment/<int:post_id>/<int:comment_id>', methods=['POST'])
 def delete_comment(post_id, comment_id):
     if post_id in comments and comment_id < len(comments[post_id]):
         del comments[post_id][comment_id]
-    return redirect(url_for('view_single_forum_post', post_id=post_id), forum_active = True)
+    return redirect(url_for('view_single_forum_post', post_id=post_id))
 
 @app.route('/edit_post/<int:post_id>', methods=['GET', 'POST'])
 def edit_forum_post(post_id):
