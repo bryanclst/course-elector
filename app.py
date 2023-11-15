@@ -11,6 +11,10 @@ class_list = [
 posts = []
 comments = {}
 
+@app.get('/')
+def index():
+    return render_template('index.html')
+
 @app.get('/view_forum_posts')
 def view_forum_posts():
     return render_template('view_forum_posts.html', posts=posts, forum_active = True)
@@ -71,10 +75,6 @@ def edit_forum_comment(post_id, comment_id):
             return redirect(url_for('view_single_forum_post', post_id=post_id))
     post_data = posts[post_id] if post_id < len(posts) else None
     return render_template('edit_forum_comment.html', comment=comments[post_id][comment_id], post=post_data, post_id=post_id, comment_id=comment_id, forum_active = True)
-
-@app.get('/')
-def index():
-    return render_template('homepage.html')
 
 @app.route('/login_signup')
 def login_signup():
