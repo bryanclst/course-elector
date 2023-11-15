@@ -1,0 +1,51 @@
+.directory-header {
+    color: #005035;
+    position: absolute;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    margin-top: 30px;
+}
+
+.directory-table {
+    margin-top: 74px;
+
+
+}
+
+.directory-table thead th{
+    color: #005035;
+    font-size: large;
+
+}
+
+.directory-form-adjuster {
+    padding-top: 5%;
+    margin-top: 10%;
+    width: 700px;
+    margin-left: -10%;
+    
+}
+
+.directory-button-container {
+    position: absolute;
+    left: 82%;
+    transform: translate(-50%, -50%);
+    margin-top: -1%;
+}
+.directory-button-adjuster {
+    width: 200px;
+    background-color: #005035;
+    color: #FFFFFF;
+    border: none;
+    cursor: pointer;
+    font-weight:600;
+}
+
+.pagination-container {
+    position: absolute;
+    right: 45%;
+    bottom: 6%;
+}
+.pagination-container a {
+    color: #005035;
+}

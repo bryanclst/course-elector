@@ -1,1 +1,166 @@
 {% extends '_layout.html' %}
+{% block title %}Course Directory{% endblock %}
+{% block styles %}<link rel="stylesheet" href="/static/css/course_directory.css">{% endblock %}
+{% block body %}
+<div class="container pt-4">
+
+<h1 class="directory-header">Course Directory</h1>
+<!--<p>{{major_choice}}</p> -->
+
+
+<!-- NOTE: This table has dummy data, mainly for testing UI-->
+<table class="table directory-table">
+    <thead>
+      <tr>
+        <th scope="col">Course</th>
+        <th scope="col">Major</th>
+        <th scope="col">Instructor</th>
+        <th scope="col">Credits</th>
+        <th scope="col">Quality Rating</th>
+        <th scope="col">Difficulty Rating</th>
+        <th scope="col"></th>
+      </tr>
+    </thead>
+    <tbody>
+
+        <tr>
+            <th scope="row" style="font-weight: normal;">ITSC-XX43</th>
+            <td>Computer Science</td>
+            <td>John Doe</td>
+            <td>3</td>
+            <td>4.85</td>
+            <td>4/5 Stars</td>
+            <td>
+                <form action="/view_forum_posts" method="post">
+                <button type="submit" name="view_posts" value="#" style="background-color: #005035;" class="btn btn-primary">View Thread</button>
+                </form>
+            </td>
+        </tr>
+
+        <tr>
+            <th scope="row" style="font-weight: normal;">ENG-XXXX</th>
+            <td>English</td>
+            <td>Bob Temple</td>
+            <td>4</td>
+            <td>4.24</td>
+            <td>3/5 Stars</td>
+            <td>
+                <form action="/view_forum_posts" method="post">
+                <button type="submit" name="view_posts" value="#" style="background-color: #005035;" class="btn btn-primary">View Thread</button>
+                </form>
+            </td>
+        </tr>
+
+        <tr>
+            <th scope="row" style="font-weight: normal;">ART-XXXX</th>
+            <td>Art</td>
+            <td>MadeUp Person</td>
+            <td>2</td>
+            <td>2.86</td>
+            <td>2/5 Stars</td>
+            <td>
+                <form action="/view_forum_posts" method="post">
+                <button type="submit" name="view_posts" value="#" style="background-color: #005035;" class="btn btn-primary">View Thread</button>
+                </form>
+            </td>
+        </tr>
+
+        <tr>
+            <th scope="row" style="font-weight: normal;">XXXX-XXXX</th>
+            <td>X</td>
+            <td>MadeUp Person</td>
+            <td>2</td>
+            <td>2.86</td>
+            <td>2/5 Stars</td>
+            <td>
+                <form action="/view_forum_posts" method="post">
+                <button type="submit" name="view_posts" value="#" style="background-color: #005035;" class="btn btn-primary">View Thread</button>
+                </form>
+            </td>
+        </tr>
+        <tr>
+            <th scope="row" style="font-weight: normal;">XXXX-XXXX</th>
+            <td>X</td>
+            <td>MadeUp Person</td>
+            <td>2</td>
+            <td>2.86</td>
+            <td>2/5 Stars</td>
+            <td>
+                <form action="/view_forum_posts" method="post">
+                <button type="submit" name="view_posts" value="#" style="background-color: #005035;" class="btn btn-primary">View Thread</button>
+                </form>
+            </td>
+        </tr>
+        <tr>
+            <th scope="row" style="font-weight: normal;">XXXX-XXXX</th>
+            <td>X</td>
+            <td>MadeUp Person</td>
+            <td>2</td>
+            <td>2.86</td>
+            <td>2/5 Stars</td>
+            <td>
+                <form action="/view_forum_posts" method="post">
+                <button type="submit" name="view_posts" value="#" style="background-color: #005035;" class="btn btn-primary">View Thread</button>
+                </form>
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+
+  <form action="/search" method="get" class="mt-4 directory-form-adjuster">
+    <div class="directory-button-container">
+    <button type="submit" class="btn btn-primary directory-button-adjuster">Back To Search</button>
+    </div>
+  </form>
+
+<!-- will use this as a template/reference to help me when database has been implemented, to feed in classes based upon requirements
+{% if class_dictionary|length == 0 %}   #no classes, display message, else       
+<h1>No Classes matched discription!</h1>
+{% else %}
+
+
+<table class="table">
+    <thead>
+      <tr>
+        <th scope="col">Course</th>
+        <th scope="col">Major</th>
+        <th scope="col">Instructor</th>
+        <th scope="col">Credits</th>
+        <th scope="col">Quality Rating</th>
+        <th scope="col">Difficulty Rating</th>
+      </tr>
+    </thead>
+    <tbody>
+        {% for key, value in order_dictionary.items() %}
+        <tr class="table-success">
+            <th scope="row" style="font-weight: normal;">{{key}}</th>
+            <td>{{value[0]}}</td>
+            <td>{{value[1]}}</td>
+            <td>{{value[2]}}</td>
+            <td>
+                <form action="/view_forum_posts" method="post">
+                <button type="submit" name="view_posts" value="{{key}}" style="background-color: #005035;" class="btn btn-primary">View Thread</button>
+                </form>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+  </table>
+    {% endif %}  
+-->
+
+<div class="pagination-container">
+    <nav aria-label="Page navigation example">
+        <ul class="pagination">
+          <li class="page-item"><a class="page-link" href="#">Previous</a></li>
+          <li class="page-item"><a class="page-link" href="#">1</a></li>
+          <li class="page-item"><a class="page-link" href="#">2</a></li>
+          <li class="page-item"><a class="page-link" href="#">3</a></li>
+          <li class="page-item"><a class="page-link" href="#">Next</a></li>
+        </ul>
+      </nav>
+</div>
+
+</div>
+{% endblock %}

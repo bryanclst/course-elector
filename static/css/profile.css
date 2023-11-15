@@ -1,0 +1,123 @@
+:root{
+    --dark-green: #005035;
+    --light-green: #86A873;
+    --blue-gray: #70798c;
+}
+
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+    text-decoration: none;
+    list-style: none;
+}
+
+h2{
+    color: white;
+    text-align: left;
+    padding: 30px 0px 0px 40px;
+}
+
+.header{
+    display: flex;
+    position: relative;
+    width: 100%;
+    height: 100%;
+    background: #f1f1f1;
+}
+
+.header .side-nav{
+    position: fixed;
+    width: 200px;
+    height: 100%;
+    background: #005035;
+    padding: 0px 0px;
+}
+
+.side-nav{
+    width: 250px;
+    height: 100%;
+    background-color: var(--dark-green);
+    position: fixed;
+    top: 0;
+    left: 0;
+    padding: 10px 30px;
+}
+
+.nav-links{
+    list-style: none;
+    position: relative;
+}
+
+.nav-links li{
+    padding: 10px 0;
+}
+
+.nav-links li a{
+    color: white;
+    text-decoration: none;
+    padding: 8px 10px;
+    display: flex;
+    align-items: center;
+} 
+
+.nav-links li a i{
+    font-size: 20px;
+    margin-right: 20px;
+} 
+
+hr{
+    border-color: var(--light-green);
+}
+
+.active{
+    background-color: rgb(255, 255, 255);
+    width: 100%;
+    height: 47px;
+    position: absolute;
+    left: 0;
+    top: 0;
+    z-index: -1;
+    border-radius: 6px;
+    box-shadow: 0 5px 10px rgb(255,255,255,0.4);
+    display: none;
+}
+
+.nav-links li:hover a{
+    color: var(--light-green);
+    transition: 0.3s;
+}
+
+/*Profile information*/
+.header .main_content{
+    width: 100%;
+    margin-left: 300px;
+}
+
+.header .main_content .profile-container{
+    margin-top: 50px;
+    width: 80%;
+    background: #70798c;
+    color: black;
+    border-bottom: 1px solid black;
+}
+
+.profile-form{
+    width: 80%;
+    padding-top: 60px;
+    padding-bottom: 50px;
+}
+
+.icon{
+    height: 150px;
+}
+
+@media only screen and (max-width:600px){
+    .side-nav{
+        width: 110px;
+    }
+    .nav-links{
+        display: none;
+    }
+}

@@ -1,0 +1,84 @@
+:root{
+    --dark-green: #005035;
+    --light-green: #86A873;
+    --blue-gray: #70798c;
+}
+body{
+    background-color: #f9f9f9;
+}
+
+.container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.login {
+    padding-top: 60px;
+    width: 45%; 
+}
+
+.login form {
+    background-color: #f9f9f9;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.login form label {
+    display: block;
+    font-weight: bold;
+}
+
+.login form input {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.login form input[type="submit"] {
+    background-color: var(--dark-green);
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.login form input[type="submit"]:hover {
+    background-color: var(--dark-green);
+}
+
+hr{
+    border-color: var(--light-green);
+}
+
+.social {
+    list-style: none;
+    padding: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%; 
+    gap: 2rem;
+}
+
+.social li {
+    margin: 0 10px; 
+}
+
+.social- a {
+    text-decoration: none;
+}
+
+.photo-container {
+    width: 35%; /* Adjust width of photo container */
+}
+
+.photo-container img {
+    padding-top: 20px;
+    border-radius: 10px;
+    max-width: 100%;
+    height: auto;
+}

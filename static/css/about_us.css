@@ -1,0 +1,23 @@
+.about-header {
+    color: #005035;
+    position: absolute;
+    left: 50%;
+    top: 15%;
+    transform: translate(-50%, -50%);
+    margin-top: 35px;
+}
+
+.about-hr
+{
+    margin-top: 10%;
+    margin-left: -12%;
+    width: 122%;
+    height: 2px;
+
+}
+
+.about-paragraph {
+    margin-top: 7%;
+    font-size: x-large;
+    text-align: center;
+}
