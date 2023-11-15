@@ -10,9 +10,9 @@ def index():
 def login_signup():
     return render_template('login_signup.html', login_active=True)
 
-@app.route('/userprofile')
+@app.route('/user_profile')
 def userprofile():
-    return render_template('user_profile.html')
+    return render_template('user_profile.html', user_active=True)
 
 @app.get('/submit_rating')
 def get_rating_form():
