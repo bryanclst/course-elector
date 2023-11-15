@@ -2,12 +2,12 @@
 {% block title %}Course Directory{% endblock %}
 {% block styles %}<link rel="stylesheet" href="/static/css/course_directory.css">{% endblock %}
 {% block body %}
-<div class="container pt-4">
+
 
 <h1 class="directory-header">Course Directory</h1>
 <!--<p>{{major_choice}}</p> -->
 
-
+<section>
 <!-- NOTE: This table has dummy data, mainly for testing UI-->
 <table class="table directory-table">
     <thead>
@@ -162,5 +162,6 @@
       </nav>
 </div>
 
-</div>
+</section>
+
 {% endblock %}
