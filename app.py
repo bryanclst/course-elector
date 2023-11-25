@@ -1,6 +1,27 @@
-from flask import Flask, render_template, redirect, request, abort, url_for
+from flask import Flask, render_template, redirect, request, abort, url_for, session
+from dotenv import load_dotenv
+from models import db, User
+from flask_bcrypt import Bcrypt
+import os
 
+load_dotenv()
 app = Flask(__name__, static_url_path='/static')
+
+env= os.getenv('ENVIRONMENT')
+db_user = os.getenv('DB_USER')
+db_pass = os.getenv('DB_PASS')
+db_host = os.getenv('DB_HOST')
+db_port = os.getenv('DB_PORT')
+db_name = os.getenv('DB_NAME')
+
+# TODO: DB connection
+app.config['SQLALCHEMY_DATABASE_URI'] = \
+    f"postgresql://{db_user}:{db_pass}@{db_host}:{db_port}/{db_name}"
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+app.config['SQLALCHEMY_ECHO']=env=='local'
+
+db.init_app(app)
+bcrypt = Bcrypt(app)
 
 
 #structures to hold posts and comments
@@ -41,7 +62,6 @@ def view_single_forum_post(post_id):
     return render_template('view_single_forum_post.html', post=post_data, comments=comments.get(post_id, []), post_id=post_id, forum_active = True)
 
 
-
 @app.route('/delete_post/<int:post_id>')
 def delete_post(post_id):
     if post_id < len(posts):
@@ -80,9 +100,37 @@ def edit_forum_comment(post_id, comment_id):
 def login_signup():
     return render_template('login_signup.html', login_active=True)
 
+@app.post('/signup')
+def signup():
+    username=request.form.get('username')
+    hashed_password=request.form.get('hashed_password')
+    if not username or not hashed_password:
+        abort (400)
+    bcrypt_password=bycrypt.generate_password_has(hashed_password,12).decode()
+    new_user = User(username,bcrypt_password)
+    db.session.add(new_user)
+    db.session.commit()
+    return redirect('login_signup.html')
+
+@app.post('/login')
+def login():
+    username=request.form.get('username')
+    hashed_password=request.form.get('hashed_password')
+    if not username or not hashed_password:
+        abort (400)
+    existing_user = User.query.filter_by(username=username).first_or_404()
+    if not existing_user:
+        abort(401)
+    if not bcrypt.check_password_hash(existing_user.password, hashed_password):
+        abort(401)
+    return redirect('/user_profile')
+
+
 @app.route('/user_profile')
 def userprofile():
-    return render_template('user_profile.html', user_active=True)
+    if 'username' not in session:
+        abort(401)
+    return render_template('user_profile.html', username=session['username'], user_active=True)
 
 @app.get('/submit_rating')
 def get_rating_form():
