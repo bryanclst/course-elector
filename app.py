@@ -103,9 +103,7 @@ def edit_forum_comment(post_id, comment_id):
         db.session.commit()
         return redirect(url_for('view_single_forum_post', post_id=post_id))
 
-    return render_template('edit_forum_comment.html', comment=comment, post_id=post_id)
-
-    return render_template('edit_forum_comment.html', comment=comment, forum_active=True)
+    return render_template('edit_forum_comment.html', comment=comment, post_id=post_id, forum_active=True)
 
 @app.route('/login_signup')
 def login_signup():
