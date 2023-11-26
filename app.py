@@ -1,28 +1,19 @@
-from flask import Flask, render_template, redirect, request, abort, url_for, session
-from dotenv import load_dotenv
-from models import db, User
+import bcrypt
+from flask import Flask, render_template, redirect, request, abort, url_for,session
+from src.models import db, AppUser, Course, Rating, Post, Comment
 from flask_bcrypt import Bcrypt
+from dotenv import load_dotenv
 import os
+
+from src.repositories.repository import repository_singleton
+
+load_dotenv()
 
 load_dotenv()
 app = Flask(__name__, static_url_path='/static')
 
-env= os.getenv('ENVIRONMENT')
-db_user = os.getenv('DB_USER')
-db_pass = os.getenv('DB_PASS')
-db_host = os.getenv('DB_HOST')
-db_port = os.getenv('DB_PORT')
-db_name = os.getenv('DB_NAME')
-
-# TODO: DB connection
-app.config['SQLALCHEMY_DATABASE_URI'] = \
-    f"postgresql://{db_user}:{db_pass}@{db_host}:{db_port}/{db_name}"
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-app.config['SQLALCHEMY_ECHO']=env=='local'
-
+app.config['SQLALCHEMY_DATABASE_URI'] = f'postgresql://{os.getenv("DB_USER")}:{os.getenv("DB_PASS")}@{os.getenv("DB_HOST")}:{os.getenv("DB_PORT")}/{os.getenv("DB_NAME")}'
 db.init_app(app)
-bcrypt = Bcrypt(app)
-
 
 #structures to hold posts and comments
 class_list = [
@@ -100,31 +91,34 @@ def edit_forum_comment(post_id, comment_id):
 def login_signup():
     return render_template('login_signup.html', login_active=True)
 
-@app.post('/signup')
-def signup():
-    username=request.form.get('username')
-    hashed_password=request.form.get('hashed_password')
+@app.route('/process_form', methods=['POST'])
+def process_form():
+    username = request.form.get('username')
+    hashed_password = request.form.get('hashed_password')
+    action = request.form.get('action')
+    
     if not username or not hashed_password:
-        abort (400)
-    bcrypt_password=bycrypt.generate_password_has(hashed_password,12).decode()
-    new_user = User(username,bcrypt_password)
-    db.session.add(new_user)
-    db.session.commit()
-    return redirect('login_signup.html')
+        abort(400)
 
-@app.post('/login')
-def login():
-    username=request.form.get('username')
-    hashed_password=request.form.get('hashed_password')
-    if not username or not hashed_password:
-        abort (400)
-    existing_user = User.query.filter_by(username=username).first_or_404()
-    if not existing_user:
-        abort(401)
-    if not bcrypt.check_password_hash(existing_user.password, hashed_password):
-        abort(401)
-    return redirect('/user_profile')
-
+    if action == 'Sign Up':
+        bcrypt_password = bcrypt.generate_password_hash(hashed_password).decode()
+        new_user = AppUser(username=username, password=bcrypt_password)
+        db.session.add(new_user)
+        db.session.commit()
+        return redirect('/login_signup.html')
+    elif action == 'Login':
+        username=request.form.get('username')
+        hashed_password=request.form.get('hashed_password')
+        if not username or not hashed_password:
+            abort (400)
+        existing_user = AppUser.query.filter_by(username=username).first_or_404()
+        if not existing_user:
+            abort(401)
+        if not bcrypt.check_password_hash(existing_user.password, hashed_password):
+            abort(401)
+        return redirect('/user_profile')
+    else:
+        return 'Invalid action'
 
 @app.route('/user_profile')
 def userprofile():
