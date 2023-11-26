@@ -1,17 +1,19 @@
 .directory-header {
     color: #005035;
     text-align: center;
-padding-bottom: 5px;
+    padding-bottom: 5px;
 
 }
 
 section {
     padding-left: 50px;
     padding-right: 50px;
+    height: 500px;
     display: flex;
     flex-direction: column;
-    align-items: center;
-    justify-content: center;
+    align-items: flex-start;
+    
+    flex-grow: 1;
     
 }
 
@@ -28,16 +30,20 @@ section {
 }
 
 .directory-form-adjuster {
-    padding-top: 0%;
+    padding-bottom: 0%;
+    
     width: 700px;
-    margin-left: 40%;
+    margin-left: 10%;
     display: flex;
     justify-content: flex-end;
     
 }
 
 .directory-button-container {
-    margin-left: auto;
+    margin-left: 40%;
+    margin-top: -15px;
+    margin-bottom: -1%;
+    
 }
 .directory-button-adjuster {
     width: 200px;
@@ -49,7 +55,12 @@ section {
 }
 
 .pagination-container {
-    margin-top: -56px;
+    margin-top: -40px;
+    margin-left: 40%;
+}
+
+.pagination-seperate {
+    margin-top: 10px;
 }
 .pagination-container a {
     color: #005035;
