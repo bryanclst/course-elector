@@ -22,4 +22,23 @@ class Repository:
     def get_all_comments(self):
         return Comment.query.all()
 
+
+
+    def get_course_by_id(self, course_id):
+        #Get a single course from the db using the course_id
+        single_course_by_id = Course.query.get(course_id)
+        return single_course_by_id
+
+    def create_course(self, course_letter, course_number, title, credits, major):
+        #create a new course in the db
+        new_course = Course(course_letter=course_letter, course_number=course_number, title=title, credits=credits, major=major)
+        db.session.add(new_course)
+        db.session.commit()
+        return new_course
+
+    def search_course_by_major(self, major_param):
+        #get all courses matching major parameter
+        matches = Course.query.filter(major=major_param).all()
+        return matches
+    
 repository_singleton = Repository()
