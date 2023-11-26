@@ -8,8 +8,8 @@ import os
 from src.repositories.repository import repository_singleton
 
 load_dotenv()
+bcrypt = Bcrypt(app)
 
-load_dotenv()
 app = Flask(__name__, static_url_path='/static')
 
 app.config['SQLALCHEMY_DATABASE_URI'] = f'postgresql://{os.getenv("DB_USER")}:{os.getenv("DB_PASS")}@{os.getenv("DB_HOST")}:{os.getenv("DB_PORT")}/{os.getenv("DB_NAME")}'
@@ -102,7 +102,7 @@ def process_form():
 
     if action == 'Sign Up':
         bcrypt_password = bcrypt.generate_password_hash(hashed_password).decode()
-        new_user = AppUser(username=username, password=bcrypt_password)
+        new_user = AppUser(username=username, hashed_password=bcrypt_password)
         db.session.add(new_user)
         db.session.commit()
         return redirect('/login_signup.html')
