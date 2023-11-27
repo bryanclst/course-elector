@@ -7,6 +7,7 @@ from src.repositories.repository import repository_singleton
 
 from sqlalchemy import func, cast, Float 
 from sqlalchemy.orm import joinedload 
+from flask_sqlalchemy import pagination #just added
 load_dotenv()
 
 app = Flask(__name__, static_url_path='/static')
@@ -138,6 +139,11 @@ def post_search():
 
 @app.get('/directory')
 def course_directory():
+
+    #beginning of pagination implementation, resources that helped me: https://betterprogramming.pub/simple-flask-pagination-example-4190b12c2e2e, https://flask-sqlalchemy.palletsprojects.com/en/2.x/api/#flask_sqlalchemy.Pagination
+    page = request.args.get('page', 1, type=int) #default page number = 1
+    rows_per_page = 7  # number of rows/courses per page
+
     # get query parameters from the URL
     major_choice = request.args.get('major')
     quality_choice = request.args.get('quality')
@@ -200,8 +206,8 @@ def course_directory():
         elif difficulty_choice == "Diff5Only":
             filtered_courses_query = filtered_courses_query.filter(subquery.c.avg_difficulty == 5.0)       
 
-    #filtered query
-    filtered_courses = filtered_courses_query.all()
+    #filtered query, modified to use paginate(), which limits the query based on the page and number of courses/rows per page, error_out returns an empty pagination object instead of an error if there is an invalid page number
+    filtered_courses = filtered_courses_query.paginate(page=page, per_page=rows_per_page, error_out=False)
 
     # loop for calculating average quality and difficulty for each course
     for course in filtered_courses:

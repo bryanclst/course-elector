@@ -65,3 +65,8 @@ section {
 .pagination-container a {
     color: #005035;
 }
+
+.pagination-container .page-item.active .page-link {
+    background-color: #005035;
+    color: #FFFFFF;
+}

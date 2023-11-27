@@ -4,7 +4,7 @@
 {% block body %}
 
 <!--Resource used for round: https://jinja.palletsprojects.com/en/3.0.x/templates/-->
-{% if all_courses|length == 0 %}
+{% if all_courses.items|length == 0 %}
   <h1 class="directory-header">No Classes matched description!</h1>
   <section>
   </section>
@@ -24,7 +24,7 @@
         </tr>
       </thead>
       <tbody>
-        {% for course in all_courses %}
+        {% for course in all_courses.items %}
           <tr>
             <th scope="row" style="font-weight: normal;">{{ course.course_letter }}-{{ course.course_number }}</th>
             <td>{{ course.major }}</td>
@@ -64,15 +64,33 @@
   </form>
 </div>
 
-
+<!--Resource that helped me with implementing pagination: https://betterprogramming.pub/simple-flask-pagination-example-4190b12c2e2e-->
 <div class="pagination-container">
   <nav aria-label="Page navigation example">
     <ul class="pagination">
-      <li class="page-item"><a class="page-link" href="#">Previous</a></li>
-      <li class="page-item"><a class="page-link" href="#">1</a></li>
-      <li class="page-item"><a class="page-link" href="#">2</a></li>
-      <li class="page-item"><a class="page-link" href="#">3</a></li>
-      <li class="page-item"><a class="page-link" href="#">Next</a></li>
+      {% if all_courses.has_prev %}
+        <li class="page-item"><a class="page-link" href="{{ url_for('course_directory', page=all_courses.prev_num) }}">Previous</a></li>
+      {% else %}
+        <li class="page-item disabled"><span class="page-link">Previous</span></li>
+      {% endif %}
+      
+      {% for num in all_courses.iter_pages() %}
+        {% if num %}
+          {% if num == all_courses.page %}
+            <li class="page-item active"><span class="page-link">{{ num }}</span></li>
+          {% else %}
+            <li class="page-item"><a class="page-link" href="{{ url_for('course_directory', page=num) }}">{{ num }}</a></li>
+          {% endif %}
+        {% else %}
+          <li class="page-item disabled"><span class="page-link">...</span></li>
+        {% endif %}
+      {% endfor %}
+
+      {% if all_courses.has_next %}
+        <li class="page-item"><a class="page-link" href="{{ url_for('course_directory', page=all_courses.next_num) }}">Next</a></li>
+      {% else %}
+        <li class="page-item disabled"><span class="page-link">Next</span></li>
+      {% endif %}
     </ul>
   </nav>
 </div>
