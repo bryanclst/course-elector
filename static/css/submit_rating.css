@@ -15,6 +15,11 @@ h1 {
     color: var(--dark-green)
 }
 
+h2 {
+    margin: 2rem 0;
+    text-align: center;
+}
+
 label {
     width: 100px;
     font-weight: 600;
@@ -55,11 +60,11 @@ td {
     width: 9rem;
 }
 
-.course-code-container {
+.course-container {
     display: flex;
 }
 
-.course-code-container span {
+.course-container span {
     margin: auto 0.5rem;
 }
 
