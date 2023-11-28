@@ -156,16 +156,39 @@ def userprofile():
 
 @app.get('/submit_rating')
 def get_rating_form():
-    return render_template('submit_rating.html', rating_active=True)
+    courses = repository_singleton.get_all_courses()
+    return render_template('submit_rating.html', rating_active=True, courses=courses)
 
 @app.post('/submit_rating')
 def submit_rating():
-    # do stuff with rating form
-    return redirect('/view_ratings') # TODO change to append the id of the rating eventually
+    course_id = request.form.get('course')
+    instructor = request.form.get('instructor')
+    quality = request.form.get('quality')
+    difficulty = request.form.get('difficulty')
+    if course_id is None or instructor is None or quality is None or difficulty is None:
+        abort(400)
+    if not isinstance(quality, int) or not isinstance(difficulty, int):
+        abort(400)
+    grade = request.form.get('grade')
+    description = request.form.get('description')
+    
+    repository_singleton.create_rating(course_id=course_id, author_id=2, instructor=instructor, quality=quality, difficulty=difficulty, grade=grade, description=description)
+    
+    return redirect(f'/view_ratings/{course_id}') # TODO change to append the id of the course
 
-@app.get('/view_ratings') # TODO variable to access specific id
-def view_ratings():
-    return render_template('view_ratings.html', rating_active=True)
+@app.get('/view_ratings/<int:course_id>') # TODO variable to access specific id
+def view_ratings(course_id):
+    course = repository_singleton.get_course_by_id(course_id)
+    if course is None:
+        abort(400) # invalid course_id
+        
+    ratings = repository_singleton.get_ratings_by_course(course_id)
+    if ratings is not None:
+        qualities = [rating.quality for rating in ratings]
+        avg_quality = round(sum(qualities) / len(qualities), 2)
+        difficulties = [rating.difficulty for rating in ratings]
+        avg_difficulty = round(sum(difficulties) / len(difficulties), 2)
+    return render_template('view_ratings.html', rating_active=True, course=course, ratings=ratings, avg_quality=avg_quality, avg_difficulty=avg_difficulty)
 
 if __name__ == '__main__':
     app.run(debug=True)
