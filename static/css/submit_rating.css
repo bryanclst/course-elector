@@ -113,3 +113,11 @@ td {
 .preview-info-header {
     text-decoration: underline;
 }
+
+.disabled-error {
+    display: flex;
+    justify-content: center;
+    margin: 1rem 0;
+    color: red;
+    font-size: small;
+}

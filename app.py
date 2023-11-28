@@ -156,11 +156,19 @@ def userprofile():
 
 @app.get('/submit_rating')
 def get_rating_form():
+    disabled = False
+    if session.get('username') is None:
+        disabled = True
     courses = repository_singleton.get_all_courses()
-    return render_template('submit_rating.html', rating_active=True, courses=courses)
+    return render_template('submit_rating.html', rating_active=True, courses=courses, disabled=disabled)
 
 @app.post('/submit_rating')
 def submit_rating():
+    username = session.get('username')
+    if username is None:
+        abort(403)
+    else:
+        author_id = repository_singleton.get_user_by_username(username).user_id
     course_id = request.form.get('course')
     instructor = request.form.get('instructor')
     quality = request.form.get('quality')
@@ -170,7 +178,7 @@ def submit_rating():
     grade = request.form.get('grade')
     description = request.form.get('description')
     
-    repository_singleton.create_rating(course_id=course_id, author_id=2, instructor=instructor, quality=quality, difficulty=difficulty, grade=grade, description=description)
+    repository_singleton.create_rating(course_id=course_id, author_id=author_id, instructor=instructor, quality=quality, difficulty=difficulty, grade=grade, description=description)
     
     return redirect(f'/view_ratings/{course_id}') # TODO change to append the id of the course
 
