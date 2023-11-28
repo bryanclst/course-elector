@@ -120,7 +120,14 @@ def about_us():
 @app.get('/search')
 def get_search():
     #Nick
-    return render_template('course_directory_search.html', course_active=True)
+    all_courses = repository_singleton.get_all_courses()
+
+    majors_set = set()
+    for course in all_courses:
+        if course.major not in majors_set:
+            majors_set.add(course.major)
+    
+    return render_template('course_directory_search.html', majors_set=majors_set, course_active=True)
 
 @app.post('/search') #handles submissions
 def post_search():

@@ -16,12 +16,9 @@
     <label for="major" class="search-directory-label-adjuster">Course Major</label>
     <select name="major" id="major" class="form-select form-select-lg mb-3 search-directory-select-border" aria-label=".form-select-lg example">
         <option selected value="">Please select your major</option>
-        <option value="Computer Science">Computer Science</option>
-        <option value="English">English</option>
-        <option value="Biology">Biology</option>
-        <option value="Mathematics">Mathematics</option>
-        <option value="Physics">Physics</option>
-        <option value="Art">Art</option>
+        {% for major in majors_set %}
+        <option value="{{ major }}">{{ major }}</option>
+        {% endfor %}
     </select>
     </div>
     
