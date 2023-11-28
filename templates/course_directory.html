@@ -44,9 +44,13 @@
             {% endif %}
             </td>
             <td>
-              <form action="/view_forum_posts" method="post">
-                <button type="submit" name="view_posts" value="#" style="background-color: #005035;" class="btn btn-primary">View Page</button>
+              {% if course.ratings %}
+              <form action="{{ url_for('view_ratings', course_id=course.course_id) }}" method="get">
+                <button type="submit" name="view_ratings" style="background-color: #005035;" class="btn btn-primary">View Page</button>
               </form>
+              {% else %}
+              <p>No Page Yet!</p>
+              {% endif %}
             </td>
           </tr>
         {% endfor %}

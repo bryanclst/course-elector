@@ -20,77 +20,95 @@ app.secret_key= os.getenv('APP_SECRET_KEY', 'abc')
 bcrypt = Bcrypt(app)
 db.init_app(app)
 
-#structures to hold posts and comments
-class_list = [
-    {"code": "ITCS 3155"},
-    {"code": "JAPN 3202"}
-]
-posts = []
-comments = {}
-
 @app.get('/')
 def index():
     return render_template('index.html')
 
 @app.get('/view_forum_posts')
 def view_forum_posts():
+    posts = Post.query.all()
     return render_template('view_forum_posts.html', posts=posts, forum_active = True)
 
 @app.route('/create_forum_post', methods=['GET', 'POST'])
 def create_forum_post():
     if request.method == 'POST':
-        title = request.form['title']
-        content = request.form['content']
-        selected_code = request.form['code']
-        posts.append({'title': title, 'content': content, 'code': selected_code})
+        subject = request.form['subject']
+        body = request.form['body']
+        selected_course_id = request.form['course_id']
+
+        course = Course.query.get(selected_course_id)
+        if course is None:
+            return render_template('create_forum_post.html', courses = Course.query.all(), forum_active = True)
+        
+        #author id is 1 for testing
+        post = Post(subject=subject, body=body, course=course, author_id=1)
+        db.session.add(post)
+        db.session.commit()
+
         return redirect(url_for('view_forum_posts'))
-    return render_template('create_forum_post.html', class_list=class_list, forum_active = True)
+    
+    return render_template('create_forum_post.html', courses=Course.query.all(), forum_active = True)
 
 
 @app.route('/view_single_forum_post/<int:post_id>', methods=['GET', 'POST'])
 def view_single_forum_post(post_id):
-    if request.method == 'POST':
-        comment = request.form['comment']
-        if post_id not in comments:
-            comments[post_id] = []
-        comments[post_id].append(comment)
-    post_data = posts[post_id] if post_id < len(posts) else None
-    return render_template('view_single_forum_post.html', post=post_data, comments=comments.get(post_id, []), post_id=post_id, forum_active = True)
+    post = Post.query.get_or_404(post_id)
+    return render_template('view_single_forum_post.html', post=post, forum_active=True)
 
 
 @app.route('/delete_post/<int:post_id>')
 def delete_post(post_id):
-    if post_id < len(posts):
-        del posts[post_id]
+    post = Post.query.get_or_404(post_id)
+    db.session.delete(post)
+    db.session.commit()
     return redirect(url_for('view_forum_posts'))
+
 
 @app.route('/delete_comment/<int:post_id>/<int:comment_id>', methods=['POST'])
 def delete_comment(post_id, comment_id):
-    if post_id in comments and comment_id < len(comments[post_id]):
-        del comments[post_id][comment_id]
+    comment = Comment.query.get_or_404(comment_id)
+    db.session.delete(comment)
+    db.session.commit()
     return redirect(url_for('view_single_forum_post', post_id=post_id))
+
+
 
 @app.route('/edit_post/<int:post_id>', methods=['GET', 'POST'])
 def edit_forum_post(post_id):
+    post = Post.query.get_or_404(post_id)
+
     if request.method == 'POST':
-        new_title = request.form['title']
-        new_content = request.form['content']
-        if post_id < len(posts):
-            posts[post_id]['title'] = new_title
-            posts[post_id]['content'] = new_content
-            return redirect(url_for('view_single_forum_post', post_id=post_id))
-    post_data = posts[post_id] if post_id < len(posts) else None
-    return render_template('edit_forum_post.html', post=post_data, post_id=post_id, forum_active = True)
+        post.subject = request.form['subject']
+        post.body = request.form['body']
+        post.course_id = request.form['course_id']
+        db.session.commit()
+        return redirect(url_for('view_forum_posts'))
+
+    return render_template('edit_forum_post.html', post=post, courses=Course.query.all(), forum_active=True)
+
+@app.route('/create_forum_comment/<int:post_id>', methods=['POST'])
+def create_forum_comment(post_id):
+    post = Post.query.get_or_404(post_id)
+
+    if request.method == 'POST':
+        body = request.form['body']
+
+        #author ID is 1 for testing purposes
+        comment = Comment(body=body, post=post, author_id=1)
+        db.session.add(comment)
+        db.session.commit()
+    return redirect(url_for('view_single_forum_post', post_id=post_id))
 
 @app.route('/edit_comment/<int:post_id>/<int:comment_id>', methods=['GET', 'POST'])
 def edit_forum_comment(post_id, comment_id):
+    comment = Comment.query.get_or_404(comment_id)
+
     if request.method == 'POST':
-        new_comment = request.form['comment']
-        if post_id in comments and comment_id < len(comments[post_id]):
-            comments[post_id][comment_id] = new_comment
-            return redirect(url_for('view_single_forum_post', post_id=post_id))
-    post_data = posts[post_id] if post_id < len(posts) else None
-    return render_template('edit_forum_comment.html', comment=comments[post_id][comment_id], post=post_data, post_id=post_id, comment_id=comment_id, forum_active = True)
+        comment.body = request.form['body']
+        db.session.commit()
+        return redirect(url_for('view_single_forum_post', post_id=post_id))
+
+    return render_template('edit_forum_comment.html', comment=comment, post_id=post_id, forum_active=True)
 
 @app.route('/login_signup')
 def login_signup():
@@ -141,16 +159,37 @@ def userprofile():
 
 @app.get('/submit_rating')
 def get_rating_form():
-    return render_template('submit_rating.html', rating_active=True)
+    courses = repository_singleton.get_all_courses()
+    return render_template('submit_rating.html', rating_active=True, courses=courses)
 
 @app.post('/submit_rating')
 def submit_rating():
-    # do stuff with rating form
-    return redirect('/view_ratings') # TODO change to append the id of the rating eventually
+    course_id = request.form.get('course')
+    instructor = request.form.get('instructor')
+    quality = request.form.get('quality')
+    difficulty = request.form.get('difficulty')
+    if course_id is None or instructor is None or quality is None or difficulty is None:
+        abort(400)
+    grade = request.form.get('grade')
+    description = request.form.get('description')
+    
+    repository_singleton.create_rating(course_id=course_id, author_id=2, instructor=instructor, quality=quality, difficulty=difficulty, grade=grade, description=description)
+    
+    return redirect(f'/view_ratings/{course_id}') # TODO change to append the id of the course
 
-@app.get('/view_ratings') # TODO variable to access specific id
-def view_ratings():
-    return render_template('view_ratings.html', rating_active=True)
+@app.get('/view_ratings/<int:course_id>') # TODO variable to access specific id
+def view_ratings(course_id):
+    course = repository_singleton.get_course_by_id(course_id)
+    if course is None:
+        abort(400) # invalid course_id
+        
+    ratings = repository_singleton.get_ratings_by_course(course_id)
+    if ratings is not None:
+        qualities = [rating.quality for rating in ratings]
+        avg_quality = round(sum(qualities) / len(qualities), 2)
+        difficulties = [rating.difficulty for rating in ratings]
+        avg_difficulty = round(sum(difficulties) / len(difficulties), 2)
+    return render_template('view_ratings.html', rating_active=True, course=course, ratings=ratings, avg_quality=avg_quality, avg_difficulty=avg_difficulty)
 
 if __name__ == '__main__':
     app.run(debug=True)
