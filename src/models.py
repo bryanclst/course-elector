@@ -60,6 +60,8 @@ class Post(db.Model):
     author_id = db.Column(db.Integer, db.ForeignKey('app_user.user_id'), nullable=False)
     subject = db.Column(db.String(255), nullable=False)
     body = db.Column(db.Text, nullable=False)
+
+    comments = db.relationship('Comment', back_populates='post', cascade='all, delete-orphan')
     
     course = db.relationship('Course', backref='posts')
     author = db.relationship('AppUser', backref='posts')
@@ -78,7 +80,7 @@ class Comment(db.Model):
     author_id = db.Column(db.Integer, db.ForeignKey('app_user.user_id'), nullable=False)
     body = db.Column(db.Text, nullable=False)
     
-    post = db.relationship('Post', backref='comments')
+    post = db.relationship('Post', back_populates='comments')
     author = db.relationship('AppUser', backref='comments')
 
     def __repr__(self):
