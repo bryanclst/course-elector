@@ -167,8 +167,6 @@ def submit_rating():
     difficulty = request.form.get('difficulty')
     if course_id is None or instructor is None or quality is None or difficulty is None:
         abort(400)
-    if not isinstance(quality, int) or not isinstance(difficulty, int):
-        abort(400)
     grade = request.form.get('grade')
     description = request.form.get('description')
     
