@@ -1,15 +1,20 @@
-from flask import Flask, render_template, redirect, request, abort, url_for
+import bcrypt
+from flask import Flask, render_template, redirect, request, abort, url_for, session, flash
 from src.models import db, AppUser, Course, Rating, Post, Comment
+from flask_bcrypt import Bcrypt
+from sqlalchemy.exc import IntegrityError 
 from dotenv import load_dotenv
 import os
 
 from src.repositories.repository import repository_singleton
 
 load_dotenv()
-
 app = Flask(__name__, static_url_path='/static')
-
 app.config['SQLALCHEMY_DATABASE_URI'] = f'postgresql://{os.getenv("DB_USER")}:{os.getenv("DB_PASS")}@{os.getenv("DB_HOST")}:{os.getenv("DB_PORT")}/{os.getenv("DB_NAME")}'
+
+app.secret_key= os.getenv('APP_SECRET_KEY', 'abc')
+
+bcrypt = Bcrypt(app)
 db.init_app(app)
 
 #structures to hold posts and comments
@@ -50,7 +55,6 @@ def view_single_forum_post(post_id):
     return render_template('view_single_forum_post.html', post=post_data, comments=comments.get(post_id, []), post_id=post_id, forum_active = True)
 
 
-
 @app.route('/delete_post/<int:post_id>')
 def delete_post(post_id):
     if post_id < len(posts):
@@ -89,9 +93,48 @@ def edit_forum_comment(post_id, comment_id):
 def login_signup():
     return render_template('login_signup.html', login_active=True)
 
+@app.route('/process_form', methods=['POST'])
+def process_form():
+    username = request.form.get('username')
+    hashed_password = request.form.get('hashed_password')
+    action = request.form.get('action')
+    
+    if not username or not hashed_password:
+        flash('Please provide both username and password', 'error')
+        return redirect('/login_signup')
+
+    if action == 'Sign Up':
+        bcrypt_password = bcrypt.generate_password_hash(hashed_password).decode()
+        try:
+            new_user = AppUser(username=username, hashed_password=bcrypt_password)
+            db.session.add(new_user)
+            db.session.commit()
+            session['username'] = username
+            flash('Account created successfully', 'success')
+            return redirect('/login_signup')
+        except IntegrityError:
+            db.session.rollback()  # Rollback the transaction
+            flash('Username already exists. Please choose another one.', 'error')
+            return redirect('/login_signup')
+    elif action == 'Login':
+        existing_user = AppUser.query.filter_by(username=username).first()
+        if not existing_user or not bcrypt.check_password_hash(existing_user.hashed_password, hashed_password):
+            flash('Incorrect username or password', 'error')
+            return redirect('/login_signup')
+        session['username'] = username
+        return redirect('/user_profile')
+    else:
+        return 'Invalid action'
+
 @app.route('/user_profile')
 def userprofile():
-    return render_template('user_profile.html', user_active=True)
+    username = session.get('username')
+    
+    if username is None:
+        # Redirect to login page or handle unauthorized access
+        return redirect('/login_signup')     
+    
+    return render_template('user_profile.html', username=session['username'], user_active=True)
 
 @app.get('/submit_rating')
 def get_rating_form():

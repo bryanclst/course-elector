@@ -7,15 +7,26 @@
     <div class="container">
         <!-- Left Side (Login Credentials) -->
         <div class="login">
-            <h2>Sign in</h2>
+            <h2>Sign Up/Login</h2>
             <hr>
-            <form>
-                <label for="email">Email:</label>
-                <input type="email" id="email" name="email"><br><br>                
-                <label for="password">Password:</label>
-                <input type="password" id="password" name="password"><br><br>
-                <input type="submit" value="LogIn">
+            <form action="/process_form" method="post">
+                <label for="username">Username:</label>
+                <input type="text" id="username" name="username" required><br><br>                
+                <label for="hashed_password">Password:</label>
+                <input type="password" id="hashed_password" name="hashed_password" required><br><br>
+                <input type="submit" value="Sign Up" name="action">
+                <input type="submit" value="Login" name="action">
             </form>
+            {% with messages = get_flashed_messages() %}
+                {% if messages %}
+                    <ul class="flash-messages">
+                        {% for message in messages %}
+                            <li>{{ message }}</li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+            {% endwith %}
+            
             <hr>
             <ul class="social">
                 <a href="https://www.linkedin.com/" target="_blank">
