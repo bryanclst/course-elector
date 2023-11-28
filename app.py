@@ -180,8 +180,9 @@ def post_search():
     difficulty_choice = request.form.get('difficulty') 
     credit_choice = request.form.get('credit')
 
-    # query in string format, so that the information gained from the forms can be used in course_directory()
-    query_parameters = f'major={major_choice}&quality={quality_choice}&difficulty={difficulty_choice}&credit={credit_choice}' 
+    # query in string format, so that the information gained from the forms can be used in course_directory(), edit: had to change this line because of bug where pages past the first page were not being sorted properly
+    # uses .join to concatenate the key value pairs seperated by the & symbol, stopping empty parameters from being appended to the url, using the if value part at the end, making sure the value part of the key-value relationship is not empty
+    query_parameters = '&'.join([f'{key}={value}' for key, value in {'major': major_choice, 'quality': quality_choice, 'difficulty': difficulty_choice, 'credit': credit_choice}.items() if value]) 
 
     #redirects to /directory with the appropriate query parameters that contain the data from the forms 
     return redirect(f'/directory?{query_parameters}') 

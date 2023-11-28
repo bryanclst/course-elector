@@ -68,29 +68,18 @@
 <div class="pagination-container">
   <nav aria-label="Page navigation example">
     <ul class="pagination">
-      {% if all_courses.has_prev %}
-        <li class="page-item"><a class="page-link" href="{{ url_for('course_directory', page=all_courses.prev_num) }}">Previous</a></li>
-      {% else %}
-        <li class="page-item disabled"><span class="page-link">Previous</span></li>
-      {% endif %}
-      
-      {% for num in all_courses.iter_pages() %}
-        {% if num %}
-          {% if num == all_courses.page %}
-            <li class="page-item active"><span class="page-link">{{ num }}</span></li>
-          {% else %}
-            <li class="page-item"><a class="page-link" href="{{ url_for('course_directory', page=num) }}">{{ num }}</a></li>
-          {% endif %}
-        {% else %}
-          <li class="page-item disabled"><span class="page-link">...</span></li>
-        {% endif %}
-      {% endfor %}
-
-      {% if all_courses.has_next %}
-        <li class="page-item"><a class="page-link" href="{{ url_for('course_directory', page=all_courses.next_num) }}">Next</a></li>
-      {% else %}
-        <li class="page-item disabled"><span class="page-link">Next</span></li>
-      {% endif %}
+<!-- Page Numbers -->
+{% for num in all_courses.iter_pages() %}
+  {% if num %}
+    <li class="page-item {% if num == all_courses.page %}active{% endif %}">
+      <a class="page-link" href="{{ url_for('course_directory', page=num, major=request.args.get('major'), quality=request.args.get('quality'), difficulty=request.args.get('difficulty'), credit=request.args.get('credit')) }}">{{ num }}</a>
+    </li>
+  {% else %}
+    <li class="page-item disabled">
+      <span class="page-link">...</span>
+    </li>
+  {% endif %}
+{% endfor %}
     </ul>
   </nav>
 </div>
