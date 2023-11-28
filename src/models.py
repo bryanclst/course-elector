@@ -10,10 +10,10 @@ class AppUser(db.Model):
     hashed_password = db.Column(db.String(255), nullable=False)
 
     def __repr__(self):
-        return f"<AppUser(user_id={self.user_id}, email={self.email}, username={self.username})>"
+        return f"<AppUser(user_id={self.user_id}, email={self.email}, username={self.username}, hashed={self.hashed_password})>"
 
     def __str__(self):
-        return f"AppUser(user_id={self.user_id}, email={self.email}, username={self.username})"
+        return f"AppUser(user_id={self.user_id}, email={self.email}, username={self.username} hashed={self.hashed_password})"
 
 
 class Course(db.Model):

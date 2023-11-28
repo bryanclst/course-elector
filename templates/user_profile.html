@@ -11,7 +11,7 @@
 <body>
     <div class="header">
         <div class="side-nav">
-            <h2>Profile</h2>
+            <h2>CourseElector</h2>
             <ul class="nav-links">
                 <li><a href="#"><i class="fa-brands fa-microsoft" style="color: #ffffff;"></i>Dashboard</a></li>
                 <li><a href="#"><i class="fa-solid fa-gear" style="color: #ffffff;"></i>Settings</a></li>
@@ -28,7 +28,7 @@
             <div class="profile-container">
                 <img src="{{ url_for('static', filename='images/icon.png') }}" class="icon"alt="Profile Icon">
                 <div class="text-info">
-                  <h2>Demo Emma</h2>
+                  <h2>{{username}}</h2>
                   <p>Email: demoemma@gmail.com</p>
                 </div>
             </div>
@@ -40,7 +40,7 @@
                     </div>
                     <div class="col-md-4">
                       <label for="inputPassword4" class="form-label">Password</label>
-                      <input type="password" class="form-control" id="inputPassword4">
+                      <input type="hashed_password" class="form-control" id="inputPassword4">
                     </div>
                     <div class="col-md-4">
                       <label for="newPassword" class="form-label">New Password</label>
@@ -53,33 +53,6 @@
                     <div class="col-md-4">
                       <label for="lname" class="form-label">Last Name</label>
                       <input type="text" class="form-control" placeholder="Last name" aria-label="Last name" id="lname">
-                    </div>
-                    <div class="col-md-4">
-                      <label for="phone" class="form-label">Phone Number</label>
-                      <input type="text" class="form-control" placeholder="(+1 123 456 7890)" aria-label="Phone Number" id="phone">
-                    </div>
-                    <div class="col-12">
-                      <label for="inputAddress" class="form-label">Address</label>
-                      <input type="text" class="form-control" id="inputAddress" placeholder="1234 Main St">
-                    </div>
-                    <div class="col-12">
-                      <label for="inputAddress2" class="form-label">Address 2</label>
-                      <input type="text" class="form-control" id="inputAddress2" placeholder="Apartment, studio, or floor">
-                    </div>
-                    <div class="col-md-6">
-                      <label for="inputCity" class="form-label">City</label>
-                      <input type="text" class="form-control" id="inputCity">
-                    </div>
-                    <div class="col-md-4">
-                      <label for="inputState" class="form-label">State</label>
-                      <select id="inputState" class="form-select">
-                        <option selected>Choose...</option>
-                        <option>...</option>
-                      </select>
-                    </div>
-                    <div class="col-md-2">
-                      <label for="inputZip" class="form-label">Zip</label>
-                      <input type="text" class="form-control" id="inputZip">
                     </div>
                     <div class="col-12">
                       <button type="submit" class="btn btn-secondary">Edit</button>
