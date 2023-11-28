@@ -1,5 +1,5 @@
 import bcrypt
-from flask import Flask, render_template, redirect, request, abort, url_for,session
+from flask import Flask, render_template, redirect, request, abort, url_for, session, flash
 from src.models import db, AppUser, Course, Rating, Post, Comment
 from flask_bcrypt import Bcrypt
 from dotenv import load_dotenv
@@ -109,7 +109,7 @@ def process_form():
         session['username'] = username
         return redirect('/login_signup')
     elif action == 'Login':
-        existing_user = AppUser.query.filter_by(username=username).first_or_404()
+        existing_user = AppUser.query.filter_by(username=username).first()
         if not existing_user or not bcrypt.check_password_hash(existing_user.hashed_password, hashed_password):
             flash('Incorrect username or password', 'error')
             return redirect('/login_signup')
