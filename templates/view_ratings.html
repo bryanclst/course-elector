@@ -64,7 +64,7 @@
                 <p>{% if rating.grade %}{{rating.grade}}{% else %}N/A{% endif %}</p>
             </div>
         </div>
-        <p class="rating-description">{{rating.description}}</p>
+        <p class="rating-description">{% if rating.description %}{{rating.description}}{% endif %}</p>
     </div>
 
     {% endfor %}
