@@ -2,6 +2,7 @@ import bcrypt
 from flask import Flask, render_template, redirect, request, abort, url_for, session, flash
 from src.models import db, AppUser, Course, Rating, Post, Comment
 from flask_bcrypt import Bcrypt
+from sqlalchemy.exc import IntegrityError 
 from dotenv import load_dotenv
 import os
 
@@ -99,15 +100,22 @@ def process_form():
     action = request.form.get('action')
     
     if not username or not hashed_password:
-        abort(400)
+        flash('Please provide both username and password', 'error')
+        return redirect('/login_signup')
 
     if action == 'Sign Up':
         bcrypt_password = bcrypt.generate_password_hash(hashed_password).decode()
-        new_user = AppUser(username=username, hashed_password=bcrypt_password)
-        db.session.add(new_user)
-        db.session.commit()
-        session['username'] = username
-        return redirect('/login_signup')
+        try:
+            new_user = AppUser(username=username, hashed_password=bcrypt_password)
+            db.session.add(new_user)
+            db.session.commit()
+            session['username'] = username
+            flash('Account created successfully', 'success')
+            return redirect('/login_signup')
+        except IntegrityError:
+            db.session.rollback()  # Rollback the transaction
+            flash('Username already exists. Please choose another one.', 'error')
+            return redirect('/login_signup')
     elif action == 'Login':
         existing_user = AppUser.query.filter_by(username=username).first()
         if not existing_user or not bcrypt.check_password_hash(existing_user.hashed_password, hashed_password):
