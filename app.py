@@ -110,12 +110,9 @@ def process_form():
         return redirect('/login_signup')
     elif action == 'Login':
         existing_user = AppUser.query.filter_by(username=username).first_or_404()
-        if not username or not hashed_password:
-            abort (400)
-        if not existing_user:
-            abort(401)
-        if not bcrypt.check_password_hash(existing_user.hashed_password, hashed_password):
-            abort(401)
+        if not existing_user or not bcrypt.check_password_hash(existing_user.hashed_password, hashed_password):
+            flash('Incorrect username or password', 'error')
+            return redirect('/login_signup')
         session['username'] = username
         return redirect('/user_profile')
     else:

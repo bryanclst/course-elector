@@ -13,10 +13,20 @@
                 <label for="username">Username:</label>
                 <input type="text" id="username" name="username" required><br><br>                
                 <label for="hashed_password">Password:</label>
-                <input type="hashed_password" id="hashed_password" name="hashed_password" required><br><br>
+                <input type="password" id="hashed_password" name="hashed_password" required><br><br>
                 <input type="submit" value="Sign Up" name="action">
                 <input type="submit" value="Login" name="action">
             </form>
+            {% with messages = get_flashed_messages() %}
+                {% if messages %}
+                    <ul class="flash-messages">
+                        {% for message in messages %}
+                            <li>{{ message }}</li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+            {% endwith %}
+            
             <hr>
             <ul class="social">
                 <a href="https://www.linkedin.com/" target="_blank">
