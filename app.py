@@ -179,6 +179,8 @@ def submit_rating():
     if course_id is None or instructor is None or quality is None or difficulty is None:
         abort(400)
     grade = request.form.get('grade')
+    if grade == 'none':
+        grade = None
     description = request.form.get('description')
     
     repository_singleton.create_rating(course_id=course_id, author_id=author_id, instructor=instructor, quality=quality, difficulty=difficulty, grade=grade, description=description)
