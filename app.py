@@ -164,11 +164,14 @@ def get_rating_form():
 
 @app.post('/submit_rating')
 def submit_rating():
+    # session checking
     username = session.get('username')
     if username is None:
-        abort(403)
+        abort(401)
     else:
         author_id = repository_singleton.get_user_by_username(username).user_id
+    
+    # form stuff
     course_id = request.form.get('course')
     instructor = request.form.get('instructor')
     quality = request.form.get('quality')
@@ -180,9 +183,9 @@ def submit_rating():
     
     repository_singleton.create_rating(course_id=course_id, author_id=author_id, instructor=instructor, quality=quality, difficulty=difficulty, grade=grade, description=description)
     
-    return redirect(f'/view_ratings/{course_id}') # TODO change to append the id of the course
+    return redirect(f'/view_ratings/{course_id}')
 
-@app.get('/view_ratings/<int:course_id>') # TODO variable to access specific id
+@app.get('/view_ratings/<int:course_id>')
 def view_ratings(course_id):
     course = repository_singleton.get_course_by_id(course_id)
     if course is None:
