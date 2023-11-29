@@ -10,9 +10,9 @@ class AppUser(db.Model):
     hashed_password = db.Column(db.String(255), nullable=False)
 
     # fk relationships
-    comments = db.relationship('Comment', back_populates="author", cascade='all, delete-orphan') # parent
     ratings = db.relationship('Rating', back_populates="author", cascade='all, delete-orphan') # parent
     posts = db.relationship('Post', back_populates="author", cascade='all, delete-orphan') # parent
+    comments = db.relationship('Comment', back_populates="author", cascade='all, delete-orphan') # parent
 
     def __repr__(self):
         return f"<AppUser(user_id={self.user_id}, email={self.email}, username={self.username}, hashed={self.hashed_password})>"
