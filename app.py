@@ -1,5 +1,5 @@
 import bcrypt
-from flask import Flask, render_template, redirect, request, abort, url_for, session, flash
+from flask import Flask, render_template as real_render_template, redirect, request, abort, url_for, session, flash
 from src.models import db, AppUser, Course, Rating, Post, Comment
 from flask_bcrypt import Bcrypt
 from sqlalchemy.exc import IntegrityError 
@@ -20,9 +20,13 @@ app.secret_key= os.getenv('APP_SECRET_KEY', 'abc')
 bcrypt = Bcrypt(app)
 db.init_app(app)
 
+# custom render_template to pass username into all routes
+def render_template(*args, **kwargs):
+    return real_render_template(*args, **kwargs, username=session.get('username'))
+
 @app.get('/')
 def index():
-    return render_template('index.html', username=session.get('username'))
+    return render_template('index.html')
 
 @app.get('/view_forum_posts')
 def view_forum_posts():
@@ -155,7 +159,7 @@ def userprofile():
         # Redirect to login page or handle unauthorized access
         return redirect('/login_signup')     
     
-    return render_template('user_profile.html', username=session['username'], user_active=True)
+    return render_template('user_profile.html', user_active=True)
 
 @app.get('/submit_rating')
 def get_rating_form():
