@@ -9,6 +9,11 @@ class AppUser(db.Model):
     username = db.Column(db.String(255), unique=True, nullable=False)
     hashed_password = db.Column(db.String(255), nullable=False)
 
+    # fk relationships
+    comments = db.relationship('Comment', back_populates="author", cascade='all, delete-orphan') # parent
+    ratings = db.relationship('Rating', back_populates="author", cascade='all, delete-orphan') # parent
+    posts = db.relationship('Post', back_populates="author", cascade='all, delete-orphan') # parent
+
     def __repr__(self):
         return f"<AppUser(user_id={self.user_id}, email={self.email}, username={self.username}, hashed={self.hashed_password})>"
 
@@ -24,6 +29,11 @@ class Course(db.Model):
     title = db.Column(db.String(255), nullable=False)
     credits = db.Column(db.SmallInteger)
     major = db.Column(db.String(255))
+    
+    # fk relationship (you can't delete a course with our website but whatever)
+    ratings = db.relationship('Rating', back_populates="course", cascade='all, delete-orphan') # parent
+    
+    posts = db.relationship('Post', back_populates="course", cascade='all, delete-orphan') # parent
 
     def __repr__(self):
         return f"<Course(course_id={self.course_id}, title={self.title})>"
@@ -35,16 +45,18 @@ class Course(db.Model):
 class Rating(db.Model):
     __tablename__ = 'rating'
     rating_id = db.Column(db.Integer, primary_key=True)
-    course_id = db.Column(db.Integer, db.ForeignKey('course.course_id'), nullable=False)
-    author_id = db.Column(db.Integer, db.ForeignKey('app_user.user_id'), nullable=False)
     instructor = db.Column(db.String(255), nullable=False)
     quality = db.Column(db.SmallInteger, nullable=False)
     difficulty = db.Column(db.SmallInteger, nullable=False)
     grade = db.Column(db.String(1))
     description = db.Column(db.Text)
     
-    course = db.relationship('Course', backref='ratings')
-    author = db.relationship('AppUser', backref='ratings')
+    # fk relationships
+    course_id = db.Column(db.Integer, db.ForeignKey('course.course_id'), nullable=False)
+    course = db.relationship('Course', back_populates='ratings') # child
+    
+    author_id = db.Column(db.Integer, db.ForeignKey('app_user.user_id'), nullable=False)
+    author = db.relationship('AppUser', back_populates='ratings') # child
 
     def __repr__(self):
         return f"<Rating(rating_id={self.rating_id}, course_id={self.course_id}, author_id={self.author_id})>"
@@ -56,15 +68,17 @@ class Rating(db.Model):
 class Post(db.Model):
     __tablename__ = 'post'
     post_id = db.Column(db.Integer, primary_key=True)
-    course_id = db.Column(db.Integer, db.ForeignKey('course.course_id'), nullable=False)
-    author_id = db.Column(db.Integer, db.ForeignKey('app_user.user_id'), nullable=False)
     subject = db.Column(db.String(255), nullable=False)
     body = db.Column(db.Text, nullable=False)
-
-    comments = db.relationship('Comment', back_populates='post', cascade='all, delete-orphan')
     
-    course = db.relationship('Course', backref='posts')
-    author = db.relationship('AppUser', backref='posts')
+    # fk relationships
+    course_id = db.Column(db.Integer, db.ForeignKey('course.course_id'), nullable=False)
+    course = db.relationship('Course', back_populates='posts') # child
+    
+    author_id = db.Column(db.Integer, db.ForeignKey('app_user.user_id'), nullable=False)
+    author = db.relationship('AppUser', back_populates='posts') # child
+
+    comments = db.relationship('Comment', back_populates="post", cascade='all, delete-orphan') # parent
 
     def __repr__(self):
         return f"<Post(post_id={self.post_id}, course_id={self.course_id}, author_id={self.author_id}, subject={self.subject})>"
@@ -76,12 +90,13 @@ class Post(db.Model):
 class Comment(db.Model):
     __tablename__ = 'comment'
     comment_id = db.Column(db.Integer, primary_key=True)
-    post_id = db.Column(db.Integer, db.ForeignKey('post.post_id'), nullable=False)
-    author_id = db.Column(db.Integer, db.ForeignKey('app_user.user_id'), nullable=False)
     body = db.Column(db.Text, nullable=False)
     
-    post = db.relationship('Post', back_populates='comments')
-    author = db.relationship('AppUser', backref='comments')
+    post_id = db.Column(db.Integer, db.ForeignKey('post.post_id'), nullable=False)
+    post = db.relationship('Post', back_populates='comments') # child
+    
+    author_id = db.Column(db.Integer, db.ForeignKey('app_user.user_id'), nullable=False)
+    author = db.relationship('AppUser', back_populates='comments') # child
 
     def __repr__(self):
         return f"<Comment(comment_id={self.comment_id}, post_id={self.post_id}, author_id={self.author_id})>"
