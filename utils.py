@@ -2,8 +2,8 @@ from src.models import AppUser, Course, Rating, Post, Comment, db
 from sqlalchemy import text
 
 def clear_db():
-    Course.query.delete()  
-    AppUser.query.delete()
+    Course.query.delete()
+    AppUser.query.delete() # cascades take care of the rest
     db.session.commit()
 
     table_primary_key_mapping = {
