@@ -29,8 +29,8 @@ CREATE TABLE IF NOT EXISTS rating
     grade       CHAR(1),
     description TEXT,
     PRIMARY KEY (rating_id),
-    FOREIGN KEY (course_id) REFERENCES course (course_id),
-    FOREIGN KEY (author_id) REFERENCES app_user (user_id)
+    FOREIGN KEY (course_id) REFERENCES course (course_id) ON DELETE CASCADE,
+    FOREIGN KEY (author_id) REFERENCES app_user (user_id) ON DELETE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS post
@@ -41,8 +41,8 @@ CREATE TABLE IF NOT EXISTS post
     subject   VARCHAR(255) NOT NULL,
     body      TEXT         NOT NULL,
     PRIMARY KEY (post_id),
-    FOREIGN KEY (course_id) REFERENCES course (course_id),
-    FOREIGN KEY (author_id) REFERENCES app_user (user_id)
+    FOREIGN KEY (course_id) REFERENCES course (course_id) ON DELETE CASCADE,
+    FOREIGN KEY (author_id) REFERENCES app_user (user_id) ON DELETE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS comment
@@ -52,6 +52,6 @@ CREATE TABLE IF NOT EXISTS comment
     author_id  INT  NOT NULL,
     body       TEXT NOT NULL,
     PRIMARY KEY (comment_id),
-    FOREIGN KEY (post_id) REFERENCES post (post_id),
-    FOREIGN KEY (author_id) REFERENCES app_user (user_id)
+    FOREIGN KEY (post_id) REFERENCES post (post_id) ON DELETE CASCADE,
+    FOREIGN KEY (author_id) REFERENCES app_user (user_id) ON DELETE CASCADE
 );
