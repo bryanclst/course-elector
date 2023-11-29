@@ -4,12 +4,14 @@ class Repository:
     def get_all_users(self):
         return AppUser.query.all()
     
+    def get_user_by_username(self, username):
+        return AppUser.query.filter_by(username=username).first()
+    
     def get_all_courses(self):
         return Course.query.all()
     
     def get_course_by_id(self, course_id: int):
-        course = Course.query.filter_by(course_id=course_id).first()
-        return course
+        return Course.query.filter_by(course_id=course_id).first()
     
     def get_all_ratings(self):
         return Rating.query.all()

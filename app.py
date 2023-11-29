@@ -1,5 +1,5 @@
 import bcrypt
-from flask import Flask, render_template, redirect, request, abort, url_for, session, flash
+from flask import Flask, render_template as real_render_template, redirect, request, abort, url_for, session, flash
 from src.models import db, AppUser, Course, Rating, Post, Comment
 from flask_bcrypt import Bcrypt
 from sqlalchemy.exc import IntegrityError 
@@ -19,6 +19,10 @@ app.secret_key= os.getenv('APP_SECRET_KEY', 'abc')
 
 bcrypt = Bcrypt(app)
 db.init_app(app)
+
+# custom render_template to pass username into all routes
+def render_template(*args, **kwargs):
+    return real_render_template(*args, **kwargs, username=session.get('username'))
 
 @app.get('/')
 def index():
@@ -155,15 +159,26 @@ def userprofile():
         # Redirect to login page or handle unauthorized access
         return redirect('/login_signup')     
     
-    return render_template('user_profile.html', username=session['username'], user_active=True)
+    return render_template('user_profile.html', user_active=True)
 
 @app.get('/submit_rating')
 def get_rating_form():
+    disabled = False
+    if session.get('username') is None:
+        disabled = True
     courses = repository_singleton.get_all_courses()
-    return render_template('submit_rating.html', rating_active=True, courses=courses)
+    return render_template('submit_rating.html', rating_active=True, courses=courses, disabled=disabled)
 
 @app.post('/submit_rating')
 def submit_rating():
+    # session checking
+    username = session.get('username')
+    if username is None:
+        abort(401)
+    else:
+        author_id = repository_singleton.get_user_by_username(username).user_id
+    
+    # form stuff
     course_id = request.form.get('course')
     instructor = request.form.get('instructor')
     quality = request.form.get('quality')
@@ -171,13 +186,17 @@ def submit_rating():
     if course_id is None or instructor is None or quality is None or difficulty is None:
         abort(400)
     grade = request.form.get('grade')
+    if grade == 'none':
+        grade = None
     description = request.form.get('description')
+    if not description:
+        description = None
     
-    repository_singleton.create_rating(course_id=course_id, author_id=2, instructor=instructor, quality=quality, difficulty=difficulty, grade=grade, description=description)
+    repository_singleton.create_rating(course_id=course_id, author_id=author_id, instructor=instructor, quality=quality, difficulty=difficulty, grade=grade, description=description)
     
-    return redirect(f'/view_ratings/{course_id}') # TODO change to append the id of the course
+    return redirect(f'/view_ratings/{course_id}')
 
-@app.get('/view_ratings/<int:course_id>') # TODO variable to access specific id
+@app.get('/view_ratings/<int:course_id>')
 def view_ratings(course_id):
     course = repository_singleton.get_course_by_id(course_id)
     if course is None:

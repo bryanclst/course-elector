@@ -27,7 +27,7 @@
                         <div class="input-container course-container">
                             <select class="form-select" id="course" name="course" required>
                                 {% for course in courses %}
-                                <option value="{{course.course_id}}">{{course.course_letter}} {{course.course_number}} - {{course.title}}</option>
+                                <option value="{{course.course_id}}">{{course.course_letter}}-{{course.course_number}} - {{course.title}}</option>
                                 {% endfor %}
                             </select>
                         </div>
@@ -74,6 +74,7 @@
                     <td>
                         <div class="input-container single-input-container">
                             <select class="form-select" id="grade" name="grade">
+                                <option value="none"></option>
                                 <option value="A">A</option>
                                 <option value="B">B</option>
                                 <option value="C">C</option>
@@ -90,7 +91,7 @@
                     </td>
                     <td>
                         <div class="input-container single-input-container">
-                            <textarea class="form-control" id="description" name="description" placeholder="test"></textarea>
+                            <textarea class="form-control" id="description" name="description"></textarea>
                         </div>
                     </td>
                 </tr>
@@ -125,7 +126,8 @@
 
 
 </div>
-<input type="submit" id="submit-btn" form="rating-form" class="btn btn-success mt-3" value="Submit">
+<input type="submit" id="submit-btn" form="rating-form" class="btn btn-success mt-3" value="Submit"{% if disabled %} disabled=True{% endif %}>
+{% if disabled %}<p class="disabled-error">You must be logged in to submit a rating.</p>{% endif %}
 
 {% endif %}
 {% endblock %}
