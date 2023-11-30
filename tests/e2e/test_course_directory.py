@@ -10,6 +10,10 @@ def test_directory_populated(test_client):
     assert course2 is not None
     assert course3 is not None
 
+def test_directory_status(test_client):
+    response = test_client.get('/directory')
+    assert response.status_code == 200
+
 def test_directory_empty(test_client):
     heavily_populate_db()
     clear_db()
@@ -40,8 +44,13 @@ def test_directory_filtering_multiple(test_client):
 
 
 
-def test_directory_filtering_and_rating_implementation(test_client):
+def test_directory_rating_implementation(test_client):
     heavily_populate_db()
     response = test_client.get('/directory?quality=Quality4Plus')
-    assert b'View Page' in response.data 
-    assert b'No Page Yet' not in response.data
+    assert b'View Page' in response.data #only should show View Page buttons
+    assert b'No Page Yet' not in response.data #Should not show No Page Yet buttons since all quality 4+ courses have a rating page
+
+def test_directory_invalid_query(test_client):
+    heavily_populate_db()
+    response = test_client.get('/directory?major=ghosthunting') #not a valid major in db at the time
+    assert b'No Classes matched description!' in response.data
