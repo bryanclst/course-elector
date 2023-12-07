@@ -13,6 +13,14 @@
     list-style: none;
 }
 
+.title{
+    font-size: 25px;
+    color: #fff;
+    display: inline-block;
+    margin-top: 20px; /* Adjust the margin as needed */
+    padding: 10px 20px;
+}
+
 h2{
     color: white;
     font-size: large;

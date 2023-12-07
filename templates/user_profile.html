@@ -11,7 +11,7 @@
 <body>
     <div class="header">
         <div class="side-nav">
-            <h2>CourseElector</h2>
+          <a class="title" href="{{url_for('index')}}">CourseElector</a>
             <ul class="nav-links">
                 <li><a href="#"><i class="fa-brands fa-microsoft" style="color: #ffffff;"></i>Dashboard</a></li>
                 <li><a href="#"><i class="fa-solid fa-gear" style="color: #ffffff;"></i>Settings</a></li>
@@ -28,41 +28,49 @@
             <div class="profile-container">
                 <img src="{{ url_for('static', filename='images/icon.png') }}" class="icon"alt="Profile Icon">
                 <div class="text-info">
-                  <h2>{{username}}</h2>
-                  <p>Email: demoemma@gmail.com</p>
+                  <h2>Username: {{username}}</h2>
+                  <p>Email Address: {{email}}</p>
                 </div>
             </div>
             <div class="profile-form">
-                <form class="row g-3">
+                <form class="row g-3" method="POST" action="{{url_for('update_profile')}}">
                     <div class="col-md-4">
                       <label for="username" class="form-label">Username</label>
-                      <input type="username" class="form-control" id="username">
+                      <input type="username" class="form-control" id="username" value="{{ username }}" readonly>
                     </div>
                     <div class="col-md-4">
                       <label for="inputPassword4" class="form-label">Password</label>
-                      <input type="hashed_password" class="form-control" id="inputPassword4">
+                      <input type="password" class="form-control" id="hashed_password" name="hashed_password" placeholder="Enter your password">
                     </div>
                     <div class="col-md-4">
                       <label for="newPassword" class="form-label">New Password</label>
-                      <input type="password" class="form-control" id="newPassword">
+                      <input type="password" class="form-control" id="newPassword" name="newPassword" placeholder="Enter a new password">
                     </div>
                     <div class="col-md-4">
                       <label for="fname" class="form-label">First Name</label>
-                      <input type="text" class="form-control" placeholder="First name" aria-label="First name" id="fname"> 
+                      <input type="text" class="form-control" id="fname" name="fname" value="{{ first_name }}"> 
                     </div>
                     <div class="col-md-4">
                       <label for="lname" class="form-label">Last Name</label>
-                      <input type="text" class="form-control" placeholder="Last name" aria-label="Last name" id="lname">
+                      <input type="text" class="form-control" id="lname" name="lname" value="{{ last_name }}">
                     </div>
                     <div class="col-12">
-                      <button type="submit" class="btn btn-secondary">Edit</button>
+                      <button type="submit" class="btn btn-secondary">Update Profile</button>
                     </div>
                 </form>
-                
+                {% with messages = get_flashed_messages() %}
+                    {% if messages %}
+                        <ul class="flash-messages">
+                            {% for message in messages %}
+                                <li>{{ message }}</li>
+                            {% endfor %}
+                        </ul>
+                    {% endif %}
+                {% endwith %}
             </div>
         </div>   
     </div>
   </body>
-  </html>
+</html>
 
 

@@ -51,11 +51,15 @@
             <form action="/process_form" method="post">
                 <label>
                     <span for="username">Username:</span>
-                    <input type="text" id="username" name="username" required><br><br>   
+                    <input type="text" id="username" name="username" required><br>   
+                </label>
+                <label>
+                    <span for="email">Email:</span>
+                    <input type="text" id="email" name="email" required><br>  
                 </label>
                 <label>
                     <span for="hashed_password">Password:</span>
-                    <input type="password" id="hashed_password" name="hashed_password" required><br><br>
+                    <input type="password" id="hashed_password" name="hashed_password" required><br>
                 </label>
                 <button class="submit" type="submit" value="Sign Up" name="action">Sign Up</button>
             </form>

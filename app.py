@@ -129,12 +129,39 @@ def process_form():
 @app.route('/user_profile')
 def userprofile():
     username = session.get('username')
-    
     if username is None:
         # Redirect to login page or handle unauthorized access
         return redirect('/login_signup')     
-    
     return render_template('user_profile.html', username=session['username'], user_active=True)
+
+@app.route('/update_profile', methods=['POST'])
+def update_profile():
+    username = request.form.get('username')
+    hashed_password = request.form.get('hashed_password')
+    new_password = request.form.get('newPassword')
+    first_name = request.form.get('fname')
+    last_name = request.form.get('lname')
+    user = AppUser.query.filter_by(username=username).first()
+
+    if not user or not bcrypt.check_password_hash(user.hashed_password, hashed_password):
+        flash('Authentication failed. Please enter your current password correctly.', 'error')
+        return redirect('/user_profile')
+
+    # Update the user's information
+    user.first_name = first_name
+    user.last_name = last_name
+
+    if new_password:
+        user.hashed_password = bcrypt.generate_password_hash(new_password).decode()
+
+    try:
+        db.session.commit()
+        flash('Profile updated successfully', 'success')
+        return redirect('/user_profile')
+    except IntegrityError:
+        db.session.rollback()
+        flash('Username already exists. Please choose another one.', 'error')
+        return redirect('/user_profile')
 
 @app.get('/submit_rating')
 def get_rating_form():
