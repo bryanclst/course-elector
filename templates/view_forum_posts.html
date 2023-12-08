@@ -1,11 +1,19 @@
 {% extends '_layout.html' %}
+
+
 {% block body %}
 <div class="container pt-4">
     <h1>CourseElector Forum</h1>
-    <a href="{{ url_for('create_forum_post') }}" class="btn btn-primary">Create Post</a>
+    {% if disabled %}
+        <a href="{{ url_for('create_forum_post') }}" class="btn btn-success disabled">Create Post</a>
+    {% else %}
+        <a href="{{ url_for('create_forum_post') }}" class="btn btn-success">Create Post</a>
+    {% endif %}
+    {% if disabled %}<p class="text-danger">You must be logged in to create a post.</p>{% endif %}
     <table class="table">
         <thead>
             <tr>
+                <th>Author</th>
                 <th>Post</th>
                 <th>Course Code</th>
                 <th>Action</th>
@@ -14,12 +22,16 @@
         <tbody>
             {% for post in posts %}
             <tr>
+                <td>{{ post.author.username }}</td>
+                
                 <td><a href="{{ url_for('view_single_forum_post', post_id=post.post_id) }}">{{ post.subject }}</a></td>
 
                 <td>{{ post.course.course_letter }}-{{ post.course.course_number }}</td>
-                
-                <td><a href="{{ url_for('delete_post', post_id=post.post_id) }}" class="btn btn-danger btn-sm float-right">Delete</a></td>
 
+
+                {% if 'username' in session and post.author.username == session['username'] %}
+                    <td><a href="{{ url_for('delete_post', post_id=post.post_id) }}" class="btn btn-danger btn-sm float-right">Delete</a></td>
+                {% endif %}
             </tr>
             {% endfor %}
         </tbody>
