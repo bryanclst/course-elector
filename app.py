@@ -97,6 +97,7 @@ def login_signup():
 def process_form():
     username = request.form.get('username')
     hashed_password = request.form.get('hashed_password')
+    email=request.form.get('email')
     action = request.form.get('action')
     
     if not username or not hashed_password:
@@ -106,7 +107,7 @@ def process_form():
     if action == 'Sign Up':
         bcrypt_password = bcrypt.generate_password_hash(hashed_password).decode()
         try:
-            new_user = AppUser(username=username, hashed_password=bcrypt_password)
+            new_user = AppUser(username=username, hashed_password=bcrypt_password, email=email)
             db.session.add(new_user)
             db.session.commit()
             session['username'] = username
@@ -137,23 +138,20 @@ def userprofile():
 @app.route('/update_profile', methods=['POST'])
 def update_profile():
     username = request.form.get('username')
+    email = request.form.get('email')
     hashed_password = request.form.get('hashed_password')
     new_password = request.form.get('newPassword')
-    first_name = request.form.get('fname')
-    last_name = request.form.get('lname')
     user = AppUser.query.filter_by(username=username).first()
 
     if not user or not bcrypt.check_password_hash(user.hashed_password, hashed_password):
         flash('Authentication failed. Please enter your current password correctly.', 'error')
         return redirect('/user_profile')
 
-    # Update the user's information
-    user.first_name = first_name
-    user.last_name = last_name
-
     if new_password:
         user.hashed_password = bcrypt.generate_password_hash(new_password).decode()
 
+    user.email=email
+    
     try:
         db.session.commit()
         flash('Profile updated successfully', 'success')
@@ -162,6 +160,31 @@ def update_profile():
         db.session.rollback()
         flash('Username already exists. Please choose another one.', 'error')
         return redirect('/user_profile')
+
+@app.route('/logout')
+def logout():
+    session.pop('username', None)
+    flash('You have been logged out', 'success')
+    return redirect('/login_signup')
+
+@app.route('/delete_user', methods=['GET','POST'])
+def delete_user():
+    if request.method == 'POST':
+        username=session.get('username')
+        try: 
+            user_delete=AppUser.query.filter_by(username=username).first()
+            db.session.delete(user_delete)
+            db.session.commit()
+            
+            session.clear()
+            
+            flash('Your account has been deleted successfully.', 'success')
+            return redirect('/login_signup')
+        except IntegrityError:
+            db.session.rollback()
+            flash('Error deleting account failed. Please try again','error')
+    return render_template('/index.html')
+
 
 @app.get('/submit_rating')
 def get_rating_form():

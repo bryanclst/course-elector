@@ -17,8 +17,6 @@
     font-size: 25px;
     color: #fff;
     display: inline-block;
-    margin-top: 20px; /* Adjust the margin as needed */
-    padding: 10px 20px;
 }
 
 h2{
@@ -147,6 +145,7 @@ hr{
 .btn btn-primary{
     background-color: #86A873;
 }
+
 
 @media only screen and (max-width:600px){
     .side-nav{

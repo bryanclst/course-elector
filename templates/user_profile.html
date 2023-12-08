@@ -20,6 +20,7 @@
                 <hr>
                 <li><a href="#"><i class="fa-solid fa-circle-question" style="color: #ffffff;"></i>Help</a></li>
                 <li><a href="#"><i class="fa-solid fa-globe" style="color: #ffffff;"></i>Language</a></li>
+                <li><a href="{{url_for('logout')}}"><i class="fa-solid fa-arrow-right-from-bracket" style="color: #ffffff;"></i>Logout</a></li>
                 <div class="active"></div>
             </ul>
         </div>
@@ -29,7 +30,7 @@
                 <img src="{{ url_for('static', filename='images/icon.png') }}" class="icon"alt="Profile Icon">
                 <div class="text-info">
                   <h2>Username: {{username}}</h2>
-                  <p>Email Address: {{email}}</p>
+                  <p>Email Address: {{email}} </p>
                 </div>
             </div>
             <div class="profile-form">
@@ -47,16 +48,15 @@
                       <input type="password" class="form-control" id="newPassword" name="newPassword" placeholder="Enter a new password">
                     </div>
                     <div class="col-md-4">
-                      <label for="fname" class="form-label">First Name</label>
-                      <input type="text" class="form-control" id="fname" name="fname" value="{{ first_name }}"> 
-                    </div>
-                    <div class="col-md-4">
-                      <label for="lname" class="form-label">Last Name</label>
-                      <input type="text" class="form-control" id="lname" name="lname" value="{{ last_name }}">
+                      <label for="email" class="form-label">Email Adress</label>
+                      <input type="text" class="form-control" id="email" name="email" placeholder="Email Address" value="{{ email }}">
                     </div>
                     <div class="col-12">
                       <button type="submit" class="btn btn-secondary">Update Profile</button>
                     </div>
+                </form><br>
+                <form method="post" action="/delete_user" id="delete_form">
+                  <button type="submit" class="btn btn-danger">Delete Account</button>
                 </form>
                 {% with messages = get_flashed_messages() %}
                     {% if messages %}
