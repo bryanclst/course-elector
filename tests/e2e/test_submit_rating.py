@@ -15,7 +15,6 @@ def test_get_submit_rating_page(test_client):
     for course in courses:
         assert f'<option value="{course.course_id}">' in data
 
-
 # @app.post('/submit_rating')
 def test_submit_rating_valid(test_client):
     heavily_populate_db()
@@ -39,8 +38,6 @@ def test_submit_rating_valid(test_client):
     # log out
     with test_client.session_transaction() as session:
         del session['username']
-
-    # data = response.data.decode()
 
 def test_submit_rating_not_logged_in(test_client):
     heavily_populate_db()
