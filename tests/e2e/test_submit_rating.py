@@ -1,4 +1,4 @@
-from src.models import AppUser, Course, Rating, Post, Comment
+from src.models import AppUser, Course, Rating, Post, Comment, db
 from utils import clear_db, populate_db, heavily_populate_db
 from app import repository_singleton
 from flask import session
@@ -24,37 +24,159 @@ def test_get_submit_rating_page(test_client):
 # @app.post('/submit_rating')
 def test_submit_rating_valid(test_client):
     heavily_populate_db()
+    
+    # simulate session
     with test_client.session_transaction() as session:
         session['username'] = 'user1'
-
-
+    
     response = test_client.post('/submit_rating', data={
         'course': '1',
         'instructor': 'test',
         'quality': 1,
         'difficulty': 1,
         'grade': None,
-        'description': None # unique description to identify rating
+        'description': "extremely unique description which nobody would just so happen to write (hopefully)"
     }, follow_redirects=True)
     
     assert response.status_code == 200
+    assert Rating.query.filter(Rating.description == "extremely unique description which nobody would just so happen to write (hopefully)").first() is not None
 
+    # log out
+    with test_client.session_transaction() as session:
+        del session['username']
 
     # data = response.data.decode()
 
-# def test_submit_rating_not_logged_in(test_client):
-#     response = test_client.post('/submit_rating', data={
-#         'course_id': 1,
-#         'instructor': 'test',
-#         'quality': 1,
-#         'difficulty': 1,
-#         'grade': None,
-#         'description': None
-#     }, follow_redirects=True)
+def test_submit_rating_not_logged_in(test_client):
+    heavily_populate_db()
     
-#     assert response.status_code == 401
+    response = test_client.post('/submit_rating', data={
+        'course': '1',
+        'instructor': 'test',
+        'quality': 1,
+        'difficulty': 1,
+        'grade': None,
+        'description': None
+    })
+    
+    assert response.status_code == 401
 
-# def test_submit_rating_invalid(test_client):
-#     # no course, no instructor, no quality, no difficulty
-#     pass
-
+def test_submit_rating_invalid_data(test_client):
+    heavily_populate_db()
+    # simulate session
+    with test_client.session_transaction() as session:
+        session['username'] = 'user1'
+        
+    # no course given
+    response = test_client.post('/submit_rating', data={
+        'course': None,
+        'instructor': 'test',
+        'quality': 1,
+        'difficulty': 1,
+        'grade': None,
+        'description': None
+    })
+    assert response.status_code == 400
+        
+    # course doesn't exist
+    response = test_client.post('/submit_rating', data={
+        'course': 20,
+        'instructor': 'test',
+        'quality': 1,
+        'difficulty': 1,
+        'grade': None,
+        'description': None
+    })
+    assert response.status_code == 400
+    
+    # no instructor given
+    response = test_client.post('/submit_rating', data={
+        'course': '1',
+        'instructor': None,
+        'quality': 1,
+        'difficulty': 1,
+        'grade': None,
+        'description': None
+    })
+    assert response.status_code == 400
+    
+    # no quality given
+    response = test_client.post('/submit_rating', data={
+        'course': '1',
+        'instructor': 'test',
+        'quality': None,
+        'difficulty': 1,
+        'grade': None,
+        'description': None
+    })
+    assert response.status_code == 400
+    
+    # quality less than 0
+    response = test_client.post('/submit_rating', data={
+        'course': '1',
+        'instructor': 'test',
+        'quality': -1,
+        'difficulty': 1,
+        'grade': None,
+        'description': None
+    })
+    assert response.status_code == 400
+    
+    # quality more than 5
+    response = test_client.post('/submit_rating', data={
+        'course': '1',
+        'instructor': 'test',
+        'quality': 6,
+        'difficulty': 1,
+        'grade': None,
+        'description': None
+    })
+    assert response.status_code == 400
+    
+    # no difficulty given
+    response = test_client.post('/submit_rating', data={
+        'course': '1',
+        'instructor': 'test',
+        'quality': None,
+        'difficulty': 1,
+        'grade': None,
+        'description': None
+    })
+    assert response.status_code == 400
+    
+    # difficulty less than 0
+    response = test_client.post('/submit_rating', data={
+        'course': '1',
+        'instructor': 'test',
+        'quality': 1,
+        'difficulty': -1,
+        'grade': None,
+        'description': None
+    })
+    assert response.status_code == 400
+    
+    # difficulty more than 5
+    response = test_client.post('/submit_rating', data={
+        'course': '1',
+        'instructor': 'test',
+        'quality': 1,
+        'difficulty': 6,
+        'grade': None,
+        'description': None
+    })
+    assert response.status_code == 400
+    
+    # invalid grade
+    response = test_client.post('/submit_rating', data={
+        'course': '1',
+        'instructor': 'test',
+        'quality': 1,
+        'difficulty': 1,
+        'grade': 'E',
+        'description': None
+    })
+    assert response.status_code == 400
+    
+    # log out
+    with test_client.session_transaction() as session:
+        del session['username']

@@ -183,11 +183,20 @@ def submit_rating():
     instructor = request.form.get('instructor')
     quality = request.form.get('quality')
     difficulty = request.form.get('difficulty')
+    
+    # input validation
     if course_id is None or instructor is None or quality is None or difficulty is None:
         abort(400)
+    if repository_singleton.get_course_by_id(course_id) is None:
+        abort(400)
+    if int(quality) < 0 or int(quality) > 5 or int(difficulty) < 0 or int(difficulty) > 5:
+        abort(400)
+    
     grade = request.form.get('grade')
     if grade == 'none':
         grade = None
+    if grade not in [None, 'A', 'B', 'C', 'D', 'F']:
+        abort(400)
     description = request.form.get('description')
     if not description:
         description = None
