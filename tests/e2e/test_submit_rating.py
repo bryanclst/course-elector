@@ -1,11 +1,6 @@
-from src.models import AppUser, Course, Rating, Post, Comment, db
-from utils import clear_db, populate_db, heavily_populate_db
+from utils import heavily_populate_db
 from app import repository_singleton
-from flask import session
-
-# def test(test_client):
-#     heavily_populate_db()
-#     assert True
+from src.models import Rating
 
 # @app.get('/submit_rating')
 def test_get_submit_rating_page(test_client):

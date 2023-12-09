@@ -212,11 +212,15 @@ def view_ratings(course_id):
         abort(400) # invalid course_id
         
     ratings = repository_singleton.get_ratings_by_course(course_id)
-    if ratings is not None:
+    
+    if ratings:
         qualities = [rating.quality for rating in ratings]
         avg_quality = round(sum(qualities) / len(qualities), 2)
         difficulties = [rating.difficulty for rating in ratings]
         avg_difficulty = round(sum(difficulties) / len(difficulties), 2)
+    else:
+        avg_quality = 'N/A'
+        avg_difficulty = 'N/A'
     return render_template('view_ratings.html', rating_active=True, course=course, ratings=ratings, avg_quality=avg_quality, avg_difficulty=avg_difficulty)
 
 if __name__ == '__main__':
