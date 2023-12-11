@@ -11,6 +11,7 @@ from src.repositories.repository import repository_singleton
 from sqlalchemy import func, cast, Float 
 from sqlalchemy.orm import joinedload 
 from flask_sqlalchemy import pagination #just added
+
 load_dotenv()
 app = Flask(__name__, static_url_path='/static')
 app.config['SQLALCHEMY_DATABASE_URI'] = f'postgresql://{os.getenv("DB_USER")}:{os.getenv("DB_PASS")}@{os.getenv("DB_HOST")}:{os.getenv("DB_PORT")}/{os.getenv("DB_NAME")}'
@@ -22,7 +23,14 @@ db.init_app(app)
 
 # custom render_template to pass username into all routes
 def render_template(*args, **kwargs):
-    return real_render_template(*args, **kwargs, username=session.get('username'))
+    if 'username' not in kwargs:
+        kwargs['username']= session.get('username')
+    return real_render_template(*args, **kwargs,)
+
+@app.errorhandler(Exception)
+def handle_exception(e):
+    app.logger.error(f"An error occurred: {str(e)}")
+    return "Internal Server Error", 500
 
 @app.get('/')
 def index():
@@ -158,7 +166,7 @@ def userprofile():
     if username is None:
         # Redirect to login page or handle unauthorized access
         return redirect('/login_signup')     
-    return render_template('user_profile.html', username=session['username'], user_active=True)
+    return render_template('user_profile.html', username=username, user_active=True)
 
 @app.route('/update_profile', methods=['POST'])
 def update_profile():

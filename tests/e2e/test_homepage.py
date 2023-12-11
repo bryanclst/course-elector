@@ -3,5 +3,5 @@ from app import repository_singleton
 from src.models import AppUser,Course,Rating,Post,Comment
 
 def test_homepage(test_client):
-    response=test_client.get('/index')
+    response=test_client.get('/')
     assert response.status_code == 200
