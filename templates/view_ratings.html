@@ -7,168 +7,68 @@
 {% endblock %}
 
 {% block body %}
-<h1 class="text-center">ITSC-3155 - Software Engineering</h1>
+<h1 class="text-center">{{course.course_number}}-{{course.course_letter}} - {{course.title}}</h1>
+
+
 <div class="course-info-container">
 
     <div class="course-info">
         <div class="course-info-title">
-        <h2 class="m-0">Computing and Informatics</h2>
-    </div>
+            <h2 class="m-0">{{course.major}}</h2>
+        </div>
 
-    <div class="course-info-metadata">
-        <div>
-            <p class="course-info-header">Ratings Submitted</p>
-            <p>?</p>
-        </div>
-        <div>
-            <p class="course-info-header">Credits</p>
-            <p>3</p>
-        </div>
-        <div>
-            <p class="course-info-header">Quality</p>
-            <p>X/5</p>
-        </div>
-        <div>
-            <p class="course-info-header">Difficulty</p>
-            <p>X/5</p>
+        <div class="course-info-metadata">
+            <div>
+                <p class="course-info-header">Ratings Submitted</p>
+                <p>{{ratings|length}}</p>
+            </div>
+            <div>
+                <p class="course-info-header">Credits</p>
+                <p>{{course.credits}}</p>
+            </div>
+            <div>
+                <p class="course-info-header">Quality</p>
+                <p>{{avg_quality}}</p>
+            </div>
+            <div>
+                <p class="course-info-header">Difficulty</p>
+                <p>{{avg_difficulty}}</p>
+            </div>
         </div>
     </div>
 </div>
-</div>
 
+{% if ratings|length == 0 %}
+<h1>No ratings for this course</h1>
+
+{% else %}
 <div class="ratings-container">
-    <div class="rating">
-        <div class="rating-info">
-            <div>
-                <p class="rating-info-header">Instructor</p>
-                <p>Jacob Krevat</p>
-            </div>
-            <div>
-                <p class="rating-info-header">Quality</p>
-                <p>X/5</p>
-            </div>
-            <div>
-                <p class="rating-info-header">Difficulty</p>
-                <p>X/5</p>
-            </div>
-            <div>
-                <p class="rating-info-header">Grade</p>
-                <p>A</p>
-            </div>
-        </div>
-        <p class="rating-description">Lorem ipsum dolor sit amet consectetur adipisicing elit. Perferendis saepe a ea nemo molestias necessitatibus suscipit nulla, cum doloribus commodi quod ipsa minus temporibus consequatur tempora debitis, facilis beatae vel? Quisquam facilis eius distinctio qui perspiciatis ipsum beatae dignissimos illum quidem autem dolorum non aspernatur quas, veniam repellendus quae! Non.</p>
-    </div>
-    
-    <div class="rating">
-        <div class="rating-info">
-            <div>
-                <p class="rating-info-header">Instructor</p>
-                <p>Jacob Krevat</p>
-            </div>
-            <div>
-                <p class="rating-info-header">Quality</p>
-                <p>X/5</p>
-            </div>
-            <div>
-                <p class="rating-info-header">Difficulty</p>
-                <p>X/5</p>
-            </div>
-            <div>
-                <p class="rating-info-header">Grade</p>
-                <p>A</p>
-            </div>
-        </div>
-        <p class="rating-description">Lorem ipsum dolor sit amet consectetur adipisicing elit. Perferendis saepe a ea nemo molestias necessitatibus suscipit nulla, cum doloribus commodi quod ipsa minus temporibus consequatur tempora debitis, facilis beatae vel? Quisquam facilis eius distinctio qui perspiciatis ipsum beatae dignissimos illum quidem autem dolorum non aspernatur quas, veniam repellendus quae! Non.</p>
-    </div>
+    {% for rating in ratings %}
 
     <div class="rating">
         <div class="rating-info">
             <div>
                 <p class="rating-info-header">Instructor</p>
-                <p>Jacob Krevat</p>
+                <p>{{rating.instructor}}</p>
             </div>
             <div>
                 <p class="rating-info-header">Quality</p>
-                <p>X/5</p>
+                <p>{{rating.quality}}</p>
             </div>
             <div>
                 <p class="rating-info-header">Difficulty</p>
-                <p>X/5</p>
+                <p>{{rating.difficulty}}</p>
             </div>
             <div>
                 <p class="rating-info-header">Grade</p>
-                <p>A</p>
+                <p>{% if rating.grade %}{{rating.grade}}{% else %}N/A{% endif %}</p>
             </div>
         </div>
-        <p class="rating-description">Lorem ipsum dolor sit amet consectetur adipisicing elit. Perferendis saepe a ea nemo molestias necessitatibus suscipit nulla, cum doloribus commodi quod ipsa minus temporibus consequatur tempora debitis, facilis beatae vel? Quisquam facilis eius distinctio qui perspiciatis ipsum beatae dignissimos illum quidem autem dolorum non aspernatur quas, veniam repellendus quae! Non.</p>
+        <p class="rating-description">{% if rating.description %}{{rating.description}}{% endif %}</p>
     </div>
 
-    <div class="rating">
-        <div class="rating-info">
-            <div>
-                <p class="rating-info-header">Instructor</p>
-                <p>Jacob Krevat</p>
-            </div>
-            <div>
-                <p class="rating-info-header">Quality</p>
-                <p>X/5</p>
-            </div>
-            <div>
-                <p class="rating-info-header">Difficulty</p>
-                <p>X/5</p>
-            </div>
-            <div>
-                <p class="rating-info-header">Grade</p>
-                <p>A</p>
-            </div>
-        </div>
-        <p class="rating-description">Lorem ipsum dolor sit amet consectetur adipisicing elit. Perferendis saepe a ea nemo molestias necessitatibus suscipit nulla, cum doloribus commodi quod ipsa minus temporibus consequatur tempora debitis, facilis beatae vel? Quisquam facilis eius distinctio qui perspiciatis ipsum beatae dignissimos illum quidem autem dolorum non aspernatur quas, veniam repellendus quae! Non.</p>
-    </div>
-
-    <div class="rating">
-        <div class="rating-info">
-            <div>
-                <p class="rating-info-header">Instructor</p>
-                <p>Jacob Krevat</p>
-            </div>
-            <div>
-                <p class="rating-info-header">Quality</p>
-                <p>X/5</p>
-            </div>
-            <div>
-                <p class="rating-info-header">Difficulty</p>
-                <p>X/5</p>
-            </div>
-            <div>
-                <p class="rating-info-header">Grade</p>
-                <p>A</p>
-            </div>
-        </div>
-        <p class="rating-description">Lorem ipsum dolor sit amet consectetur adipisicing elit. Perferendis saepe a ea nemo molestias necessitatibus suscipit nulla, cum doloribus commodi quod ipsa minus temporibus consequatur tempora debitis, facilis beatae vel? Quisquam facilis eius distinctio qui perspiciatis ipsum beatae dignissimos illum quidem autem dolorum non aspernatur quas, veniam repellendus quae! Non.</p>
-    </div>
-
-    <div class="rating">
-        <div class="rating-info">
-            <div>
-                <p class="rating-info-header">Instructor</p>
-                <p>Jacob Krevat</p>
-            </div>
-            <div>
-                <p class="rating-info-header">Quality</p>
-                <p>X/5</p>
-            </div>
-            <div>
-                <p class="rating-info-header">Difficulty</p>
-                <p>X/5</p>
-            </div>
-            <div>
-                <p class="rating-info-header">Grade</p>
-                <p>A</p>
-            </div>
-        </div>
-        <p class="rating-description">Lorem ipsum dolor sit amet consectetur adipisicing elit. Perferendis saepe a ea nemo molestias necessitatibus suscipit nulla, cum doloribus commodi quod ipsa minus temporibus consequatur tempora debitis, facilis beatae vel? Quisquam facilis eius distinctio qui perspiciatis ipsum beatae dignissimos illum quidem autem dolorum non aspernatur quas, veniam repellendus quae! Non.</p>
-    </div>
+    {% endfor %}
 </div>
-
+{% endif %}
 
 {% endblock %}
