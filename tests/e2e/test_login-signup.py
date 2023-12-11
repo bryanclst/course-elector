@@ -10,13 +10,14 @@ def test_signup(test_client):
     response=test_client.get(response.headers['Location'])
     assert b'Account created successfully' in response.data
 
-def test_signup_existing(test_client, initialize_database): #initialize_database: deletes all data and all log entries
-    # Your test code here
+def test_signup_existing(test_client):
     response = test_client.post('/process_form', data={'username': 'user1', 'hashed_password': 'password', 'action': 'Sign Up'})
     assert response.status_code == 302
-    response = test_client.get(response.headers['Location'])
-    response_data = response.data.decode('utf-8')
+    response=test_client.get(response.headers['Location'])
+    response_data=response.data.decode('utf-8')
+    print(response_data)
     assert 'Username already exists' in response_data
+
 
 def test_login(test_client):
     clear_db()
