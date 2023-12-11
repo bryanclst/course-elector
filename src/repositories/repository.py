@@ -7,6 +7,9 @@ class Repository:
     def get_user_by_username(self, username):
         return AppUser.query.filter_by(username=username).first()
     
+    def get_user_by_id(self, user_id):
+        return AppUser.query.filter_by(user_id=user_id).first()
+    
     def get_all_courses(self):
         return Course.query.all()
     
