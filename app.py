@@ -11,6 +11,8 @@ from src.repositories.repository import repository_singleton
 from sqlalchemy import func, cast, Float 
 from sqlalchemy.orm import joinedload 
 from flask_sqlalchemy import pagination #just added
+from utils import clear_db, courses_db 
+
 load_dotenv()
 app = Flask(__name__, static_url_path='/static')
 app.config['SQLALCHEMY_DATABASE_URI'] = f'postgresql://{os.getenv("DB_USER")}:{os.getenv("DB_PASS")}@{os.getenv("DB_HOST")}:{os.getenv("DB_PORT")}/{os.getenv("DB_NAME")}'
@@ -212,6 +214,12 @@ def view_ratings(course_id):
 
 if __name__ == '__main__':
     app.run(debug=True)
+
+# I was receiving an error saying: "RuntimeError: Working outside of application context." 
+# the error mentioned using app.app_context, and this resource helped me understand how to use it: https://stackoverflow.com/questions/34122949/working-outside-of-application-context-flask
+with app.app_context(): 
+    print("courses_db is working!")
+    courses_db() #adds courses to database
 
 @app.get('/about')
 def about_us():
