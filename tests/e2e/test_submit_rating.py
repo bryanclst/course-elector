@@ -1,4 +1,4 @@
-from utils import heavily_populate_db
+from utils import clear_db, heavily_populate_db
 from app import repository_singleton
 from src.models import Rating
 
@@ -14,6 +14,8 @@ def test_get_submit_rating_page(test_client):
     courses = repository_singleton.get_all_courses()
     for course in courses:
         assert f'<option value="{course.course_id}">' in data
+    
+    clear_db()
 
 # @app.post('/submit_rating')
 def test_submit_rating_valid(test_client):
@@ -38,6 +40,8 @@ def test_submit_rating_valid(test_client):
     # log out
     with test_client.session_transaction() as session:
         del session['username']
+    
+    clear_db()
 
 def test_submit_rating_not_logged_in(test_client):
     heavily_populate_db()
@@ -52,6 +56,8 @@ def test_submit_rating_not_logged_in(test_client):
     })
     
     assert response.status_code == 401
+    
+    clear_db()
 
 def test_submit_rating_invalid_data(test_client):
     heavily_populate_db()
@@ -172,3 +178,5 @@ def test_submit_rating_invalid_data(test_client):
     # log out
     with test_client.session_transaction() as session:
         del session['username']
+        
+    clear_db()
