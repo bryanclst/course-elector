@@ -1,10 +1,12 @@
 import bcrypt
-from flask import Flask, render_template as real_render_template, redirect, request, abort, url_for, session, flash
+from flask import Flask, render_template as real_render_template, redirect, request, abort, url_for, flash, session, json
 from src.models import db, AppUser, Course, Rating, Post, Comment
+from werkzeug.security import generate_password_hash, check_password_hash
 from flask_bcrypt import Bcrypt
 from sqlalchemy.exc import IntegrityError 
 from dotenv import load_dotenv
 import os
+import traceback
 
 from src.repositories.repository import repository_singleton
 
@@ -31,6 +33,7 @@ def render_template(*args, **kwargs):
 def handle_exception(e):
     app.logger.error(f"An error occurred: {str(e)}")
     return "Internal Server Error", 500
+
 
 @app.get('/')
 def index():
@@ -193,18 +196,23 @@ def process_form():
             db.session.commit()
             session['username'] = username
             flash('Account created successfully', 'success')
-            return redirect('/login_signup')
+            return redirect('/user_profile')  # Redirect to user_profile after successful signup
         except IntegrityError:
-            db.session.rollback()  # Rollback the transaction
-            flash('Username already exists. Please choose another one.', 'error')
+            db.session.rollback()
+            flash('Username already exists', 'error')
             return redirect('/login_signup')
     elif action == 'Login':
-        existing_user = AppUser.query.filter_by(username=username).first()
-        if not existing_user or not bcrypt.check_password_hash(existing_user.hashed_password, hashed_password):
-            flash('Incorrect username or password', 'error')
+        try:
+            existing_user = AppUser.query.filter_by(username=username).first()
+            if not existing_user or hashed_password is None or not bcrypt.check_password_hash(existing_user.hashed_password, hashed_password):
+                flash('Incorrect username or password', 'error')
+                return redirect('/login_signup')
+            session['username'] = username
+            return redirect('/user_profile')
+        except Exception as e:
+            app.logger.error(f"Error during login: {str(e)}")
+            flash('An error occurred during login', 'error')
             return redirect('/login_signup')
-        session['username'] = username
-        return redirect('/user_profile')
     else:
         return 'Invalid action'
 
@@ -216,31 +224,79 @@ def userprofile():
         return redirect('/login_signup')     
     return render_template('user_profile.html', username=username, user_active=True)
 
-@app.route('/update_profile', methods=['POST'])
+@app.route('/update_profile', methods=['PUT','POST'])
 def update_profile():
-    username = request.form.get('username')
-    email = request.form.get('email')
-    hashed_password = request.form.get('hashed_password')
-    new_password = request.form.get('newPassword')
-    user = AppUser.query.filter_by(username=username).first()
+    if request.method == 'POST':
+        
+        username = request.form.get('username')
+        email = request.form.get('email')
+        hashed_password = request.form.get('hashed_password')
+        new_password = request.form.get('newPassword')
+        return render_template('user_profile', username=username, email=email, messages=['Profile updated successfully!'])
+    elif request.method == 'PUT':
+        # Handle PUT request logic
+        # For example, you can access form data using request.form
+        username = request.form.get('username')
+        hashed_password = request.form.get('hashed_password')
+        newPassword = request.form.get('newPassword')
+        email = request.form.get('email')
 
-    if not user or not bcrypt.check_password_hash(user.hashed_password, hashed_password):
-        flash('Authentication failed. Please enter your current password correctly.', 'error')
-        return redirect('/user_profile')
+        return render_template('user_profile.html', username=username, email=email, messages=['Profile updated successfully!'])
 
-    if new_password:
-        user.hashed_password = bcrypt.generate_password_hash(new_password).decode()
+    else:
+        # Handle other HTTP methods if necessary
+        return 'Method not allowed', 405
+        # try:
+        #     data = request.json  # Access JSON data from the request body
+            
+        #     # Extract relevant fields from the JSON data
+        #     new_password = data.get('newPassword')
+        #     username = data.get('username')
+        #     email = data.get('email')
+        #     hashed_password = data.get('hashed_password')
+        # except Exception as e:
+        #     # Log the exception traceback for debugging
+        #     traceback.print_exc()
 
-    user.email=email
+        #     # Return an error response
+        #     error_response_data = {
+        #         'message': 'Internal Server Error',
+        #         'status': 'error'
+        #     }
+
+        #     error_response = app.response_class(
+        #         response=json.dumps(error_response_data),
+        #         status=500,
+        #         mimetype='application/json'
+        #     )
+
+        #     return error_response
+    # new_password = request.form.get('newPassword')
+    # user.hashed_password = bcrypt.generate_password_hash(new_password).decode()
+    # username = request.form.get('username')
+    # email = request.form.get('email')
+    # hashed_password = request.form.get('hashed_password')
+    # new_password = request.form.get('newPassword')
+    # user = AppUser.query.filter_by(username=username).first()
+
+    # if not user or not bcrypt.check_password_hash(user.hashed_password, hashed_password):
+    #     flash('Authentication failed. Please enter your current password correctly.', 'error')
+    #     return redirect('/user_profile')
+
+    # if new_password:
+    #     user.hashed_password = bcrypt.generate_password_hash(new_password).decode()
+
+    # user.email=email
     
-    try:
-        db.session.commit()
-        flash('Profile updated successfully', 'success')
-        return redirect('/user_profile')
-    except IntegrityError:
-        db.session.rollback()
-        flash('Username already exists. Please choose another one.', 'error')
-        return redirect('/user_profile')
+    # try:
+    #     db.session.commit()
+    #     flash('Profile updated successfully', 'success')
+    #     return redirect('/user_profile')
+    # except IntegrityError:
+    #     db.session.rollback()
+    #     flash('Username already exists. Please choose another one.', 'error')
+    # return redirect('/user_profile')
+    
 
 @app.route('/logout')
 def logout():

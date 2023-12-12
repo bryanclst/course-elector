@@ -66,10 +66,10 @@
             <div class="flask-message">
                 {% with messages = get_flashed_messages() %}
                     {% if messages %}
-                        <ul class="flash-messages">
-                            {% for message in messages %}
-                                <li>{{ message }}</li>
-                            {% endfor %}
+                        <ul class="flashes">
+                        {% for message in messages %}
+                            <li>{{ message }}</li>
+                        {% endfor %}
                         </ul>
                     {% endif %}
                 {% endwith %}
