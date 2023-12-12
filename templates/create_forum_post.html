@@ -1,5 +1,5 @@
 {% extends '_layout.html' %}
-
+{% block title %}Create a Forum Post{% endblock %}
 
 {% block body %}
 
@@ -23,7 +23,13 @@
           <textarea class="form-control" id="body" name="body" rows="5" required></textarea>
         </div>
         <br>
-        <button type="submit" class="btn btn-primary">Create Post</button>
+        {% if disabled %}<p class="text-danger">Don't be sneaky. You must be logged in to create a post.</p>{% endif %}
+        {% if disabled %}
+          <button type="submit" class="btn btn-success disabled">Create Post</button>
+        {% else %}
+          <button type="submit" class="btn btn-success">Create Post</button>
+        {% endif %}
+
       </form>
       <a href="{{ url_for('view_forum_posts') }}" class="btn btn-secondary mt-2">Back to Forum Home</a>
 </div>
