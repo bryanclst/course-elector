@@ -45,6 +45,11 @@ def create_forum_post():
         subject = request.form['subject']
         body = request.form['body']
         selected_course_id = request.form['course_id']
+
+        if subject is None or body is None or selected_course_id is None:
+            abort(400)
+        if repository_singleton.get_course_by_id(selected_course_id) is None:
+            abort(400)
         username = session.get('username')
         if username is None:
             abort(401)
@@ -87,13 +92,21 @@ def view_single_forum_post(post_id):
 @app.route('/delete_post/<int:post_id>')
 def delete_post(post_id):
     username = session.get('username')
+    #abort with 401 if not logged in
     if username is None:
         abort(401)
     else:
         post = Post.query.get_or_404(post_id)
-        db.session.delete(post)
-        db.session.commit()
-        return redirect(url_for('view_forum_posts'))
+        post_author_id = post.author_id
+        current_user_id = repository_singleton.get_user_by_username(username).user_id
+
+        #abort with 403 if the currently logged in user isn't the post's author
+        if post_author_id != current_user_id:
+            abort(403)
+        else:
+            db.session.delete(post)
+            db.session.commit()
+            return redirect(url_for('view_forum_posts'))
 
 
 @app.route('/delete_comment/<int:post_id>/<int:comment_id>', methods=['POST'])
@@ -103,27 +116,46 @@ def delete_comment(post_id, comment_id):
         abort(401)
     else:
         comment = Comment.query.get_or_404(comment_id)
-        db.session.delete(comment)
-        db.session.commit()
-        return redirect(url_for('view_single_forum_post', post_id=post_id))
+        comment_author_id = comment.author_id
+        current_user_id = repository_singleton.get_user_by_username(username).user_id
+        if comment_author_id != current_user_id:
+            abort(403)
+        else:
+            db.session.delete(comment)
+            db.session.commit()
+            return redirect(url_for('view_single_forum_post', post_id=post_id))
 
 
 
 @app.route('/edit_post/<int:post_id>', methods=['GET', 'POST'])
 def edit_forum_post(post_id):
     disabled = False
-    if session.get('username') is None:
+    username = session.get('username')
+    if username is None:
         disabled = True
+    if username is None:
+        abort(401) 
     post = Post.query.get_or_404(post_id)
+    post_author_id = post.author_id
+    current_user_id=repository_singleton.get_user_by_username(username).user_id
+    if post_author_id != current_user_id:
+        abort(403)
+    else:
+        if request.method == 'POST':
+            new_subject = request.form['subject']
+            new_body = request.form['body']
+            new_course_id = request.form['course_id']
+            if new_subject is None or new_body is None or new_course_id is None:
+                abort(400)
+            if repository_singleton.get_course_by_id(new_course_id) is None:
+                abort(400)
+            post.subject = new_subject
+            post.body = new_body
+            post.course_id = new_course_id
+            db.session.commit()
+            return redirect(url_for('view_forum_posts'))
 
-    if request.method == 'POST':
-        post.subject = request.form['subject']
-        post.body = request.form['body']
-        post.course_id = request.form['course_id']
-        db.session.commit()
-        return redirect(url_for('view_forum_posts'))
-
-    return render_template('edit_forum_post.html', post=post, courses=Course.query.all(), forum_active=True, disabled=disabled)
+        return render_template('edit_forum_post.html', post=post, courses=Course.query.all(), forum_active=True, disabled=disabled)
 
 @app.route('/create_forum_comment/<int:post_id>', methods=['POST'])
 def create_forum_comment(post_id):
@@ -136,6 +168,8 @@ def create_forum_comment(post_id):
 
     if request.method == 'POST':
         body = request.form['body']
+        if body is None:
+            abort(400)
         username = session.get('username')
         if username is None:
             abort(401)
@@ -151,16 +185,26 @@ def create_forum_comment(post_id):
 @app.route('/edit_comment/<int:post_id>/<int:comment_id>', methods=['GET', 'POST'])
 def edit_forum_comment(post_id, comment_id):
     disabled = False
-    if session.get('username') is None:
+    username = session.get('username')
+    if username is None:
         disabled = True
+    if username is None:
+        abort(401) 
     comment = Comment.query.get_or_404(comment_id)
+    comment_author_id = comment.author_id
+    current_user_id = repository_singleton.get_user_by_username(username).user_id
+    if comment_author_id != current_user_id:
+        abort(403)
+    else:
+        if request.method == 'POST':
+            new_body = request.form['body']
+            if new_body is None:
+                abort(400)
+            comment.body = request.form['body']
+            db.session.commit()
+            return redirect(url_for('view_single_forum_post', post_id=post_id))
 
-    if request.method == 'POST':
-        comment.body = request.form['body']
-        db.session.commit()
-        return redirect(url_for('view_single_forum_post', post_id=post_id))
-
-    return render_template('edit_forum_comment.html', comment=comment, post_id=post_id, forum_active=True, disabled=disabled)
+        return render_template('edit_forum_comment.html', comment=comment, post_id=post_id, forum_active=True, disabled=disabled)
 
 @app.route('/login_signup')
 def login_signup():
