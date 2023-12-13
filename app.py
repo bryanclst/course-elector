@@ -305,7 +305,7 @@ def view_ratings(course_id):
     if course is None:
         abort(400) # invalid course_id
         
-    ratings = repository_singleton.get_ratings_by_course(course_id)
+    ratings = repository_singleton.get_ratings_by_course_id(course_id)
     
     if ratings:
         qualities = [rating.quality for rating in ratings]
