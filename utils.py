@@ -120,7 +120,7 @@ def heavily_populate_db():
 
     # Commit the changes to the database
     db.session.commit()
-
+#adds courses to database instead of having to insert them via SQL
 def courses_db():
     clear_db()
     courses = [
@@ -152,7 +152,7 @@ def courses_db():
     #Biology
     Course(course_letter='BIOL', course_number=1110, title='Principles of Biology I', credits=3, major='Biology'),
     Course(course_letter='BIOL', course_number=2130, title='General Biology II Lab', credits=1, major='Biology'),
-    Course(course_letter='BIOL', course_number=3111, title='Cell Biology', credits=3, major='Biology'),
+    Course(course_letter='BIOL', course_number=3115, title='Cell Biology', credits=3, major='Biology'),
     Course(course_letter='BIOL', course_number=3000, title='Animal Health', credits=3, major='Biology'),
     #Chemistry
     Course(course_letter='CHEM', course_number=1251, title='General Chemistry I', credits=3, major='Chemistry'),

@@ -7,8 +7,14 @@ def test_courses_db(test_client):
     course2 = Course.query.filter_by(course_number=2181).first()
     course3 = Course.query.filter_by(course_number=3111).first()
     assert course1 is not None
+    assert course1.title == "Intro to Computer Science I"
+    assert course1.major == "Computer Science"
     assert course2 is not None
+    assert course2.title == "Intro To Computer Systems"
+    assert course2.major == "Computer Science"
     assert course3 is not None
-
-    all_courses = Course.query.all()
+    assert course3.title == "Quantitative Analysis"
+    assert course3.major == "Chemistry"
+    
+    all_courses = Course.query.all() 
     assert len(all_courses) == 31
