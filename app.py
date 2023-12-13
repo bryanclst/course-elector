@@ -283,10 +283,13 @@ def update_profile(user_id):
 
     # Check the hashed password for authentication
     if bcrypt.check_password_hash(user.hashed_password, hashed_password):
+        if not new_password:
+            flash('New Password cannot be empty', 'warning')
         # Update user password
-        user.hashed_password = bcrypt.generate_password_hash(new_password).decode('utf-8')
-        db.session.commit()
-        flash('Password updated successfully', 'success')
+        else:
+            user.hashed_password = bcrypt.generate_password_hash(new_password).decode('utf-8')
+            db.session.commit()
+            flash('Password updated successfully', 'success')
     else:
         flash('Invalid password', 'danger')
     return redirect(url_for('userprofile', user_id=user_id))

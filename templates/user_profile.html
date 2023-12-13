@@ -41,7 +41,7 @@
               <form class="row g-3" method="POST" action="{{ url_for('update_profile', user_id=user.user_id) }}">
                     <div class="col-md-4">
                       <label for="username" class="form-label">Username</label>
-                      <input type="username" class="form-control" id="username" value="{{ username }}" readonly>
+                      <input type="username" class="form-control" id="username" value="{{ username }}" disabled>
                     </div>
                     <div class="col-md-4">
                       <label for="hashed_password" class="form-label">Password</label>
@@ -53,7 +53,7 @@
                     </div>
                     <div class="col-md-4">
                       <label for="email" class="form-label">Email Adress</label>
-                      <input type="text" class="form-control" id="email" name="email" placeholder="Email Address" value="{{ email }}">
+                      <input type="text" class="form-control" id="email" name="email" name="email" value="{{ user.email }}" disabled>
                     </div>
                     <div class="col-12">
                       <button type="submit" class="btn btn-secondary">Update Profile</button>

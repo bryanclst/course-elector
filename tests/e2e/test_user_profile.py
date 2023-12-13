@@ -1,8 +1,11 @@
+from flask import session
+from flask_bcrypt import Bcrypt
+import bcrypt
 from sqlalchemy.exc import IntegrityError
 from utils import clear_db,heavily_populate_db, populate_db
 from app import app, repository_singleton, db
 from src.models import db, AppUser, Course, Rating, Post, Comment
-from werkzeug.security import generate_password_hash
+from werkzeug.security import generate_password_hash, check_password_hash
 
 test_client = app.test_client()
 app.config['TESTING'] = True
@@ -44,23 +47,24 @@ def test_user_logout(test_client):
     db.session.add(test_user)
     db.session.commit()
 
+    # Perform login
     login_response = test_client.post('/process_form', data={
         'username': 'testuser',
         'hashed_password': 'test_password',
         'action': 'Login'
     }, follow_redirects=True)
+    assert login_response.status_code == 200
 
-    print("Actual Status Code:", login_response.status_code)
-    print("Login Response Content:", login_response.data)
-    
-    # Debugging: Print the hashed password during registration and login
-    app.logger.debug(f"Registered Hash: {test_user.hashed_password}")
-    app.logger.debug(f"Login Attempt Hash: {generate_password_hash('test_password')}")
+    # Perform logout
+    logout_response = test_client.get('/logout', follow_redirects=True)
 
-    # Ensure that the user is redirected to the expected page after login
-    assert login_response.status_code == 200  
-    
-    
+    assert logout_response.status_code == 200
+    assert b'You have been logged out' in logout_response.data
+
+    # Check the redirected URL if it's not None
+    if logout_response.location:
+        assert any('/login_signup' in url for url in [logout_response.location])
+
 def test_user_delete(test_client):
     clear_db()
 
@@ -89,17 +93,21 @@ def test_user_delete(test_client):
         # Handle the case where the user does not exist
         print("User not found.")
 
-
 def test_update_profile(test_client):
     clear_db()
-    test_user = AppUser(username='testuser', hashed_password='test_password')
+    test_user = AppUser(username='testuser', hashed_password=bcrypt.hashpw('test_password'.encode('utf-8'), bcrypt.gensalt()).decode('utf-8'))
     db.session.add(test_user)
     db.session.commit()
 
-    # Bypass login (assuming it works correctly)
-    # test_client.post('/process_form', data={'username': 'testuser', 'hashed_password': 'test_password', 'action': 'Login'})
+    with app.test_request_context('/update_profile'):
+        # Bypass login if necessary
+        if 'user_id' not in session:
+            session['user_id'] = test_user.user_id
 
-    response = test_client.put('/update_profile', data={'username': 'testuser', 'hashed_password': 'testpassword', 'newPassword': 'newpassword'})
-    assert response.status_code == 404
-    success_message = b'Profile updated successfully'
-    #assert success_message in response.data, f"Expected: {success_message}, Actual: {response.data}"
+        # Update the profile
+        response = test_client.post(
+            '/update_profile/{user_id}'.format(user_id=test_user.user_id),
+            data={'hashed_password': test_user.hashed_password, 'new_password': 'newpassword'}
+        )
+    assert response.status_code == 302, f"Unexpected status code: {response.status_code}"
+

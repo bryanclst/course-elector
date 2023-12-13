@@ -1,7 +1,8 @@
 import pytest
-from utils import clear_db, populate_db ,heavily_populate_db
-from app import repository_singleton
-from app import app, db
+from src.models import AppUser, Course, Rating, Post, Comment, db
+from utils import clear_db, populate_db, heavily_populate_db
+from app import app, db, repository_singleton
+
 
 test_client = app.test_client()
 app.config['TESTING'] = True
@@ -41,17 +42,17 @@ def test_signup_existing(test_client):
     assert 'Username already exists' in all_messages
 
 
-def test_login():
+def test_login(test_client):
     clear_db()
 
-    with app.test_request_context('/process_form', method='POST', data={'username': 'user1', 'hashed_password': 'password', 'action': 'Login'}):
-        response = app.full_dispatch_request()
+    user = AppUser(username='user1', hashed_password='password', email='user1@example.com')
+    db.session.add(user)
+    db.session.commit()
 
-    # Check the response status code
-    assert response.status_code == 302
-
-    # Check if the user is redirected to the expected path
-    assert '/login_signup' in response.location  # Check the redirected URL
+    # Attempt to log in with the created user
+    with test_client.post('/process_form', data={'username': 'user1', 'hashed_password': 'password', 'action': 'Login'}, follow_redirects=True) as response: 
+        assert response.status_code == 200  
+        assert b'user1' in response.data
     
 def test_login_incorrect(test_client):
     clear_db()
