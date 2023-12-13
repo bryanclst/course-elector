@@ -323,8 +323,11 @@ if __name__ == '__main__':
 # I was receiving an error saying: "RuntimeError: Working outside of application context." 
 # the error mentioned using app.app_context, and this resource helped me understand how to use it: https://stackoverflow.com/questions/34122949/working-outside-of-application-context-flask
 with app.app_context(): 
-    #print("courses_db is working!")
-    courses_db() #adds courses to database
+    # checks if courses_db() has already been executed by comparing course in it
+    course_check = Course.query.filter_by(title="Medieval Art").first()
+    
+    if course_check is None:
+        courses_db() #adds courses to database
 
 @app.get('/about')
 def about_us():
