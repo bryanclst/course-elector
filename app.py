@@ -356,9 +356,9 @@ def delete_user():
             user_delete=AppUser.query.filter_by(username=username).first()
             db.session.delete(user_delete)
             db.session.commit()
-            
+
             session.clear()
-            
+
             flash('Your account has been deleted successfully.', 'success')
             return redirect('/login_signup')
         except IntegrityError:
