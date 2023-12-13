@@ -4,6 +4,7 @@ from src.models import db, AppUser, Course, Rating, Post, Comment
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_bcrypt import Bcrypt
 from sqlalchemy.exc import IntegrityError 
+from utils import clear_db, users_db
 from dotenv import load_dotenv
 import os
 import traceback
@@ -22,6 +23,9 @@ app.secret_key= os.getenv('APP_SECRET_KEY', 'abc')
 
 bcrypt = Bcrypt(app)
 db.init_app(app)
+
+with app.app_context():
+    users_db()
 
 # custom render_template to pass username into all routes
 def render_template(*args, **kwargs):
