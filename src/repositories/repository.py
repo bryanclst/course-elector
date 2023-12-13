@@ -20,7 +20,7 @@ class Repository:
     # def get_all_ratings(self):
     #     return Rating.query.all()
     
-    def get_ratings_by_course(self, course_id: int):
+    def get_ratings_by_course_id(self, course_id: int):
         return Rating.query.filter_by(course_id=course_id).all()
     
     def create_rating(self, course_id, author_id, instructor, quality, difficulty, grade=None, description=None):
