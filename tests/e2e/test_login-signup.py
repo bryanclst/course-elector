@@ -1,7 +1,6 @@
 import pytest
 from utils import clear_db, populate_db ,heavily_populate_db
 from app import repository_singleton
-from src.models import AppUser
 from app import app, db
 
 test_client = app.test_client()
@@ -36,11 +35,9 @@ def test_signup_existing(test_client):
     # Extract message strings from the flashed messages
     message_strings = [message[1] for message in flashed_messages]
 
-    # Combine messages from different categories
     all_messages = message_strings
     print(f"All messages: {all_messages}")
 
-    # Assert that the expected message is present in the combined messages
     assert 'Username already exists' in all_messages
 
 

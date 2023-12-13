@@ -29,23 +29,27 @@
             <div class="profile-container">
                 <img src="{{ url_for('static', filename='images/icon.png') }}" class="icon"alt="Profile Icon">
                 <div class="text-info">
-                  <h2>Username: {{username}}</h2>
-                  <p>Email Address: {{email}} </p>
+                  <div class="text-info">
+                    {% if user %}
+                        <h2>Username: {{ user.username }}</h2>
+                        <p>Email Address: {{ user.email }}</p>
+                    {% endif %}
+                  </div>                
                 </div>
             </div>
             <div class="profile-form">
-                <form class="row g-3" method="{{ method }}" action="{{url_for('update_profile')}}">
+              <form class="row g-3" method="POST" action="{{ url_for('update_profile', user_id=user.user_id) }}">
                     <div class="col-md-4">
                       <label for="username" class="form-label">Username</label>
                       <input type="username" class="form-control" id="username" value="{{ username }}" readonly>
                     </div>
                     <div class="col-md-4">
-                      <label for="inputPassword4" class="form-label">Password</label>
+                      <label for="hashed_password" class="form-label">Password</label>
                       <input type="password" class="form-control" id="hashed_password" name="hashed_password" placeholder="Enter your password">
                     </div>
                     <div class="col-md-4">
-                      <label for="newPassword" class="form-label">New Password</label>
-                      <input type="password" class="form-control" id="newPassword" name="newPassword" placeholder="Enter a new password">
+                      <label for="new_password" class="form-label">New Password</label>
+                      <input type="password" class="form-control" id="new_password" name="new_password">
                     </div>
                     <div class="col-md-4">
                       <label for="email" class="form-label">Email Adress</label>
