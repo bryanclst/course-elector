@@ -1,3 +1,4 @@
+from flask import current_app
 from src.models import AppUser, Course, Rating, Post, Comment, db
 from sqlalchemy import text
 
@@ -118,4 +119,49 @@ def heavily_populate_db():
     db.session.add_all([user1, user2] + courses + ratings + posts + comments)
 
     # Commit the changes to the database
+    db.session.commit()
+#adds courses to database instead of having to insert them via SQL
+def courses_db():
+    clear_db()
+    courses = [
+    #Computer Science
+    Course(course_letter='ITSC', course_number=1212, title='Intro to Computer Science I', credits=4, major='Computer Science'),
+    Course(course_letter='ITSC', course_number=1213, title='Intro to Computer Science II', credits=4, major='Computer Science'),
+    Course(course_letter='ITSC', course_number=2181, title='Intro To Computer Systems', credits=4, major='Computer Science'),
+    Course(course_letter='ITSC', course_number=2214, title='Data Structures and Algorithms', credits=3, major='Computer Science'),
+    Course(course_letter='ITSC', course_number=3155, title='Software Engineering', credits=3, major='Computer Science'),
+    Course(course_letter='ITIS', course_number=3131, title='Human-Centered Design', credits=3, major='Computer Science'),
+    Course(course_letter='ITCS', course_number=2116, title='C Programming', credits=3, major='Computer Science'),
+    Course(course_letter='ITCS', course_number=3160, title='Database Design and Implementation', credits=3, major='Computer Science'),
+    Course(course_letter='ITSC', course_number=2600, title='Computing Professionals 2', credits=2, major='Computer Science'),
+    #Mathematics
+    Course(course_letter='MATH', course_number=1101, title='College Algebra', credits=4, major='Mathematics'),
+    Course(course_letter='MATH', course_number=1241, title='Calculus I', credits=3, major='Mathematics'),
+    Course(course_letter='MATH', course_number=1242, title='Calculus II', credits=3, major='Mathematics'),
+    Course(course_letter='MATH', course_number=2241, title='Calculus III', credits=3, major='Mathematics'),
+    Course(course_letter='MATH', course_number=3180, title='Differential Equations', credits=3, major='Mathematics'),
+    Course(course_letter='MATH', course_number=2164, title='Matrices & Linear Algebra', credits=3, major='Mathematics'),
+    Course(course_letter='MATH', course_number=6118, title='Non-Euclidean Geometry', credits=3, major='Mathematics'),
+    #Art
+    Course(course_letter='ARTH', course_number=2140, title='Medieval Art', credits=3, major='Art'),
+    Course(course_letter='ARTH', course_number=3323, title='Ancient Roman Art I', credits=3, major='Art'),
+    #English
+    Course(course_letter='ENGL', course_number=1101, title='English 1', credits=3, major='English'),
+    Course(course_letter='ENGL', course_number=2128, title='Introduction to Fiction Writing', credits=2, major='English'),
+    Course(course_letter='ENGL', course_number=3215, title='British Victorian Literature', credits=3, major='English'),
+    #Biology
+    Course(course_letter='BIOL', course_number=1110, title='Principles of Biology I', credits=3, major='Biology'),
+    Course(course_letter='BIOL', course_number=2130, title='General Biology II Lab', credits=1, major='Biology'),
+    Course(course_letter='BIOL', course_number=3115, title='Cell Biology', credits=3, major='Biology'),
+    Course(course_letter='BIOL', course_number=3000, title='Animal Health', credits=3, major='Biology'),
+    #Chemistry
+    Course(course_letter='CHEM', course_number=1251, title='General Chemistry I', credits=3, major='Chemistry'),
+    Course(course_letter='CHEM', course_number=1252, title='General Chemistry II', credits=3, major='Chemistry'),
+    Course(course_letter='CHEM', course_number=3695, title='Chemistry Seminar I', credits=1, major='Chemistry'),
+    Course(course_letter='CHEM', course_number=3111, title='Quantitative Analysis', credits=4, major='Chemistry'),
+    #Physics
+    Course(course_letter='PHYS', course_number=1101, title='Introductory Physics I', credits=3, major='Physics'),
+    Course(course_letter='PHYS', course_number=4151, title='Thermal Physics', credits=4, major='Physics'),
+    ]
+    db.session.add_all(courses)
     db.session.commit()
