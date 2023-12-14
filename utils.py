@@ -1,4 +1,3 @@
-from flask import current_app
 from src.models import AppUser, Course, Rating, Post, Comment, db
 from sqlalchemy import text
 

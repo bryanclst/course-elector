@@ -1,5 +1,4 @@
-from src.models import AppUser, Course, Rating, Post, Comment
-from utils import clear_db, populate_db, heavily_populate_db
+from utils import clear_db, populate_db
 
 def test_search_status(test_client):
     response = test_client.get('/search')
@@ -25,6 +24,8 @@ def test_search_forms(test_client):
 
     response = test_client.post('/search', data={'credit': 4}, follow_redirects=True)
     assert response.status_code == 200
+    
+    clear_db()
 
 def test_search_empty(test_client):
     populate_db()
@@ -39,6 +40,5 @@ def test_search_empty(test_client):
 
     response = test_client.post('/search', data={'credit': ''}, follow_redirects=True)
     assert response.status_code == 200
-
-
-
+    
+    clear_db()

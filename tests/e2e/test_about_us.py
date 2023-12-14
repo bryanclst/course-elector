@@ -1,6 +1,3 @@
-from src.models import AppUser, Course, Rating, Post, Comment
-from utils import clear_db, populate_db, heavily_populate_db
-
 def test_about_us_status(test_client):
     response = test_client.get('/about') 
     assert response.status_code == 200 #test request if succeeded 

@@ -1,17 +1,18 @@
-import bcrypt
 from flask import Flask, render_template as real_render_template, redirect, request, abort, url_for, session, flash
+
 from src.models import db, AppUser, Course, Rating, Post, Comment
+from src.repositories.repository import repository_singleton
+from utils import courses_db
+
+import bcrypt
 from flask_bcrypt import Bcrypt
+
 from sqlalchemy.exc import IntegrityError 
+from sqlalchemy import func
+from sqlalchemy.orm import joinedload 
+
 from dotenv import load_dotenv
 import os
-
-from src.repositories.repository import repository_singleton
-
-from sqlalchemy import func, cast, Float 
-from sqlalchemy.orm import joinedload 
-from flask_sqlalchemy import pagination #just added
-from utils import clear_db, courses_db 
 
 load_dotenv()
 app = Flask(__name__, static_url_path='/static')
