@@ -1,19 +1,17 @@
-import bcrypt
-from flask import Flask, render_template as real_render_template, redirect, request, abort, url_for, flash, session, json
+from flask import Flask, render_template as real_render_template, redirect, request, abort, url_for, session, flash
+
 from src.models import db, AppUser, Course, Rating, Post, Comment
-from werkzeug.security import generate_password_hash, check_password_hash
+from src.repositories.repository import repository_singleton
+from utils import courses_db
+
 from flask_bcrypt import Bcrypt
+
 from sqlalchemy.exc import IntegrityError 
-from utils import clear_db, users_db,courses_db
+from sqlalchemy import func
+from sqlalchemy.orm import joinedload 
+
 from dotenv import load_dotenv
 import os
-import traceback
-
-from src.repositories.repository import repository_singleton
-
-from sqlalchemy import func, cast, Float 
-from sqlalchemy.orm import joinedload 
-from flask_sqlalchemy import pagination #just added
 
 load_dotenv()
 app = Flask(__name__, static_url_path='/static')
@@ -24,14 +22,11 @@ app.secret_key= os.getenv('APP_SECRET_KEY', 'abc')
 bcrypt = Bcrypt(app)
 db.init_app(app)
 
-with app.app_context():
-    users_db()
-
 # custom render_template to pass username into all routes
 def render_template(*args, **kwargs):
     if 'username' not in kwargs:
         kwargs['username']= session.get('username')
-    return real_render_template(*args, **kwargs,)
+    return real_render_template(*args, **kwargs)
 
 @app.get('/')
 def index():
@@ -94,8 +89,7 @@ def view_single_forum_post(post_id):
     if session.get('username') is None:
         disabled = True
     
-    return render_template('view_single_forum_post.html', post=post, forum_active=True, poster_username = poster_username, 
-                           comment_usernames=comment_usernames, disabled=disabled)
+    return render_template('view_single_forum_post.html', post=post, forum_active=True, poster_username = poster_username, comment_usernames=comment_usernames, disabled=disabled)
 
 
 @app.route('/delete_post/<int:post_id>')
@@ -347,7 +341,7 @@ def submit_rating():
         abort(400)
     if repository_singleton.get_course_by_id(course_id) is None:
         abort(400)
-    if int(quality) < 0 or int(quality) > 5 or int(difficulty) < 0 or int(difficulty) > 5:
+    if int(quality) < 1 or int(quality) > 5 or int(difficulty) < 1 or int(difficulty) > 5:
         abort(400)
     
     grade = request.form.get('grade')

@@ -34,6 +34,7 @@ def test_successfully_delete_comment(test_client):
 
     with test_client.session_transaction() as session:
         del session['username']
+    
     clear_db()
 
 # test attempting to delete a comment when not logged in
@@ -70,6 +71,7 @@ def test_delete_comment_not_logged_in(test_client):
     response_delete_comment = test_client.post(f'/delete_comment/{created_post.post_id}/{created_comment.comment_id}', follow_redirects=True)
 
     assert response_delete_comment.status_code == 401
+    
     clear_db()
 
 # test attempting to delete a comment that doesn't belong to the logged-in user
@@ -110,5 +112,5 @@ def test_delete_comment_that_isnt_users(test_client):
     # log out
     with test_client.session_transaction() as session:
         del session['username']
+    
     clear_db()
-

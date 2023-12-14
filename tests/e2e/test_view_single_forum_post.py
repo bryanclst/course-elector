@@ -1,5 +1,5 @@
 from utils import heavily_populate_db, clear_db
-from src.models import Post, Comment
+from src.models import Post
 
 # test viewing a single forum post
 def test_view_single_forum_post(test_client):
@@ -34,3 +34,4 @@ def test_view_single_forum_post(test_client):
     with test_client.session_transaction() as session:
         del session['username']
 
+    clear_db()

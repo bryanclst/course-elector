@@ -1,4 +1,3 @@
-from flask import current_app
 from src.models import AppUser, Course, Rating, Post, Comment, db
 from sqlalchemy import text
 
@@ -130,6 +129,7 @@ def users_db():
 
     # Commit the changes to the database
     db.session.commit()
+
 #adds courses to database instead of having to insert them via SQL
 def courses_db():
     clear_db()

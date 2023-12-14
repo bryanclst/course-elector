@@ -1,65 +1,66 @@
 {% extends '_layout.html' %}
 {% block title %}Course Directory{% endblock %}
-{% block styles %}<link rel="stylesheet" href="/static/css/course_directory.css">{% endblock %}
+{% block styles %}
+<link rel="stylesheet" href="/static/css/course_directory.css">{% endblock %}
 {% block body %}
 
 <!--Resource used for round: https://jinja.palletsprojects.com/en/3.0.x/templates/-->
 {% if all_courses.items|length == 0 %}
-  <h1 class="directory-header">No Classes matched description!</h1>
-  <section>
-  </section>
+<h1 class="directory-header">No Classes matched description!</h1>
+<section>
+</section>
 {% else %}
 <h1 class="directory-header">Course Directory</h1>
-  <section>
-    
-    <table class="table directory-table">
-      <thead>
-        <tr>
-          <th scope="col">Course</th>
-          <th scope="col">Title</th>
-          <th scope="col">Major</th>
-          <th scope="col">Credits</th>
-          <th scope="col">Quality Rating</th>
-          <th scope="col">Difficulty Rating</th>
-          <th scope="col">Rating Page</th>
-        </tr>
-      </thead>
-      <tbody>
-        {% for course in all_courses.items %}
-          <tr>
-            <th scope="row" style="font-weight: normal;">{{ course.course_letter }}-{{ course.course_number }}</th>
-            <th scope="row" style="font-weight: normal;">{{ course.title }}</th>
-            <td>{{ course.major }}</td>
-            <td>{{ course.credits }}</td>
-            <td>
-            {% if course.avg_quality is not none %}
-              {{ course.avg_quality|round(2) }}/5 stars
-            {% else %}
-              N/A
-            {% endif %}
-            </td>
-            <td>
-            {% if course.avg_difficulty is not none %}
-              {{ course.avg_difficulty|round(2) }}/5 stars
-            {% else %}
-              N/A
-            {% endif %}
-            </td>
-            <td>
-              {% if course.ratings %}
-              <form action="{{ url_for('view_ratings', course_id=course.course_id) }}" method="get">
-                <button type="submit" name="view_ratings" style="background-color: #005035;" class="btn btn-primary">View Page</button>
-              </form>
-              {% else %}
-              <p>No Page Yet!</p>
-              {% endif %}
-            </td>
-          </tr>
-        {% endfor %}
-      </tbody>
-    </table>
-  </section>
-{% endif %}  
+<section>
+
+  <table class="table directory-table">
+    <thead>
+      <tr>
+        <th scope="col">Course</th>
+        <th scope="col">Title</th>
+        <th scope="col">Major</th>
+        <th scope="col">Credits</th>
+        <th scope="col">Quality Rating</th>
+        <th scope="col">Difficulty Rating</th>
+        <th scope="col">Rating Page</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for course in all_courses.items %}
+      <tr>
+        <th scope="row" style="font-weight: normal;">{{ course.course_letter }}-{{ course.course_number }}</th>
+        <th scope="row" style="font-weight: normal;">{{ course.title }}</th>
+        <td>{{ course.major }}</td>
+        <td>{{ course.credits }}</td>
+        <td>
+          {% if course.avg_quality is not none %}
+          {{ course.avg_quality|round(2) }}/5 stars
+          {% else %}
+          N/A
+          {% endif %}
+        </td>
+        <td>
+          {% if course.avg_difficulty is not none %}
+          {{ course.avg_difficulty|round(2) }}/5 stars
+          {% else %}
+          N/A
+          {% endif %}
+        </td>
+        <td>
+          {% if course.ratings %}
+          <form action="{{ url_for('view_ratings', course_id=course.course_id) }}" method="get">
+            <button type="submit" name="view_ratings" style="background-color: #005035;" class="btn btn-primary">View Page</button>
+          </form>
+          {% else %}
+          <p>No Page Yet!</p>
+          {% endif %}
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</section>
+{% endif %}
 
 
 <div class="directory-button-container">
@@ -73,31 +74,31 @@
 <!--Resource that helped me with implementing pagination: https://betterprogramming.pub/simple-flask-pagination-example-4190b12c2e2e, https://www.geeksforgeeks.org/using-request-args-for-a-variable-url-in-flask/, https://jinja.palletsprojects.com/en/3.0.x/templates/#jinja-filters.urlencode-->
 <div class="pagination-container">
   <nav aria-label="Page navigation example">
-      <ul class="pagination">
-          {% if all_courses.has_prev %}
-              <li class="page-item"><a class="page-link" href="{{ url_for('course_directory', page=all_courses.prev_num) }}{{ '&' + request.args.to_dict()|urlencode if request.args }}">{{ 'Previous' }}</a></li>
-          {% else %}
-              <li class="page-item disabled"><span class="page-link">Previous</span></li>
-          {% endif %}
+    <ul class="pagination">
+      {% if all_courses.has_prev %}
+      <li class="page-item"><a class="page-link" href="{{ url_for('course_directory', page=all_courses.prev_num) }}{{ '&' + request.args.to_dict()|urlencode if request.args }}">{{ 'Previous' }}</a></li>
+      {% else %}
+      <li class="page-item disabled"><span class="page-link">Previous</span></li>
+      {% endif %}
 
-          {% for num in all_courses.iter_pages() %}
-              {% if num %}
-                  {% if num == all_courses.page %}
-                      <li class="page-item active"><span class="page-link">{{ num }}</span></li>
-                  {% else %}
-                      <li class="page-item"><a class="page-link" href="{{ url_for('course_directory', page=num) }}{{ '&' + request.args.to_dict()|urlencode if request.args }}">{{ num }}</a></li>
-                  {% endif %}
-              {% else %}
-                  <li class="page-item disabled"><span class="page-link">...</span></li>
-              {% endif %}
-          {% endfor %}
+      {% for num in all_courses.iter_pages() %}
+      {% if num %}
+      {% if num == all_courses.page %}
+      <li class="page-item active"><span class="page-link">{{ num }}</span></li>
+      {% else %}
+      <li class="page-item"><a class="page-link" href="{{ url_for('course_directory', page=num) }}{{ '&' + request.args.to_dict()|urlencode if request.args }}">{{ num }}</a></li>
+      {% endif %}
+      {% else %}
+      <li class="page-item disabled"><span class="page-link">...</span></li>
+      {% endif %}
+      {% endfor %}
 
-          {% if all_courses.has_next %}
-              <li class="page-item"><a class="page-link" href="{{ url_for('course_directory', page=all_courses.next_num) }}{{ '&' + request.args.to_dict()|urlencode if request.args }}">{{ 'Next' }}</a></li>
-          {% else %}
-              <li class="page-item disabled"><span class="page-link">Next</span></li>
-          {% endif %}
-      </ul>
+      {% if all_courses.has_next %}
+      <li class="page-item"><a class="page-link" href="{{ url_for('course_directory', page=all_courses.next_num) }}{{ '&' + request.args.to_dict()|urlencode if request.args }}">{{ 'Next' }}</a></li>
+      {% else %}
+      <li class="page-item disabled"><span class="page-link">Next</span></li>
+      {% endif %}
+    </ul>
   </nav>
 </div>
 

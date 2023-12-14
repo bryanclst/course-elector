@@ -19,8 +19,8 @@ def test_create_valid_comment(test_client):
     # log out
     with test_client.session_transaction() as session:
         del session['username']
-    clear_db()
     
+    clear_db()
 
 #test creating a comment while a session is not active (user isn't logged in)
 def test_create_post_not_logged_in(test_client):
@@ -31,6 +31,7 @@ def test_create_post_not_logged_in(test_client):
     }, follow_redirects=True)
     
     assert response.status_code == 401
+    
     clear_db()
 
 #test with bad data
@@ -49,4 +50,5 @@ def test_create_comment_with_invalid_data(test_client):
     # log out
     with test_client.session_transaction() as session:
         del session['username']
+    
     clear_db()

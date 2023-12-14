@@ -109,11 +109,11 @@ def test_submit_rating_invalid_data(test_client):
     })
     assert response.status_code == 400
     
-    # quality less than 0
+    # quality less than 1
     response = test_client.post('/submit_rating', data={
         'course': '1',
         'instructor': 'test',
-        'quality': -1,
+        'quality': 0,
         'difficulty': 1,
         'grade': None,
         'description': None
@@ -142,12 +142,12 @@ def test_submit_rating_invalid_data(test_client):
     })
     assert response.status_code == 400
     
-    # difficulty less than 0
+    # difficulty less than 1
     response = test_client.post('/submit_rating', data={
         'course': '1',
         'instructor': 'test',
         'quality': 1,
-        'difficulty': -1,
+        'difficulty': 0,
         'grade': None,
         'description': None
     })

@@ -4,33 +4,32 @@
 {% block body %}
 
 <div class="container pt-4">
-    <h1>Create Post</h1>
-    <form method="post" action="{{ url_for('create_forum_post') }}">
-        <div class="form-group">
-            <label for="course-select">Choose a course:</label>
-            <select class="form-control" id="course-select" name="course_id" required>
-              {% for course in courses %}
-                <option value="{{ course.course_id }}">{{ course.course_letter }}-{{ course.course_number }}: {{ course.title }}</option>
-              {% endfor %}
-            </select>
-          </div>
-        <div class="form-group">
-          <label for="subject">Subject:</label>
-          <input type="text" class="form-control" id="subject" name="subject" required>
-        </div>
-        <div class="form-group">
-          <label for="body">Body:</label>
-          <textarea class="form-control" id="body" name="body" rows="5" required></textarea>
-        </div>
-        <br>
-        {% if disabled %}<p class="text-danger">Don't be sneaky. You must be logged in to create a post.</p>{% endif %}
-        {% if disabled %}
-          <button type="submit" class="btn btn-success disabled">Create Post</button>
-        {% else %}
-          <button type="submit" class="btn btn-success">Create Post</button>
-        {% endif %}
+  <h1>Create Post</h1>
+  <form method="post" action="{{ url_for('create_forum_post') }}">
+    <div class="form-group">
+      <label for="course-select">Choose a course:</label>
+      <select class="form-control" id="course-select" name="course_id" required>
+        {% for course in courses %}
+        <option value="{{ course.course_id }}">{{ course.course_letter }}-{{ course.course_number }}: {{ course.title }}</option>
+        {% endfor %}
+      </select>
+    </div>
+    <div class="form-group">
+      <label for="subject">Subject:</label>
+      <input type="text" class="form-control" id="subject" name="subject" required>
+    </div>
+    <div class="form-group">
+      <label for="body">Body:</label>
+      <textarea class="form-control" id="body" name="body" rows="5" required></textarea>
+    </div>
+    <br>
+    {% if disabled %}<p class="text-danger">Don't be sneaky. You must be logged in to create a post.</p>
+    <button type="submit" class="btn btn-success disabled">Create Post</button>
+    {% else %}
+    <button type="submit" class="btn btn-success">Create Post</button>
+    {% endif %}
 
-      </form>
-      <a href="{{ url_for('view_forum_posts') }}" class="btn btn-secondary mt-2">Back to Forum Home</a>
+  </form>
+  <a href="{{ url_for('view_forum_posts') }}" class="btn btn-secondary mt-2">Back to Forum Home</a>
 </div>
 {% endblock %}

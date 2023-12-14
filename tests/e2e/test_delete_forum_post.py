@@ -29,6 +29,7 @@ def test_successfully_delete_post(test_client):
     # log out
     with test_client.session_transaction() as session:
         del session['username']
+    
     clear_db()
 
 def test_delete_post_not_logged_in(test_client):
@@ -57,6 +58,7 @@ def test_delete_post_not_logged_in(test_client):
     response_delete = test_client.get(f'/delete_post/{created_post.post_id}', follow_redirects=True)
 
     assert response_delete.status_code == 401
+    
     clear_db()
 
 # test attempting to edit a post with mismatched author ID
@@ -88,4 +90,5 @@ def test_edit_post_that_isnt_users(test_client):
 
     with test_client.session_transaction() as session:
         del session['username']
+    
     clear_db()

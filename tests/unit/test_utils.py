@@ -1,5 +1,5 @@
 from src.models import AppUser, Course, Rating, Post, Comment, db
-from utils import clear_db, populate_db, heavily_populate_db, users_db
+from utils import clear_db, populate_db, heavily_populate_db, users_db, courses_db
 
 def test_users_db(test_client):
     users_db()
@@ -17,9 +17,8 @@ def test_users_db(test_client):
 
     all_users = AppUser.query.all()
     assert len(all_users) == 2
-
-
-from utils import clear_db, populate_db, heavily_populate_db, courses_db
+    
+    clear_db()
 
 def test_clear_db(test_client):
     clear_db() # i have no idea how to test this without actually clearing the database and resetting serial keys first, but i think it's fine

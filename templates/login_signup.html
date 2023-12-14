@@ -1,16 +1,16 @@
 {% extends '_layout.html' %}
-{% block title %}Log In / Sign Up {% endblock %}
-{% block body %}
+{% block title %}Log In / Sign Up{% endblock %}
 {% block styles %}
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/login.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/login.css') }}">
 {% endblock %}
+{% block body %}
 <div class="container">
     <div class="form sign-in">
         <h2>Login</h2>
         <form action="/process_form" method="post">
             <label>
                 <span for="username">Username:</span>
-                <input type="text" id="username" name="username" required><br> 
+                <input type="text" id="username" name="username" required><br>
             </label>
             <label>
                 <span for="hashed_password">Password:</span>
@@ -20,16 +20,16 @@
         </form>
         <div class="flash-message">
             {% with messages = get_flashed_messages() %}
-                {% if messages %}
-                    <ul class="flash-messages">
-                        {% for message in messages %}
-                            <li>{{ message }}</li>
-                        {% endfor %}
-                    </ul>
-                {% endif %}
+            {% if messages %}
+            <ul class="flash-messages">
+                {% for message in messages %}
+                <li>{{ message }}</li>
+                {% endfor %}
+            </ul>
+            {% endif %}
             {% endwith %}
         </div>
-        
+
     </div>
     <div class="sub-container">
         <div class="img">
@@ -51,11 +51,11 @@
             <form action="/process_form" method="post">
                 <label>
                     <span for="username">Username:</span>
-                    <input type="text" id="username" name="username" required><br>   
+                    <input type="text" id="username" name="username" required><br>
                 </label>
                 <label>
                     <span for="email">Email:</span>
-                    <input type="text" id="email" name="email" required><br>  
+                    <input type="text" id="email" name="email" required><br>
                 </label>
                 <label>
                     <span for="hashed_password">Password:</span>
@@ -65,13 +65,13 @@
             </form>
             <div class="flask-message">
                 {% with messages = get_flashed_messages() %}
-                    {% if messages %}
-                        <ul class="flashes">
-                        {% for message in messages %}
-                            <li>{{ message }}</li>
-                        {% endfor %}
-                        </ul>
-                    {% endif %}
+                {% if messages %}
+                <ul class="flashes">
+                    {% for message in messages %}
+                    <li>{{ message }}</li>
+                    {% endfor %}
+                </ul>
+                {% endif %}
                 {% endwith %}
             </div>
         </div>

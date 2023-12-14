@@ -38,6 +38,7 @@ def test_edit_valid_comment(test_client):
     assert edited_comment.body == 'edited comment'
     with test_client.session_transaction() as session:
         del session['username']
+    
     clear_db()
 
 # test editing a comment with bad data
@@ -74,8 +75,9 @@ def test_edit_comment_with_invalid_data(test_client):
     assert response_edit_comment.status_code == 400
     with test_client.session_transaction() as session:
         del session['username']
-    clear_db()
     
+    clear_db()
+
 # test attempting to edit a comment while not logged in
 def test_edit_comment_not_logged_in(test_client):
     heavily_populate_db()
@@ -112,6 +114,7 @@ def test_edit_comment_not_logged_in(test_client):
     }, follow_redirects=True)
 
     assert response_edit_comment.status_code == 401
+    
     clear_db()
 
 # test attempting to edit a comment not belonging to the logged-in user
@@ -152,5 +155,5 @@ def test_edit_comment_that_isnt_users(test_client):
     assert response_edit_comment.status_code == 403
     with test_client.session_transaction() as session:
         del session['username']
-    clear_db()
     
+    clear_db()

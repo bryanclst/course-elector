@@ -1,6 +1,6 @@
 {% extends '_layout.html' %}
 
-{% block title %}Course Elector | Submit Rating{% endblock %}
+{% block title %}Submit Rating{% endblock %}
 
 {% block styles %}
 <link href="{{url_for('static', filename='css/submit_rating.css')}}" rel="stylesheet">
@@ -50,7 +50,7 @@
                 </td>
                 <td>
                     <div class="input-container single-input-container">
-                        <input class="form-control" type="number" id="quality" name="quality" min=0 max=5 required>
+                        <input class="form-control" type="number" id="quality" name="quality" min=1 max=5 required>
                     </div>
                 </td>
             </tr>
@@ -61,7 +61,7 @@
                 </td>
                 <td>
                     <div class="input-container single-input-container">
-                        <input class="form-control" type="number" id="difficulty" name="difficulty" min=0 max=5 required>
+                        <input class="form-control" type="number" id="difficulty" name="difficulty" min=1 max=5 required>
                     </div>
                 </td>
             </tr>
