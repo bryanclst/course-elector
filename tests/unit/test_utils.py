@@ -149,4 +149,3 @@ def test_courses_db(test_client):
     assert len(all_courses) == 31
 
     clear_db()
-
