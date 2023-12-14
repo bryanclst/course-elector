@@ -13,6 +13,20 @@
     list-style: none;
 }
 
+.title{
+    font-size: 25px;
+    color: #fff;
+    display: inline-block;
+    padding-left: 25px;
+    padding-top: 20px;
+    padding-bottom: 10px;
+    text-decoration: none;
+}
+
+.title:hover{
+    background: -webkit-linear-gradient(left, #86A873, #005035);
+}
+
 h2{
     color: white;
     font-size: large;
@@ -139,6 +153,7 @@ hr{
 .btn btn-primary{
     background-color: #86A873;
 }
+
 
 @media only screen and (max-width:600px){
     .side-nav{

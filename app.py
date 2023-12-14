@@ -1,17 +1,19 @@
 import bcrypt
-from flask import Flask, render_template as real_render_template, redirect, request, abort, url_for, session, flash
+from flask import Flask, render_template as real_render_template, redirect, request, abort, url_for, flash, session, json
 from src.models import db, AppUser, Course, Rating, Post, Comment
+from werkzeug.security import generate_password_hash, check_password_hash
 from flask_bcrypt import Bcrypt
 from sqlalchemy.exc import IntegrityError 
+from utils import clear_db, users_db,courses_db
 from dotenv import load_dotenv
 import os
+import traceback
 
 from src.repositories.repository import repository_singleton
 
 from sqlalchemy import func, cast, Float 
 from sqlalchemy.orm import joinedload 
 from flask_sqlalchemy import pagination #just added
-from utils import clear_db, courses_db 
 
 load_dotenv()
 app = Flask(__name__, static_url_path='/static')
@@ -22,9 +24,14 @@ app.secret_key= os.getenv('APP_SECRET_KEY', 'abc')
 bcrypt = Bcrypt(app)
 db.init_app(app)
 
+with app.app_context():
+    users_db()
+
 # custom render_template to pass username into all routes
 def render_template(*args, **kwargs):
-    return real_render_template(*args, **kwargs, username=session.get('username'))
+    if 'username' not in kwargs:
+        kwargs['username']= session.get('username')
+    return real_render_template(*args, **kwargs,)
 
 @app.get('/')
 def index():
@@ -216,6 +223,7 @@ def login_signup():
 def process_form():
     username = request.form.get('username')
     hashed_password = request.form.get('hashed_password')
+    email=request.form.get('email')
     action = request.form.get('action')
     
     if not username or not hashed_password:
@@ -225,35 +233,91 @@ def process_form():
     if action == 'Sign Up':
         bcrypt_password = bcrypt.generate_password_hash(hashed_password).decode()
         try:
-            new_user = AppUser(username=username, hashed_password=bcrypt_password)
+            new_user = AppUser(username=username, hashed_password=bcrypt_password, email=email)
             db.session.add(new_user)
             db.session.commit()
             session['username'] = username
             flash('Account created successfully', 'success')
-            return redirect('/login_signup')
+            return redirect('/user_profile')  # Redirect to user_profile after successful signup
         except IntegrityError:
-            db.session.rollback()  # Rollback the transaction
-            flash('Username already exists. Please choose another one.', 'error')
+            db.session.rollback()
+            flash('Username already exists', 'error')
             return redirect('/login_signup')
     elif action == 'Login':
-        existing_user = AppUser.query.filter_by(username=username).first()
-        if not existing_user or not bcrypt.check_password_hash(existing_user.hashed_password, hashed_password):
-            flash('Incorrect username or password', 'error')
+        try:
+            existing_user = AppUser.query.filter_by(username=username).first()
+            if not existing_user or hashed_password is None or not bcrypt.check_password_hash(existing_user.hashed_password, hashed_password):
+                flash('Incorrect username or password', 'error')
+                return redirect('/login_signup')
+            session['username'] = username
+            return redirect('/user_profile')
+        except Exception as e:
+            app.logger.error(f"Error during login: {str(e)}")
+            flash('An error occurred during login', 'error')
             return redirect('/login_signup')
-        session['username'] = username
-        return redirect('/user_profile')
     else:
         return 'Invalid action'
 
 @app.route('/user_profile')
 def userprofile():
     username = session.get('username')
-    
     if username is None:
         # Redirect to login page or handle unauthorized access
-        return redirect('/login_signup')     
-    
-    return render_template('user_profile.html', user_active=True)
+        return redirect('/login_signup')
+
+    # Fetch the user based on the username or however you are retrieving it
+    user = AppUser.query.filter_by(username=username).first()
+
+    if not user:
+        # Handle the case where the user is not found
+        flash('User not found', 'error')
+        return redirect('/login_signup')
+
+    return render_template('user_profile.html', user=user, username=username, user_active=True)
+
+@app.route('/update_profile/<int:user_id>', methods=['POST'])
+def update_profile(user_id):
+    user = AppUser.query.get(user_id)
+    hashed_password = request.form['hashed_password']
+    new_password = request.form['new_password']
+
+    # Check the hashed password for authentication
+    if bcrypt.check_password_hash(user.hashed_password, hashed_password):
+        if not new_password:
+            flash('New Password cannot be empty', 'warning')
+        # Update user password
+        else:
+            user.hashed_password = bcrypt.generate_password_hash(new_password).decode('utf-8')
+            db.session.commit()
+            flash('Password updated successfully', 'success')
+    else:
+        flash('Invalid password', 'danger')
+    return redirect(url_for('userprofile', user_id=user_id))
+
+@app.route('/logout')
+def logout():
+    session.pop('username', None)
+    flash('You have been logged out', 'success')
+    return redirect('/login_signup')
+
+@app.route('/delete_user', methods=['GET','POST'])
+def delete_user():
+    if request.method == 'POST':
+        username=session.get('username')
+        try: 
+            user_delete=AppUser.query.filter_by(username=username).first()
+            db.session.delete(user_delete)
+            db.session.commit()
+
+            session.clear()
+
+            flash('Your account has been deleted successfully.', 'success')
+            return redirect('/login_signup')
+        except IntegrityError:
+            db.session.rollback()
+            flash('Error deleting account failed. Please try again','error')
+    return render_template('/index.html')
+
 
 @app.get('/submit_rating')
 def get_rating_form():

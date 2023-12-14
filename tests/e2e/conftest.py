@@ -13,3 +13,4 @@ from app import app
 def test_client():
     with app.app_context():
         yield app.test_client()
+        
