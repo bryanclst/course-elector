@@ -117,6 +117,16 @@ def heavily_populate_db():
     # Add objects to the session
     db.session.add_all([user1, user2] + courses + ratings + posts + comments)
 
+    db.session.commit()
+
+def users_db():
+    clear_db()
+
+    user1 = AppUser(email='user1@example.com', username='user1', hashed_password='hashed_password_1')
+    user2 = AppUser(email='user2@example.com', username='user2', hashed_password='hashed_password_2')
+        
+    db.session.add_all([user1, user2])
+
     # Commit the changes to the database
     db.session.commit()
 #adds courses to database instead of having to insert them via SQL

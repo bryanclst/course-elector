@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title> User Profile</title>
+    <title>User Profile</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/profile.css') }}">
@@ -11,7 +11,7 @@
 <body>
     <div class="header">
         <div class="side-nav">
-            <h2>CourseElector</h2>
+          <a class="title" href="{{url_for('index')}}">CourseElector</a>
             <ul class="nav-links">
                 <li><a href="#"><i class="fa-brands fa-microsoft" style="color: #ffffff;"></i>Dashboard</a></li>
                 <li><a href="#"><i class="fa-solid fa-gear" style="color: #ffffff;"></i>Settings</a></li>
@@ -20,6 +20,7 @@
                 <hr>
                 <li><a href="#"><i class="fa-solid fa-circle-question" style="color: #ffffff;"></i>Help</a></li>
                 <li><a href="#"><i class="fa-solid fa-globe" style="color: #ffffff;"></i>Language</a></li>
+                <li><a href="{{url_for('logout')}}"><i class="fa-solid fa-arrow-right-from-bracket" style="color: #ffffff;"></i>Logout</a></li>
                 <div class="active"></div>
             </ul>
         </div>
@@ -28,41 +29,52 @@
             <div class="profile-container">
                 <img src="{{ url_for('static', filename='images/icon.png') }}" class="icon"alt="Profile Icon">
                 <div class="text-info">
-                  <h2>{{username}}</h2>
-                  <p>Email: demoemma@gmail.com</p>
+                  <div class="text-info">
+                    {% if user %}
+                        <h2>Username: {{ user.username }}</h2>
+                        <p>Email Address: {{ user.email }}</p>
+                    {% endif %}
+                  </div>                
                 </div>
             </div>
             <div class="profile-form">
-                <form class="row g-3">
+              <form class="row g-3" method="POST" action="{{ url_for('update_profile', user_id=user.user_id) }}">
                     <div class="col-md-4">
                       <label for="username" class="form-label">Username</label>
-                      <input type="username" class="form-control" id="username">
+                      <input type="username" class="form-control" id="username" value="{{ username }}" disabled>
                     </div>
                     <div class="col-md-4">
-                      <label for="inputPassword4" class="form-label">Password</label>
-                      <input type="hashed_password" class="form-control" id="inputPassword4">
+                      <label for="hashed_password" class="form-label">Password</label>
+                      <input type="password" class="form-control" id="hashed_password" name="hashed_password" placeholder="Enter your password">
                     </div>
                     <div class="col-md-4">
-                      <label for="newPassword" class="form-label">New Password</label>
-                      <input type="password" class="form-control" id="newPassword">
+                      <label for="new_password" class="form-label">New Password</label>
+                      <input type="password" class="form-control" id="new_password" name="new_password">
                     </div>
                     <div class="col-md-4">
-                      <label for="fname" class="form-label">First Name</label>
-                      <input type="text" class="form-control" placeholder="First name" aria-label="First name" id="fname"> 
-                    </div>
-                    <div class="col-md-4">
-                      <label for="lname" class="form-label">Last Name</label>
-                      <input type="text" class="form-control" placeholder="Last name" aria-label="Last name" id="lname">
+                      <label for="email" class="form-label">Email Adress</label>
+                      <input type="text" class="form-control" id="email" name="email" name="email" value="{{ user.email }}" disabled>
                     </div>
                     <div class="col-12">
-                      <button type="submit" class="btn btn-secondary">Edit</button>
+                      <button type="submit" class="btn btn-secondary">Update Profile</button>
                     </div>
+                </form><br>
+                <form action="/delete_user" method="post" id="delete_form">
+                  <button type="submit" class="btn btn-danger">Delete Account</button>
                 </form>
-                
+                {% with messages = get_flashed_messages() %}
+                    {% if messages %}
+                        <ul class="flash-messages">
+                            {% for message in messages %}
+                                <li>{{ message }}</li>
+                            {% endfor %}
+                        </ul>
+                    {% endif %}
+                {% endwith %}
             </div>
         </div>   
     </div>
   </body>
-  </html>
+</html>
 
 

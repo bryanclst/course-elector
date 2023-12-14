@@ -4,19 +4,21 @@
 {% block styles %}
     <link rel="stylesheet" href="{{ url_for('static', filename='css/login.css') }}">
 {% endblock %}
-    <div class="container">
-        <!-- Left Side (Login Credentials) -->
-        <div class="login">
-            <h2>Sign Up/Login</h2>
-            <hr>
-            <form action="/process_form" method="post">
-                <label for="username">Username:</label>
-                <input type="text" id="username" name="username" required><br><br>                
-                <label for="hashed_password">Password:</label>
-                <input type="password" id="hashed_password" name="hashed_password" required><br><br>
-                <input type="submit" value="Sign Up" name="action">
-                <input type="submit" value="Login" name="action">
-            </form>
+<div class="container">
+    <div class="form sign-in">
+        <h2>Login</h2>
+        <form action="/process_form" method="post">
+            <label>
+                <span for="username">Username:</span>
+                <input type="text" id="username" name="username" required><br> 
+            </label>
+            <label>
+                <span for="hashed_password">Password:</span>
+                <input type="password" id="hashed_password" name="hashed_password" required><br>
+            </label>
+            <button class="submit" type="submit" value="Login" name="action">Login</button>
+        </form>
+        <div class="flash-message">
             {% with messages = get_flashed_messages() %}
                 {% if messages %}
                     <ul class="flash-messages">
@@ -26,27 +28,54 @@
                     </ul>
                 {% endif %}
             {% endwith %}
-            
-            <hr>
-            <ul class="social">
-                <a href="https://www.linkedin.com/" target="_blank">
-                    <i class="fa-brands fa-linkedin fa-2xl" style="color: #306ed9;"></i>
-                </a>
-                
-                <a href="https://www.google.com/" target="_blank">
-                    <i class="fab fa-google fa-2xl"></i>
-                </a>
-                
-                <a href="https://www.facebook.com/" target="_blank">
-                    <i class="fa-brands fa-square-facebook fa-2xl" style="color: #1b56bb;"></i>
-                </a>
-            </ul>
-            
         </div>
-
-        <!-- Right Side (Photo Container) -->
-        <div class="photo-container">
-            <img src="{{ url_for('static', filename='images/UNCClock.jpg') }}" class="unc"alt="UNC Charlotte">
+        
+    </div>
+    <div class="sub-container">
+        <div class="img">
+            <div class="img-text m-up">
+                <h2>New Here?</h2>
+                <p>Sign Up and discover reviews of courses in your school</p>
+            </div>
+            <div class="img-text m-in">
+                <h2>Already Have an Account?</h2>
+                <p>Just Login</p>
+            </div>
+            <div class="img-btn">
+                <span class="m-up">Sign Up</span>
+                <span class="m-in">Login</span>
+            </div>
+        </div>
+        <div class="form sign-up">
+            <h2>Sign Up</h2>
+            <form action="/process_form" method="post">
+                <label>
+                    <span for="username">Username:</span>
+                    <input type="text" id="username" name="username" required><br>   
+                </label>
+                <label>
+                    <span for="email">Email:</span>
+                    <input type="text" id="email" name="email" required><br>  
+                </label>
+                <label>
+                    <span for="hashed_password">Password:</span>
+                    <input type="password" id="hashed_password" name="hashed_password" required><br>
+                </label>
+                <button class="submit" type="submit" value="Sign Up" name="action">Sign Up</button>
+            </form>
+            <div class="flask-message">
+                {% with messages = get_flashed_messages() %}
+                    {% if messages %}
+                        <ul class="flashes">
+                        {% for message in messages %}
+                            <li>{{ message }}</li>
+                        {% endfor %}
+                        </ul>
+                    {% endif %}
+                {% endwith %}
+            </div>
         </div>
     </div>
+</div>
+<script src="{{ url_for('static', filename='script.js')}}"></script>
 {% endblock %}

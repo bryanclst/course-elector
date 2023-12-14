@@ -75,6 +75,7 @@ def test_edit_comment_with_invalid_data(test_client):
     assert response_edit_comment.status_code == 400
     with test_client.session_transaction() as session:
         del session['username']
+    clear_db()
     
     clear_db()
     
@@ -155,5 +156,6 @@ def test_edit_comment_that_isnt_users(test_client):
     assert response_edit_comment.status_code == 403
     with test_client.session_transaction() as session:
         del session['username']
+    clear_db()
     
     clear_db()

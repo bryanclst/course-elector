@@ -13,6 +13,7 @@ from sqlalchemy.orm import joinedload
 
 from dotenv import load_dotenv
 import os
+import traceback
 
 load_dotenv()
 app = Flask(__name__, static_url_path='/static')
@@ -25,7 +26,9 @@ db.init_app(app)
 
 # custom render_template to pass username into all routes
 def render_template(*args, **kwargs):
-    return real_render_template(*args, **kwargs, username=session.get('username'))
+    if 'username' not in kwargs:
+        kwargs['username']= session.get('username')
+    return real_render_template(*args, **kwargs,)
 
 @app.get('/')
 def index():
@@ -88,8 +91,7 @@ def view_single_forum_post(post_id):
     if session.get('username') is None:
         disabled = True
     
-    return render_template('view_single_forum_post.html', post=post, forum_active=True, poster_username = poster_username, 
-                           comment_usernames=comment_usernames, disabled=disabled)
+    return render_template('view_single_forum_post.html', post=post, forum_active=True, poster_username = poster_username, comment_usernames=comment_usernames, disabled=disabled)
 
 
 @app.route('/delete_post/<int:post_id>')
@@ -217,6 +219,7 @@ def login_signup():
 def process_form():
     username = request.form.get('username')
     hashed_password = request.form.get('hashed_password')
+    email=request.form.get('email')
     action = request.form.get('action')
     
     if not username or not hashed_password:
@@ -226,35 +229,91 @@ def process_form():
     if action == 'Sign Up':
         bcrypt_password = bcrypt.generate_password_hash(hashed_password).decode()
         try:
-            new_user = AppUser(username=username, hashed_password=bcrypt_password)
+            new_user = AppUser(username=username, hashed_password=bcrypt_password, email=email)
             db.session.add(new_user)
             db.session.commit()
             session['username'] = username
             flash('Account created successfully', 'success')
-            return redirect('/login_signup')
+            return redirect('/user_profile')  # Redirect to user_profile after successful signup
         except IntegrityError:
-            db.session.rollback()  # Rollback the transaction
-            flash('Username already exists. Please choose another one.', 'error')
+            db.session.rollback()
+            flash('Username already exists', 'error')
             return redirect('/login_signup')
     elif action == 'Login':
-        existing_user = AppUser.query.filter_by(username=username).first()
-        if not existing_user or not bcrypt.check_password_hash(existing_user.hashed_password, hashed_password):
-            flash('Incorrect username or password', 'error')
+        try:
+            existing_user = AppUser.query.filter_by(username=username).first()
+            if not existing_user or hashed_password is None or not bcrypt.check_password_hash(existing_user.hashed_password, hashed_password):
+                flash('Incorrect username or password', 'error')
+                return redirect('/login_signup')
+            session['username'] = username
+            return redirect('/user_profile')
+        except Exception as e:
+            app.logger.error(f"Error during login: {str(e)}")
+            flash('An error occurred during login', 'error')
             return redirect('/login_signup')
-        session['username'] = username
-        return redirect('/user_profile')
     else:
         return 'Invalid action'
 
 @app.route('/user_profile')
 def userprofile():
     username = session.get('username')
-    
     if username is None:
         # Redirect to login page or handle unauthorized access
-        return redirect('/login_signup')     
-    
-    return render_template('user_profile.html', user_active=True)
+        return redirect('/login_signup')
+
+    # Fetch the user based on the username or however you are retrieving it
+    user = AppUser.query.filter_by(username=username).first()
+
+    if not user:
+        # Handle the case where the user is not found
+        flash('User not found', 'error')
+        return redirect('/login_signup')
+
+    return render_template('user_profile.html', user=user, username=username, user_active=True)
+
+@app.route('/update_profile/<int:user_id>', methods=['POST'])
+def update_profile(user_id):
+    user = AppUser.query.get(user_id)
+    hashed_password = request.form['hashed_password']
+    new_password = request.form['new_password']
+
+    # Check the hashed password for authentication
+    if bcrypt.check_password_hash(user.hashed_password, hashed_password):
+        if not new_password:
+            flash('New Password cannot be empty', 'warning')
+        # Update user password
+        else:
+            user.hashed_password = bcrypt.generate_password_hash(new_password).decode('utf-8')
+            db.session.commit()
+            flash('Password updated successfully', 'success')
+    else:
+        flash('Invalid password', 'danger')
+    return redirect(url_for('userprofile', user_id=user_id))
+
+@app.route('/logout')
+def logout():
+    session.pop('username', None)
+    flash('You have been logged out', 'success')
+    return redirect('/login_signup')
+
+@app.route('/delete_user', methods=['GET','POST'])
+def delete_user():
+    if request.method == 'POST':
+        username=session.get('username')
+        try: 
+            user_delete=AppUser.query.filter_by(username=username).first()
+            db.session.delete(user_delete)
+            db.session.commit()
+
+            session.clear()
+
+            flash('Your account has been deleted successfully.', 'success')
+            return redirect('/login_signup')
+        except IntegrityError:
+            db.session.rollback()
+            flash('Error deleting account failed. Please try again','error')
+    return render_template('/index.html')
+
 
 @app.get('/submit_rating')
 def get_rating_form():
