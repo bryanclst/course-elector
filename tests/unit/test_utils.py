@@ -19,8 +19,6 @@ def test_users_db(test_client):
     assert len(all_users) == 2
 
 
-
-
 from utils import clear_db, populate_db, heavily_populate_db, courses_db
 
 def test_clear_db(test_client):
@@ -151,3 +149,4 @@ def test_courses_db(test_client):
     assert len(all_courses) == 31
 
     clear_db()
+
