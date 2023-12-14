@@ -1,4 +1,4 @@
-from utils import heavily_populate_db
+from utils import heavily_populate_db, clear_db
 from src.models import Post, Comment
 
 # test viewing a single forum post

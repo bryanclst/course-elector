@@ -1,4 +1,4 @@
-from utils import heavily_populate_db
+from utils import heavily_populate_db, clear_db
 from src.models import Post
 
 # test viewing forum posts
@@ -9,4 +9,5 @@ def test_view_forum_posts(test_client):
 
     #simple test to make sure it works
     assert response.status_code == 200
-    assert b'View Forum Posts' in response.data
+    assert b'CourseElector Forum Home' in response.data
+    clear_db()
