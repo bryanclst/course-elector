@@ -1,5 +1,4 @@
-from utils import heavily_populate_db
-from app import repository_singleton
+from utils import heavily_populate_db, clear_db
 from src.models import Post
 
 # test a successful post edit
@@ -36,6 +35,7 @@ def test_edit_valid_post(test_client):
 
     with test_client.session_transaction() as session:
         del session['username']
+    clear_db()
 
 # test editing a post with bad data
 def test_edit_post_with_invalid_data(test_client):
@@ -89,6 +89,7 @@ def test_edit_post_with_invalid_data(test_client):
 
     with test_client.session_transaction() as session:
         del session['username']
+    clear_db()
 
 # test attempting to edit a post while not logged in
 def test_edit_post_not_logged_in(test_client):
@@ -120,6 +121,7 @@ def test_edit_post_not_logged_in(test_client):
     }, follow_redirects=True)
 
     assert response_edit_post.status_code == 401
+    clear_db()
 
 def test_editing_post_that_isnt_users(test_client):
     heavily_populate_db()
@@ -153,5 +155,6 @@ def test_editing_post_that_isnt_users(test_client):
 
     with test_client.session_transaction() as session:
         del session['username']
+    clear_db()
     
     

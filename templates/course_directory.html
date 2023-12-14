@@ -16,6 +16,7 @@
       <thead>
         <tr>
           <th scope="col">Course</th>
+          <th scope="col">Title</th>
           <th scope="col">Major</th>
           <th scope="col">Credits</th>
           <th scope="col">Quality Rating</th>
@@ -27,6 +28,7 @@
         {% for course in all_courses.items %}
           <tr>
             <th scope="row" style="font-weight: normal;">{{ course.course_letter }}-{{ course.course_number }}</th>
+            <th scope="row" style="font-weight: normal;">{{ course.title }}</th>
             <td>{{ course.major }}</td>
             <td>{{ course.credits }}</td>
             <td>

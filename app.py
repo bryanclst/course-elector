@@ -4,7 +4,7 @@ from src.models import db, AppUser, Course, Rating, Post, Comment
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_bcrypt import Bcrypt
 from sqlalchemy.exc import IntegrityError 
-from utils import clear_db, users_db
+from utils import clear_db, users_db,courses_db
 from dotenv import load_dotenv
 import os
 import traceback
@@ -369,7 +369,7 @@ def view_ratings(course_id):
     if course is None:
         abort(400) # invalid course_id
         
-    ratings = repository_singleton.get_ratings_by_course(course_id)
+    ratings = repository_singleton.get_ratings_by_course_id(course_id)
     
     if ratings:
         qualities = [rating.quality for rating in ratings]
@@ -383,6 +383,15 @@ def view_ratings(course_id):
 
 if __name__ == '__main__':
     app.run(debug=True)
+
+# I was receiving an error saying: "RuntimeError: Working outside of application context." 
+# the error mentioned using app.app_context, and this resource helped me understand how to use it: https://stackoverflow.com/questions/34122949/working-outside-of-application-context-flask
+with app.app_context(): 
+    # checks if courses_db() has already been executed by comparing course in it
+    course_check = Course.query.filter_by(title="Medieval Art").first()
+    
+    if course_check is None:
+        courses_db() #adds courses to database
 
 @app.get('/about')
 def about_us():

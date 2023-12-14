@@ -1,5 +1,4 @@
-from utils import heavily_populate_db
-from app import repository_singleton
+from utils import heavily_populate_db, clear_db
 from src.models import Post
 
 # test a successful post creation
@@ -22,6 +21,7 @@ def test_create_valid_post(test_client):
     # log out
     with test_client.session_transaction() as session:
         del session['username']
+    clear_db()
 
 #test creating a post while a session is not active (user isn't logged in)
 def test_create_post_not_logged_in(test_client):
@@ -34,6 +34,7 @@ def test_create_post_not_logged_in(test_client):
     }, follow_redirects=True)
     
     assert response.status_code == 401
+    clear_db()
 
 #test various forms of bad data
 def test_create_post_with_invalid_data(test_client):
@@ -77,4 +78,5 @@ def test_create_post_with_invalid_data(test_client):
     # log out
     with test_client.session_transaction() as session:
         del session['username']
+    clear_db()
     
