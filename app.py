@@ -341,7 +341,7 @@ def submit_rating():
         abort(400)
     if repository_singleton.get_course_by_id(course_id) is None:
         abort(400)
-    if int(quality) < 0 or int(quality) > 5 or int(difficulty) < 0 or int(difficulty) > 5:
+    if int(quality) < 1 or int(quality) > 5 or int(difficulty) < 1 or int(difficulty) > 5:
         abort(400)
     
     grade = request.form.get('grade')

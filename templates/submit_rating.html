@@ -50,7 +50,7 @@
                 </td>
                 <td>
                     <div class="input-container single-input-container">
-                        <input class="form-control" type="number" id="quality" name="quality" min=0 max=5 required>
+                        <input class="form-control" type="number" id="quality" name="quality" min=1 max=5 required>
                     </div>
                 </td>
             </tr>
@@ -61,7 +61,7 @@
                 </td>
                 <td>
                     <div class="input-container single-input-container">
-                        <input class="form-control" type="number" id="difficulty" name="difficulty" min=0 max=5 required>
+                        <input class="form-control" type="number" id="difficulty" name="difficulty" min=1 max=5 required>
                     </div>
                 </td>
             </tr>
@@ -97,7 +97,7 @@
         </table>
     </form>
 </div>
-<input type="submit" id="submit-btn" form="rating-form" class="btn btn-success mt-3" value="Submit" {% if disabled %} disabled=True{% endif %}>
+<input type="submit" id="submit-btn" form="rating-form" class="btn btn-success mt-3" value="Submit"{% if disabled %} disabled=True{% endif %}>
 {% if disabled %}<p class="disabled-error">You must be logged in to submit a rating.</p>{% endif %}
 
 {% endif %}
