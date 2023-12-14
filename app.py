@@ -4,7 +4,6 @@ from src.models import db, AppUser, Course, Rating, Post, Comment
 from src.repositories.repository import repository_singleton
 from utils import courses_db
 
-import bcrypt
 from flask_bcrypt import Bcrypt
 
 from sqlalchemy.exc import IntegrityError 
@@ -13,7 +12,6 @@ from sqlalchemy.orm import joinedload
 
 from dotenv import load_dotenv
 import os
-import traceback
 
 load_dotenv()
 app = Flask(__name__, static_url_path='/static')
@@ -28,7 +26,7 @@ db.init_app(app)
 def render_template(*args, **kwargs):
     if 'username' not in kwargs:
         kwargs['username']= session.get('username')
-    return real_render_template(*args, **kwargs,)
+    return real_render_template(*args, **kwargs)
 
 @app.get('/')
 def index():

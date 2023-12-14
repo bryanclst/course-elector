@@ -1,12 +1,6 @@
-import pytest
-from src.models import AppUser, Course, Rating, Post, Comment, db
-from utils import clear_db, populate_db, heavily_populate_db, users_db
-from app import app, db, repository_singleton
-import bcrypt
-
-
-test_client = app.test_client()
-app.config['TESTING'] = True
+from src.models import AppUser,  db
+from utils import clear_db, users_db
+from bcrypt import hashpw, gensalt
 
 def test_signup(test_client):
     clear_db()
@@ -79,7 +73,7 @@ def test_login(test_client):
         assert session.get('username') == None
 
     # add a user
-    test_user = AppUser(username='user1', hashed_password=bcrypt.hashpw('pass1'.encode('utf-8'), bcrypt.gensalt()).decode('utf-8'))
+    test_user = AppUser(username='user1', hashed_password=hashpw('pass1'.encode('utf-8'), gensalt()).decode('utf-8'))
     db.session.add(test_user)
     db.session.commit()
 

@@ -97,7 +97,7 @@
         </table>
     </form>
 </div>
-<input type="submit" id="submit-btn" form="rating-form" class="btn btn-success mt-3" value="Submit"{% if disabled %} disabled=True{% endif %}>
+<input type="submit" id="submit-btn" form="rating-form" class="btn btn-success mt-3" value="Submit" {% if disabled %} disabled=True{% endif %}>
 {% if disabled %}<p class="disabled-error">You must be logged in to submit a rating.</p>{% endif %}
 
 {% endif %}

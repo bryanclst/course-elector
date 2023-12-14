@@ -158,6 +158,5 @@ def test_editing_post_that_isnt_users(test_client):
 
     with test_client.session_transaction() as session:
         del session['username']
-    clear_db()
     
     clear_db()
