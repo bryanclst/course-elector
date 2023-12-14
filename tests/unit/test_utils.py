@@ -17,7 +17,5 @@ def test_users_db(test_client):
 
     all_users = AppUser.query.all()
     assert len(all_users) == 2
-
-
-
-
+    
+    clear_db()
